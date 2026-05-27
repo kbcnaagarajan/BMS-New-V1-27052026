@@ -25,6 +25,7 @@ def seed_modules():
         {'name': 'REPORTS & ANALYTICS', 'key': 'group_reports', 'icon': '', 'path': '', 'sequence': 70},
         {'name': 'ADMINISTRATION', 'key': 'group_admin', 'icon': '', 'path': '', 'sequence': 80},
         {'name': 'CLIENT PORTAL', 'key': 'group_portal', 'icon': '', 'path': '', 'sequence': 90},
+        {'name': 'PLATFORM', 'key': 'group_platform', 'icon': '', 'path': '', 'sequence': 5},
     ]
 
     created = []
@@ -75,6 +76,10 @@ def seed_modules():
         # CLIENT PORTAL
         {'name': 'Portal Dashboard', 'key': 'portal_dashboard', 'icon': 'bi bi-speedometer2', 'path': '/portal/', 'parent': 'group_portal', 'sequence': 91},
         {'name': 'Portal Projects', 'key': 'portal_projects', 'icon': 'bi bi-kanban', 'path': '/portal/projects/', 'parent': 'group_portal', 'sequence': 92},
+        # PLATFORM (Super Admin only)
+        {'name': 'Companies', 'key': 'companies', 'icon': 'bi bi-building', 'path': '/companies/', 'parent': 'group_platform', 'sequence': 6},
+        {'name': 'Packages', 'key': 'packages', 'icon': 'bi bi-box', 'path': '/packages/', 'parent': 'group_platform', 'sequence': 7},
+        {'name': 'Subscriptions', 'key': 'subscriptions', 'icon': 'bi bi-credit-card-2-front', 'path': '/subscriptions/', 'parent': 'group_platform', 'sequence': 8},
     ]
 
     for m in modules_data:
@@ -147,20 +152,22 @@ SYSTEM_ROLES = {
         'name': 'Management / Director',
         'description': 'Can view all projects, reports, revenue, and risks within their company',
         'permissions': ['view', 'export'],
-        'modules': ['dashboard', 'clients', 'contacts', 'projects', 'tasks', 'milestones',
-                     'deliverables', 'meetings', 'documents', 'team',
-                     'invoices', 'payments', 'expenses',
+        'modules': ['dashboard', 'clients', 'projects', 'tasks',
+                     'meetings', 'documents',
                      'issues', 'risks', 'change_requests', 'support_tickets',
-                     'employees', 'timesheets', 'leave', 'attendance', 'reports'],
+                     'invoices', 'payments', 'expenses',
+                     'employees', 'timesheets', 'leave', 'attendance',
+                     'reports'],
     },
     'delivery_manager': {
         'name': 'Delivery Manager',
         'description': 'Manages multiple projects, resources, delivery timelines',
         'permissions': ['view', 'export'],
-        'modules': ['dashboard', 'clients', 'contacts', 'projects', 'tasks', 'milestones',
+        'modules': ['dashboard', 'clients', 'projects', 'tasks', 'milestones',
                      'deliverables', 'meetings', 'documents', 'team',
                      'issues', 'risks', 'change_requests', 'support_tickets',
-                     'employees', 'timesheets', 'leave', 'attendance', 'reports'],
+                     'employees', 'timesheets', 'leave', 'attendance',
+                     'reports'],
     },
     'project_manager': {
         'name': 'Project Manager',
@@ -169,23 +176,24 @@ SYSTEM_ROLES = {
         'modules': ['dashboard', 'clients', 'contacts', 'projects', 'tasks', 'milestones',
                      'deliverables', 'meetings', 'documents', 'team',
                      'issues', 'risks', 'change_requests', 'support_tickets',
-                     'timesheets', 'leave', 'attendance'],
+                     'timesheets', 'leave', 'attendance',
+                     'reports'],
     },
     'account_manager': {
         'name': 'Account Manager',
         'description': 'Client relationship, contracts, invoices, communication',
         'permissions': ['view', 'create', 'edit'],
-        'modules': ['dashboard', 'clients', 'contacts', 'projects', 'tasks', 'milestones',
-                     'deliverables', 'meetings', 'documents',
-                     'invoices', 'payments', 'expenses',
-                     'issues', 'risks', 'change_requests', 'support_tickets',
-                     'team', 'timesheets'],
+        'modules': ['dashboard', 'clients', 'contacts', 'projects',
+                     'meetings', 'documents',
+                     'issues', 'support_tickets', 'change_requests',
+                     'invoices', 'payments',
+                     'reports'],
     },
     'employee': {
         'name': 'Employee / Staff',
         'description': 'Works on assigned tasks, logs timesheets, updates work',
         'permissions': ['view', 'create', 'edit'],
-        'modules': ['dashboard', 'projects', 'tasks', 'team',
+        'modules': ['dashboard', 'projects', 'tasks',
                      'timesheets', 'leave', 'attendance', 'expenses',
                      'meetings', 'documents'],
     },
@@ -194,13 +202,14 @@ SYSTEM_ROLES = {
         'description': 'Manages employee profiles, leaves, attendance, allocations',
         'permissions': ['view', 'create', 'edit'],
         'modules': ['dashboard', 'employees', 'timesheets', 'leave', 'attendance',
-                     'company_settings', 'departments', 'designations', 'user_management'],
+                     'expenses', 'reports',
+                     'departments', 'designations'],
     },
     'finance_user': {
         'name': 'Finance User',
         'description': 'Manages invoices, payments, billing, financial reports',
         'permissions': ['view', 'create', 'edit', 'export'],
-        'modules': ['dashboard', 'clients', 'contacts', 'projects',
+        'modules': ['dashboard', 'clients', 'projects',
                      'invoices', 'payments', 'expenses', 'reports'],
     },
     'client_admin': {

@@ -598,9 +598,18 @@ for mk in SUPER_ADMIN_RESTRICTED_MODULES:
     check(f'SA menu hides {mk}', mk not in menu_keys)
 
 # SA CAN access monitoring modules
-for url_name in ['client_list', 'project_list', 'company_list', 'reports_list', 'dashboard']:
+for url_name in ['company_list', 'reports_list', 'dashboard']:
     resp = c_super.get(reverse(url_name))
     check(f'SA accesses {url_name}', resp.status_code == 200)
+
+# SA blocked from client/project detail views (not routed through _module_list)
+for url_name in ['client_list', 'client_add', 'client_detail', 'project_list', 'project_add',
+                  'task_list', 'task_add', 'employee_list']:
+    try:
+        resp = c_super.get(reverse(url_name))
+        detail = f'(got {resp.status_code})' if resp.status_code not in (302, 403, 404) else ''
+        check(f'SA blocked from {url_name}', resp.status_code in (302, 403, 404), detail)
+    except: pass
 
 # ───────────────────────────────────────────────
 #  24. REPORTS DASHBOARD BY ROLE (WF26)

@@ -379,20 +379,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Check if user has access to a module via any permission in that module."""
         if self.is_superuser:
             return module_key not in SUPER_ADMIN_RESTRICTED_MODULES
-        return self.roles.filter(
+        if self.roles.filter(
             permissions__module__key=module_key,
             is_active=True
-        ).exists()
+        ).exists():
+            return True
+        user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+        if user_type_module_keys == '__all__':
+            return True
+        if user_type_module_keys:
+            return module_key in user_type_module_keys
+        return False
 
     def has_perm_in_module(self, module_key, perm_type='view'):
         """Check if user has a specific permission type on a module."""
         if self.is_superuser:
             return module_key not in SUPER_ADMIN_RESTRICTED_MODULES
-        return self.roles.filter(
+        if self.roles.filter(
             permissions__module__key=module_key,
             permissions__permission_type=perm_type,
             is_active=True
-        ).exists()
+        ).exists():
+            return True
+        user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+        if user_type_module_keys == '__all__':
+            return True
+        if user_type_module_keys:
+            return module_key in user_type_module_keys
+        return False
 
     def get_module_permissions(self, module_key):
         """Get all permission types the user has for a module."""
@@ -400,20 +414,70 @@ class User(AbstractBaseUser, PermissionsMixin):
             if module_key in SUPER_ADMIN_RESTRICTED_MODULES:
                 return []
             return ['view', 'create', 'edit', 'delete', 'approve', 'export', 'import', 'assign', 'manage']
-        return list(self.roles.filter(
+        perms = list(self.roles.filter(
             permissions__module__key=module_key,
             is_active=True
         ).values_list('permissions__permission_type', flat=True).distinct())
+        if perms:
+            return perms
+        user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+        if user_type_module_keys == '__all__' or (user_type_module_keys and module_key in user_type_module_keys):
+            return ['view', 'create', 'edit', 'delete']
+        return []
+
+    USER_TYPE_MODULES = {
+        'company_admin': '__all__',
+        'management': ['dashboard', 'clients', 'projects', 'tasks', 'timesheets',
+                        'meetings', 'documents',
+                        'issues', 'risks', 'change_requests', 'support_tickets',
+                        'invoices', 'payments', 'expenses',
+                        'employees', 'timesheets', 'leave', 'attendance',
+                        'reports'],
+        'delivery_manager': ['dashboard', 'clients', 'projects', 'tasks', 'milestones',
+                              'deliverables', 'meetings', 'documents', 'team',
+                              'issues', 'risks', 'change_requests', 'support_tickets',
+                              'employees', 'timesheets', 'leave', 'attendance',
+                              'reports'],
+        'project_manager': ['dashboard', 'clients', 'contacts', 'projects', 'tasks',
+                             'milestones', 'deliverables', 'meetings', 'documents', 'team',
+                             'timesheets', 'leave', 'attendance',
+                             'issues', 'risks', 'change_requests', 'support_tickets',
+                             'reports'],
+        'account_manager': ['dashboard', 'clients', 'contacts', 'projects',
+                             'meetings', 'documents',
+                             'issues', 'support_tickets', 'change_requests',
+                             'invoices', 'payments',
+                             'reports'],
+        'employee': ['dashboard', 'projects', 'tasks',
+                      'timesheets', 'leave', 'attendance', 'expenses',
+                      'meetings', 'documents'],
+        'hr_manager': ['dashboard', 'employees', 'timesheets', 'leave', 'attendance',
+                        'expenses', 'reports',
+                        'departments', 'designations'],
+        'finance_user': ['dashboard', 'clients', 'projects',
+                          'invoices', 'payments', 'expenses',
+                          'reports'],
+        'client_admin': ['portal_dashboard', 'portal_projects'],
+        'client_user': ['portal_dashboard', 'portal_projects'],
+    }
 
     def get_accessible_modules(self):
         """Get all modules this user can access."""
         if self.is_superuser:
-            return Module.objects.filter(is_active=True).exclude(key__in=SUPER_ADMIN_RESTRICTED_MODULES)
-        return Module.objects.filter(
+            return Module.objects.filter(key__in=SA_ALLOWED_MODULES, is_active=True)
+        role_modules = Module.objects.filter(
             permissions__roles__users=self,
             permissions__roles__is_active=True,
             is_active=True
         ).distinct()
+        if role_modules.exists():
+            return role_modules
+        user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+        if user_type_module_keys == '__all__':
+            return Module.objects.filter(is_active=True)
+        if user_type_module_keys:
+            return Module.objects.filter(key__in=user_type_module_keys, is_active=True)
+        return Module.objects.none()
 
     def is_company_admin_user(self):
         """Check if user is a company admin."""
@@ -484,11 +548,18 @@ class UserActivity(models.Model):
 # ── Super Admin Boundary ──
 
 SUPER_ADMIN_RESTRICTED_MODULES = [
-    'timesheets', 'leave', 'attendance', 'expenses',
-    'meetings', 'documents', 'issues', 'risks',
-    'change_requests', 'support_tickets', 'team',
-    'tasks', 'milestones', 'deliverables',
-    'invoices', 'payments', 'contacts',
+    'clients', 'contacts', 'projects', 'tasks', 'milestones', 'deliverables',
+    'meetings', 'documents', 'team',
+    'invoices', 'payments', 'expenses',
+    'issues', 'risks', 'change_requests', 'support_tickets',
+    'employees', 'timesheets', 'leave', 'attendance',
+    'departments', 'designations', 'user_management', 'roles_permissions', 'users', 'roles',
+    'company_settings',
+    'portal_dashboard', 'portal_projects',
     # Aliases used in code
     'leaves',
+]
+
+SA_ALLOWED_MODULES = [
+    'dashboard', 'companies', 'packages', 'subscriptions', 'reports',
 ]

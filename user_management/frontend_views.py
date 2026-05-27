@@ -14,8 +14,14 @@ from meetings_documents.models import Meeting, Document
 from issues_risks.models import ProjectIssue, ProjectRisk, ChangeRequest, SupportTicket
 from billing.models import Invoice, Payment
 
+from django.http import HttpResponseForbidden
 
-# ── Role-based Data Scoping ───────────────────────────────────────────────
+
+def _sa_check(user, module_key):
+    """Return 403 response if super admin is blocked from this module, else None."""
+    if user.is_superuser and module_key in SUPER_ADMIN_RESTRICTED_MODULES:
+        return HttpResponseForbidden()
+    return None
 
 def _get_role_scope(user, module_key):
     """
@@ -32,6 +38,7 @@ def _get_role_scope(user, module_key):
                           'change_requests', 'support_tickets', 'team',
                           'tasks', 'milestones', 'deliverables',
                           'invoices', 'payments', 'contacts',
+                          'clients', 'projects', 'employees',
                           'users', 'roles', 'departments', 'designations'):
             return Q(pk=None)
         return Q()
@@ -410,6 +417,9 @@ def company_toggle_active(request, pk):
 # --- Client CRM ---
 @login_required
 def client_list(request):
+    sa_resp = _sa_check(request.user, 'clients')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     clients = Client.objects.filter(scope).annotate(project_count=Count('projects'))
@@ -418,6 +428,9 @@ def client_list(request):
 
 @login_required
 def client_detail(request, pk):
+    sa_resp = _sa_check(request.user, 'clients')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     client = get_object_or_404(Client.objects.filter(scope).annotate(project_count=Count('projects')), pk=pk)
@@ -429,6 +442,9 @@ def client_detail(request, pk):
 
 @login_required
 def client_form(request, pk=None):
+    sa_resp = _sa_check(request.user, 'clients')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     if pk:
@@ -462,8 +478,9 @@ def client_form(request, pk=None):
 @login_required
 def contact_list(request):
     ctx = get_rbac_context(request.user)
-    if request.user.is_super_admin:
-        return HttpResponseForbidden('Access denied')
+    sa_resp = _sa_check(request.user, 'contacts')
+    if sa_resp:
+        return sa_resp
     scope = _get_role_scope(request.user, 'contacts')
     contacts = ClientContact.objects.filter(scope).select_related('client')
     ctx['contacts'] = contacts
@@ -472,6 +489,9 @@ def contact_list(request):
 # --- Project 360 ---
 @login_required
 def project_list(request):
+    sa_resp = _sa_check(request.user, 'projects')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     if request.user.is_client_user:
         return HttpResponseForbidden('Access denied')
@@ -484,6 +504,9 @@ def project_list(request):
 
 @login_required
 def project_detail(request, pk):
+    sa_resp = _sa_check(request.user, 'projects')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'projects')
     project = get_object_or_404(Project.objects.filter(scope).select_related('client', 'project_manager'), pk=pk)
@@ -499,6 +522,9 @@ def project_detail(request, pk):
 
 @login_required
 def project_form(request, pk=None):
+    sa_resp = _sa_check(request.user, 'projects')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'projects')
     if pk:
@@ -536,6 +562,9 @@ def project_form(request, pk=None):
 
 @login_required
 def task_list(request):
+    sa_resp = _sa_check(request.user, 'tasks')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'tasks')
     tasks = ProjectTask.objects.filter(scope).select_related('project', 'assigned_to')
@@ -547,6 +576,9 @@ def task_list(request):
 
 @login_required
 def task_form(request, pk=None):
+    sa_resp = _sa_check(request.user, 'tasks')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'tasks')
     if pk:
@@ -579,6 +611,9 @@ def task_form(request, pk=None):
 # --- Employee ---
 @login_required
 def employee_list(request):
+    sa_resp = _sa_check(request.user, 'users')
+    if sa_resp:
+        return sa_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'users')
     employees = User.objects.filter(scope, is_active=True).select_related('department', 'designation')
