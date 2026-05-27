@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}{% if edit %}Edit Project{% else %}Add Project{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">{% if edit %}Edit Project{% else %}Add Project{% endif %}</h4>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="id_project_name" class="form-label">Project Name <span class="text-danger">*</span></label>
+                        <input type="text" name="project_name" id="id_project_name" class="form-control" value="{{ project.project_name|default:'' }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_client" class="form-label">Client</label>
+                        <select name="client" id="id_client" class="form-select">
+                            <option value="">---------</option>
+                            {% for client in clients %}
+                            <option value="{{ client.pk }}" {% if project.client_id|stringformat:"s" == client.pk|stringformat:"s" %}selected{% endif %}>{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_project_manager" class="form-label">Project Manager</label>
+                        <select name="project_manager" id="id_project_manager" class="form-select">
+                            <option value="">---------</option>
+                            {% for mgr in managers %}
+                            <option value="{{ mgr.pk }}" {% if project.project_manager_id|stringformat:"s" == mgr.pk|stringformat:"s" %}selected{% endif %}>{{ mgr.get_full_name|default:mgr.email }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label for="id_description" class="form-label">Description</label>
+                        <textarea name="description" id="id_description" class="form-control" rows="4">{{ project.description|default:'' }}</textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_start_date" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" id="id_start_date" class="form-control" value="{{ project.start_date|date:'Y-m-d'|default:'' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_expected_end_date" class="form-label">Expected End Date</label>
+                        <input type="date" name="expected_end_date" id="id_expected_end_date" class="form-control" value="{{ project.expected_end_date|date:'Y-m-d'|default:'' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_status" class="form-label">Status</label>
+                        <select name="status" id="id_status" class="form-select">
+                            <option value="draft" {% if project.status == "draft" or not project %}selected{% endif %}>Draft</option>
+                            <option value="approved" {% if project.status == "approved" %}selected{% endif %}>Approved</option>
+                            <option value="active" {% if project.status == "active" %}selected{% endif %}>Active</option>
+                            <option value="on_hold" {% if project.status == "on_hold" %}selected{% endif %}>On Hold</option>
+                            <option value="completed" {% if project.status == "completed" %}selected{% endif %}>Completed</option>
+                            <option value="cancelled" {% if project.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_priority" class="form-label">Priority</label>
+                        <select name="priority" id="id_priority" class="form-select">
+                            <option value="low" {% if project.priority == "low" %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if project.priority == "medium" or not project %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if project.priority == "high" %}selected{% endif %}>High</option>
+                            <option value="urgent" {% if project.priority == "urgent" %}selected{% endif %}>Urgent</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_budget" class="form-label">Budget ($)</label>
+                        <input type="number" name="budget" id="id_budget" class="form-control" step="0.01" value="{{ project.budget|default:'' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_health" class="form-label">Health</label>
+                        <select name="health" id="id_health" class="form-select">
+                            <option value="green" {% if project.health == "green" or not project %}selected{% endif %}>Green - On Track</option>
+                            <option value="amber" {% if project.health == "amber" %}selected{% endif %}>Amber - Needs Attention</option>
+                            <option value="red" {% if project.health == "red" %}selected{% endif %}>Red - Critical</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                    <a href="{% url 'project_list' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

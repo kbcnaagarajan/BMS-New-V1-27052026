@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block page_title %}Companies{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Companies</h4>
+    {% if user.is_super_admin %}
+    <a href="{% url 'company_add' %}" class="btn btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>Create Company
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 datatable">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Name</th>
+              <th>Status</th>
+              <th>Subscription</th>
+              <th>Users</th>
+              <th>Clients</th>
+              <th>Projects</th>
+              <th>Created</th>
+              <th class="pe-3 text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for company in companies %}
+            <tr>
+              <td class="ps-3 fw-medium">{{ company.name }}</td>
+              <td>
+                {% if company.is_active %}
+                  <span class="health-green">Active</span>
+                {% else %}
+                  <span class="health-red">Inactive</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="status-badge {% if company.subscription_status == 'active' %}bg-success bg-opacity-10 text-success{% elif company.subscription_status == 'trial' %}bg-info bg-opacity-10 text-info{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %}">
+                  {{ company.get_subscription_status_display }}
+                </span>
+              </td>
+              <td>{{ company.total_users|default:"0" }}/{{ company.user_limit|default:"—" }}</td>
+              <td>{{ company.total_clients|default:"0" }}/{{ company.client_limit|default:"—" }}</td>
+              <td>{{ company.total_projects|default:"0" }}/{{ company.project_limit|default:"—" }}</td>
+              <td>{{ company.created_at|date:"M d, Y" }}</td>
+              <td class="pe-3 text-end">
+                <div class="btn-group btn-group-sm">
+                  <a href="{% url 'company_detail' company.pk %}" class="btn btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
+                  {% if user.is_super_admin %}
+                  <a href="{% url 'company_edit' company.pk %}" class="btn btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-center text-muted py-5">No companies registered yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

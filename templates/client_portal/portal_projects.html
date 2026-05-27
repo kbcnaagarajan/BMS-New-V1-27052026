@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}My Projects{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">My Projects</h4>
+    </div>
+
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title fw-semibold mb-0">{{ project.project_name }}</h5>
+                        <div>
+                            {% if project.status == "Active" %}
+                                <span class="badge bg-success">Active</span>
+                            {% elif project.status == "On Hold" %}
+                                <span class="badge bg-warning text-dark">On Hold</span>
+                            {% elif project.status == "Completed" %}
+                                <span class="badge bg-primary">Completed</span>
+                            {% elif project.status == "Planning" %}
+                                <span class="badge bg-secondary">Planning</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ project.status }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {% if project.health == "Good" %}
+                            <span class="health-green">Good</span>
+                        {% elif project.health == "At Risk" %}
+                            <span class="health-amber">At Risk</span>
+                        {% elif project.health == "Critical" %}
+                            <span class="health-red">Critical</span>
+                        {% else %}
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ project.health|default:"N/A" }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <small class="text-muted">Progress</small>
+                            <small class="text-muted">{{ project.completion_percentage|default:0 }}%</small>
+                        </div>
+                        <div class="progress progress-thin">
+                            <div class="progress-bar" role="progressbar" style="width:{{ project.completion_percentage|default:0 }}%;" aria-valuenow="{{ project.completion_percentage|default:0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <p class="card-text text-muted small flex-grow-1">{{ project.description|default:"No description provided."|truncatewords:25 }}</p>
+
+                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-outline-primary btn-sm mt-auto">
+                        <i class="bi bi-eye me-1"></i>View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center text-muted py-5">
+                <i class="bi bi-folder2-open fs-1 d-block mb-2"></i>
+                <span>No projects found.</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

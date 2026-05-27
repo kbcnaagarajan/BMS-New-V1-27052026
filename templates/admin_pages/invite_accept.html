@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block page_title %}Accept Invite{% endblock %}
+{% block content %}
+<style>
+  .main-content { margin-left: 0 !important; padding-top: 0 !important; }
+</style>
+<div class="login-page">
+  <div class="login-card">
+    <div class="logo">
+      <h3>KarthikAi-OMS</h3>
+      <p>You've been invited to join <strong>{{ invite.company.name }}</strong></p>
+    </div>
+    {% if error %}
+    <div class="alert alert-danger py-2 small">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" value="{{ invite.email }}" disabled>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" value="{{ invite.first_name }} {{ invite.last_name }}" disabled>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Set Password <span class="text-danger">*</span></label>
+        <input type="password" name="password" class="form-control" required minlength="6" placeholder="Min 6 characters">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+        <input type="password" name="confirm_password" class="form-control" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Accept Invite & Set Password</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

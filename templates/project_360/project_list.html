@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block page_title %}Projects{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Projects</h4>
+    <a href="{% url 'project_add' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Project</a>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0 datatable">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-3">Project Name</th>
+            <th>Client</th>
+            <th>Manager</th>
+            <th>Status</th>
+            <th>Health</th>
+            <th>Deadline</th>
+            <th class="pe-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr>
+            <td class="ps-3 fw-medium"><a href="{% url 'project_detail' project.pk %}">{{ project.project_name }}</a></td>
+            <td>{{ project.client.name|default:"-" }}</td>
+            <td>{{ project.project_manager.full_name|default:project.project_manager.email|default:"-" }}</td>
+            <td>
+              {% with s=project.status|lower %}
+              {% if s == 'active' or s == 'approved' or s == 'kickoff_scheduled' %}
+                <span class="health-green">{{ project.get_status_display }}</span>
+              {% elif s == 'on_hold' or s == 'delayed' %}
+                <span class="health-amber">{{ project.get_status_display }}</span>
+              {% elif s == 'completed' or s == 'closed' %}
+                <span class="status-badge bg-primary bg-opacity-10 text-primary">{{ project.get_status_display }}</span>
+              {% elif s == 'cancelled' %}
+                <span class="health-red">{{ project.get_status_display }}</span>
+              {% else %}
+                <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ project.get_status_display }}</span>
+              {% endif %}
+              {% endwith %}
+            </td>
+            <td>
+              {% if project.health == 'green' %}
+                <span class="health-green">On Track</span>
+              {% elif project.health == 'amber' %}
+                <span class="health-amber">Needs Attention</span>
+              {% elif project.health == 'red' %}
+                <span class="health-red">Critical</span>
+              {% else %}
+                <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ project.health }}</span>
+              {% endif %}
+            </td>
+            <td>{{ project.expected_end_date|date:"M d, Y"|default:"-" }}</td>
+            <td class="pe-3">
+              <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'project_edit' project.pk %}" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="text-center text-muted py-4">No projects found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

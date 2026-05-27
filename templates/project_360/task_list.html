@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block page_title %}Tasks{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Tasks</h4>
+    <a href="{% url 'task_add' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Task</a>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-hover align-middle mb-0 datatable">
+        <thead class="table-light">
+          <tr>
+            <th class="ps-3">Task Name</th>
+            <th>Project</th>
+            <th>Assignee</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>% Done</th>
+            <th class="pe-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+          <tr>
+            <td class="ps-3">{{ task.title }}</td>
+            <td>{{ task.project.name|default:"-" }}</td>
+            <td>{{ task.assigned_to.full_name|default:task.assigned_to.email|default:"Unassigned" }}</td>
+            <td>{{ task.due_date|date:"M d, Y"|default:"-" }}</td>
+            <td>
+              {% with p=task.priority|lower %}
+              {% if p == 'high' or p == 'urgent' %}
+                <span class="status-badge bg-danger bg-opacity-10 text-danger">High</span>
+              {% elif p == 'medium' %}
+                <span class="status-badge bg-warning bg-opacity-10 text-warning">Medium</span>
+              {% elif p == 'low' %}
+                <span class="status-badge bg-info bg-opacity-10 text-info">Low</span>
+              {% else %}
+                <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ task.priority }}</span>
+              {% endif %}
+              {% endwith %}
+            </td>
+            <td>
+              {% with s=task.status|lower %}
+              {% if s == 'todo' or s == 'not_started' or s == 'not started' %}
+                <span class="status-badge bg-secondary bg-opacity-10 text-secondary">Not Started</span>
+              {% elif s == 'in_progress' or s == 'in progress' %}
+                <span class="status-badge bg-primary bg-opacity-10 text-primary">In Progress</span>
+              {% elif s == 'done' or s == 'completed' %}
+                <span class="status-badge bg-success bg-opacity-10 text-success">Completed</span>
+              {% elif s == 'on_hold' or s == 'on hold' %}
+                <span class="status-badge bg-warning bg-opacity-10 text-warning">On Hold</span>
+              {% elif s == 'cancelled' %}
+                <span class="status-badge bg-danger bg-opacity-10 text-danger">Cancelled</span>
+              {% else %}
+                <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ task.status }}</span>
+              {% endif %}
+              {% endwith %}
+            </td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="progress flex-grow-1 progress-thin">
+                  <div class="progress-bar" role="progressbar" style="width:{{ task.progress|default:0 }}%;" aria-valuenow="{{ task.progress|default:0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small class="text-muted">{{ task.progress|default:0 }}%</small>
+              </div>
+            </td>
+            <td class="pe-3">
+              <a href="{% url 'task_edit' task.pk %}" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="8" class="text-center text-muted py-4">No tasks found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

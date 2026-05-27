@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Client: {{ client.company_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="mb-4">
+    <a href="{% url 'client_list' %}" class="text-decoration-none text-muted">
+      <i class="bi bi-arrow-left me-1"></i>Back to Clients
+    </a>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+          <i class="bi bi-building me-2 text-primary"></i>
+          <h5 class="card-title mb-0 fw-semibold">Company Info</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="detail-label">Company Name</div>
+              <div class="detail-value">{{ client.name }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Client Code</div>
+              <div class="detail-value">{{ client.client_code|default:"—" }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Email</div>
+              <div class="detail-value"><a href="mailto:{{ client.email }}" class="text-decoration-none">{{ client.email }}</a></div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Phone</div>
+              <div class="detail-value">{{ client.phone }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Website</div>
+              <div class="detail-value">{{ client.website|default:"—" }}</div>
+            </div>
+            <div class="col-12">
+              <div class="detail-label">Address</div>
+              <div class="detail-value">{{ client.address_line1|linebreaksbr|default:"—" }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Tax / GST Number</div>
+              <div class="detail-value">{{ client.tax_number|default:"—" }}</div>
+            </div>
+            <div class="col-12">
+              <div class="detail-label">Status</div>
+              <div class="detail-value">
+                {% if client.status == "active" %}
+                  <span class="health-green">Active</span>
+                {% else %}
+                  <span class="health-red">Inactive</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+          <i class="bi bi-person me-2 text-success"></i>
+          <h5 class="card-title mb-0 fw-semibold">Account Manager</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="detail-label">Assigned Manager</div>
+              <div class="detail-value">{% if client.assigned_account_manager %}{{ client.assigned_account_manager.get_full_name|default:client.assigned_account_manager.email }}{% else %}—{% endif %}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Client Type</div>
+              <div class="detail-value">{{ client.get_client_type_display|default:"—" }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div class="detail-label">Industry</div>
+              <div class="detail-value">{{ client.get_industry_display|default:"—" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="bi bi-folder2-open me-2 text-info"></i>Active Projects
+          </h5>
+          <span class="badge bg-info rounded-pill">{{ projects|length }}</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">Project Name</th>
+                  <th>Manager</th>
+                  <th>Status</th>
+                  <th>Health</th>
+                  <th class="pe-3">Progress</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for project in projects %}
+                <tr>
+                  <td class="ps-3 fw-medium">{{ project.name }}</td>
+                  <td>{{ project.project_manager.get_full_name|default:project.project_manager.email }}</td>
+                  <td>
+                    {% with s=project.status|lower %}
+                    {% if s == 'active' or s == 'approved' or s == 'kickoff_scheduled' %}
+                      <span class="health-green">{{ project.get_status_display }}</span>
+                    {% elif s == 'on_hold' or s == 'delayed' %}
+                      <span class="health-amber">{{ project.get_status_display }}</span>
+                    {% elif s == 'completed' or s == 'closed' %}
+                      <span class="status-badge bg-primary bg-opacity-10 text-primary">{{ project.get_status_display }}</span>
+                    {% elif s == 'cancelled' %}
+                      <span class="health-red">{{ project.get_status_display }}</span>
+                    {% else %}
+                      <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ project.get_status_display }}</span>
+                    {% endif %}
+                    {% endwith %}
+                  </td>
+                  <td>
+                    {% if project.health == 'green' %}
+                      <span class="health-green">On Track</span>
+                    {% elif project.health == 'amber' %}
+                      <span class="health-amber">Needs Attention</span>
+                    {% elif project.health == 'red' %}
+                      <span class="health-red">Critical</span>
+                    {% else %}
+                      <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ project.health }}</span>
+                    {% endif %}
+                  </td>
+                  <td class="pe-3">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="progress flex-grow-1 progress-thin">
+                        <div class="progress-bar" role="progressbar" style="width:0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small class="text-muted">0%</small>
+                    </div>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-5">No active projects.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+          <i class="bi bi-clock-history me-2 text-warning"></i>
+          <h5 class="card-title mb-0 fw-semibold">Recent Activity</h5>
+        </div>
+        <div class="card-body">
+          <div class="activity-timeline">
+            {% for activity in recent_activities %}
+            <div class="activity-item">
+              <p class="mb-1 fw-medium">{{ activity.description }}</p>
+              <small class="text-muted">{{ activity.created_by.get_full_name|default:activity.created_by.email }} &middot; {{ activity.created_at|timesince }} ago</small>
+            </div>
+            {% empty %}
+            <div class="text-center text-muted py-4">
+              <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+              <span>No recent activity.</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+          <h5 class="card-title mb-0 fw-semibold">
+            <i class="bi bi-sticky me-2 text-primary"></i>Notes
+          </h5>
+        </div>
+        <div class="card-body">
+          {% for note in notes %}
+          <div class="border-bottom pb-3 mb-3">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="user-avatar" style="width:28px;height:28px;font-size:11px;">{{ note.created_by.first_name|first|upper }}</div>
+                <strong class="small">{{ note.created_by.get_full_name|default:note.created_by.email }}</strong>
+              </div>
+              <small class="text-muted">{{ note.created_at|date:"M d, Y" }}</small>
+            </div>
+            <p class="mb-0 small">{{ note.content }}</p>
+          </div>
+          {% empty %}
+          <div class="text-center text-muted py-4">
+            <i class="bi bi-journal-text fs-1 d-block mb-2"></i>
+            <span>No notes yet.</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

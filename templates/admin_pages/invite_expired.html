@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block page_title %}Invite Expired{% endblock %}
+{% block content %}
+<style>
+  .main-content { margin-left: 0 !important; padding-top: 0 !important; }
+</style>
+<div class="login-page">
+  <div class="login-card text-center">
+    <div class="logo">
+      <i class="bi bi-clock-history fs-1 text-warning d-block mb-3"></i>
+      <h3>Invite Expired</h3>
+      <p class="text-muted">This invite for <strong>{{ invite.email }}</strong> to join <strong>{{ invite.company.name }}</strong> has expired.</p>
+      <p class="text-muted small">Please contact your company admin to send a new invitation.</p>
+      <a href="{% url 'login' %}" class="btn btn-primary mt-3">Go to Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

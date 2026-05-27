@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Timesheets{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">Timesheets</h4>
+        <a href="{% url 'timesheets_add' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>Add Timesheet
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">Employee</label>
+                    <select name="employee" class="form-select select2">
+                        <option value="">All Employees</option>
+                        {% for emp in employees %}
+                        <option value="{{ emp.pk }}" {% if request.GET.employee == emp.pk|stringformat:"s" %}selected{% endif %}>{{ emp.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-1"></i>Apply</button>
+                    <a href="{% url 'timesheets_list' %}" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="timesheetTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3">Employee</th>
+                            <th>Week Start</th>
+                            <th>Week End</th>
+                            <th>Total Hours</th>
+                            <th>Status</th>
+                            <th class="pe-3 text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ts in timesheets %}
+                        <tr>
+                            <td class="ps-3">{{ ts.employee.full_name }}</td>
+                            <td>{{ ts.week_start_date|date:"M d, Y" }}</td>
+                            <td>{{ ts.week_end_date|date:"M d, Y" }}</td>
+                            <td>{{ ts.total_hours }}</td>
+                            <td>
+                                {% if ts.status == "submitted" %}
+                                    <span class="badge bg-warning text-dark">Submitted</span>
+                                {% elif ts.status == "approved" %}
+                                    <span class="badge bg-success">Approved</span>
+                                {% elif ts.status == "rejected" %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                {% elif ts.status == "draft" %}
+                                    <span class="badge bg-secondary">Draft</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ ts.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="pe-3 text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'timesheets_detail' ts.pk %}" class="btn btn-outline-info" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'timesheets_edit' ts.pk %}" class="btn btn-outline-secondary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'timesheets_delete' ts.pk %}" class="btn btn-outline-danger" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">No timesheets found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    $(document).ready(function() {
+        $('#timesheetTable').DataTable({
+            pageLength: 25,
+            order: [[1, 'desc']],
+            language: {
+                search: "Search timesheets:"
+            }
+        });
+    });
+</script>
+{% endblock %}

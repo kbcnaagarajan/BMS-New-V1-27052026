@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Employees{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">Employees</h4>
+        <a href="{% url 'users_add' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>Add Employee
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="employeeTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3">Employee Name</th>
+                            <th>Employee ID</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th class="pe-3 text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                        <tr>
+                            <td class="ps-3 fw-medium">{{ emp.full_name }}</td>
+                            <td>{{ emp.employee_id }}</td>
+                            <td>{{ emp.department }}</td>
+                            <td>{{ emp.designation }}</td>
+                            <td><a href="mailto:{{ emp.email }}" class="text-decoration-none">{{ emp.email }}</a></td>
+                            <td>{{ emp.phone }}</td>
+                            <td>
+                                {% if emp.is_active %}
+                                    <span class="health-green">Active</span>
+                                {% else %}
+                                    <span class="health-red">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td class="pe-3 text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'employee_detail' emp.pk %}" class="btn btn-outline-secondary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'users_edit' emp.pk %}" class="btn btn-outline-secondary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-5">No employees found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    $(document).ready(function() {
+        $('#employeeTable').DataTable({
+            pageLength: 25,
+            order: [[1, 'asc']],
+            language: {
+                search: "Search employees:"
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}{{ employee.full_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="mb-4">
+        <a href="{% url 'employee_list' %}" class="text-decoration-none text-muted">
+            <i class="bi bi-arrow-left me-1"></i>Back to Employees
+        </a>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+                    <i class="bi bi-person me-2 text-primary"></i>
+                    <h5 class="card-title mb-0 fw-semibold">Employee Profile</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="detail-label">Full Name</div>
+                            <div class="detail-value">{{ employee.full_name }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Employee ID</div>
+                            <div class="detail-value">{{ employee.employee_id }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Department</div>
+                            <div class="detail-value">{{ employee.department }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Designation</div>
+                            <div class="detail-value">{{ employee.designation }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Email</div>
+                            <div class="detail-value"><a href="mailto:{{ employee.email }}" class="text-decoration-none">{{ employee.email }}</a></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">{{ employee.phone }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Join Date</div>
+                            <div class="detail-value">{{ employee.date_joined|date:"M d, Y"|default:"—" }}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">
+                                {% if employee.is_active %}
+                                    <span class="health-green">Active</span>
+                                {% else %}
+                                    <span class="health-red">Inactive</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+                    <i class="bi bi-list-task me-2 text-success"></i>
+                    <h5 class="card-title mb-0 fw-semibold">Current Tasks</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Task</th>
+                                    <th>Project</th>
+                                    <th>Due Date</th>
+                                    <th class="pe-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in current_tasks %}
+                                <tr>
+                                    <td class="ps-3">{{ task.title }}</td>
+                                    <td>{{ task.project.name }}</td>
+                                    <td>{{ task.due_date|date:"M d, Y"|default:"—" }}</td>
+                                    <td class="pe-3">{{ task.status|default:"—" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No current tasks.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+                    <i class="bi bi-clock me-2 text-warning"></i>
+                    <h5 class="card-title mb-0 fw-semibold">Timesheet</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Date</th>
+                                    <th>Project</th>
+                                    <th>Hours</th>
+                                    <th class="pe-3">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in timesheet_entries %}
+                                <tr>
+                                    <td class="ps-3">{{ entry.date|date:"M d, Y" }}</td>
+                                    <td>{{ entry.project.name }}</td>
+                                    <td>{{ entry.hours }}</td>
+                                    <td class="pe-3">{{ entry.description|truncatewords:8 }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No timesheet entries.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom d-flex align-items-center py-3">
+                    <i class="bi bi-umbrella me-2 text-info"></i>
+                    <h5 class="card-title mb-0 fw-semibold">Leave Balance</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">Leave Type</th>
+                                    <th>Total</th>
+                                    <th>Used</th>
+                                    <th class="pe-3">Remaining</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for leave in leave_balances %}
+                                <tr>
+                                    <td class="ps-3">{{ leave.leave_policy.name }}</td>
+                                    <td>{{ leave.total_days }}</td>
+                                    <td>{{ leave.consumed_days }}</td>
+                                    <td class="pe-3 fw-semibold">{{ leave.remaining_days }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">No leave balances found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

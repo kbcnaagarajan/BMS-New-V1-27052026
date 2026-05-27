@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}{% if edit %}Edit Client{% else %}Add Client{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="mb-4">
+    <a href="{% url 'client_list' %}" class="text-decoration-none text-muted">
+      <i class="bi bi-arrow-left me-1"></i>Back to Clients
+    </a>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom py-3">
+      <h5 class="card-title mb-0 fw-semibold">
+        <i class="bi bi-building me-2 text-primary"></i>{% if edit %}Edit Client{% else %}New Client{% endif %}
+      </h5>
+    </div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="id_name" class="form-label">Company Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" id="id_name" class="form-control" value="{{ client.name|default:'' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label for="id_email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" name="email" id="id_email" class="form-control" value="{{ client.email|default:'' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label for="id_phone" class="form-label">Phone <span class="text-danger">*</span></label>
+            <input type="text" name="phone" id="id_phone" class="form-control" value="{{ client.phone|default:'' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label for="id_website" class="form-label">Website</label>
+            <input type="url" name="website" id="id_website" class="form-control" value="{{ client.website|default:'' }}">
+          </div>
+          <div class="col-12">
+            <label for="id_address_line1" class="form-label">Address</label>
+            <input type="text" name="address_line1" id="id_address_line1" class="form-control" value="{{ client.address_line1|default:'' }}" placeholder="Address line 1">
+          </div>
+          <div class="col-md-6">
+            <label for="id_tax_number" class="form-label">Tax / GST Number</label>
+            <input type="text" name="tax_number" id="id_tax_number" class="form-control" value="{{ client.tax_number|default:'' }}">
+          </div>
+          <div class="col-md-6">
+            <label for="id_status" class="form-label">Status</label>
+            <select name="status" id="id_status" class="form-select">
+              <option value="active" {% if client.status == 'active' or not client %}selected{% endif %}>Active</option>
+              <option value="inactive" {% if client.status == 'inactive' %}selected{% endif %}>Inactive</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="id_client_type" class="form-label">Client Type</label>
+            <select name="client_type" id="id_client_type" class="form-select">
+              <option value="company" {% if client.client_type == 'company' or not client %}selected{% endif %}>Company</option>
+              <option value="individual" {% if client.client_type == 'individual' %}selected{% endif %}>Individual</option>
+              <option value="government" {% if client.client_type == 'government' %}selected{% endif %}>Government</option>
+              <option value="non_profit" {% if client.client_type == 'non_profit' %}selected{% endif %}>Non-Profit</option>
+            </select>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-4">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-lg me-1"></i>Save
+          </button>
+          <a href="{% url 'client_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

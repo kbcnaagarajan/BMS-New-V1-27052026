@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block page_title %}Edit {{ company.name }}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Edit: {{ company.name }}</h4>
+    <a href="{% url 'company_detail' company.pk %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Back</a>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-4">
+      <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white fw-semibold">Company Details</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" value="{{ company.name }}" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Type</label>
+                <select name="company_type" class="form-select">
+                  <option value="enterprise" {% if company.company_type == 'enterprise' %}selected{% endif %}>Enterprise</option>
+                  <option value="startup" {% if company.company_type == 'startup' %}selected{% endif %}>Startup</option>
+                  <option value="agency" {% if company.company_type == 'agency' %}selected{% endif %}>Agency</option>
+                  <option value="freelancer" {% if company.company_type == 'freelancer' %}selected{% endif %}>Freelancer</option>
+                  <option value="other" {% if company.company_type == 'other' %}selected{% endif %}>Other</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ company.email }}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Phone</label>
+                <input type="text" name="phone" class="form-control" value="{{ company.phone }}">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="2">{{ company.address }}</textarea>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">City</label>
+                <input type="text" name="city" class="form-control" value="{{ company.city }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">State</label>
+                <input type="text" name="state" class="form-control" value="{{ company.state }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Country</label>
+                <input type="text" name="country" class="form-control" value="{{ company.country }}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Registration #</label>
+                <input type="text" name="registration_number" class="form-control" value="{{ company.registration_number }}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tax #</label>
+                <input type="text" name="tax_number" class="form-control" value="{{ company.tax_number }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white fw-semibold">Status & Subscription</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="is_active" id="is_active" {% if company.is_active %}checked{% endif %}>
+                <label class="form-check-label" for="is_active">Active</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Subscription Status</label>
+              <select name="subscription_status" class="form-select">
+                <option value="trial" {% if company.subscription_status == 'trial' %}selected{% endif %}>Trial</option>
+                <option value="active" {% if company.subscription_status == 'active' %}selected{% endif %}>Active</option>
+                <option value="expired" {% if company.subscription_status == 'expired' %}selected{% endif %}>Expired</option>
+                <option value="suspended" {% if company.subscription_status == 'suspended' %}selected{% endif %}>Suspended</option>
+                <option value="cancelled" {% if company.subscription_status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Package</label>
+              <select name="package" class="form-select">
+                <option value="">— Custom Limits —</option>
+                {% for pkg in packages %}
+                <option value="{{ pkg.pk }}" {% if subscription and subscription.package_id == pkg.pk %}selected{% endif %}>{{ pkg.name }} (${{ pkg.price }}/{{ pkg.get_billing_cycle_display }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <hr>
+            <h6 class="fw-semibold">Usage Limits</h6>
+            <div class="mb-2">
+              <label class="form-label small">User Limit</label>
+              <input type="number" name="user_limit" class="form-control form-control-sm" value="{{ company.user_limit }}">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small">Client Limit</label>
+              <input type="number" name="client_limit" class="form-control form-control-sm" value="{{ company.client_limit }}">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small">Project Limit</label>
+              <input type="number" name="project_limit" class="form-control form-control-sm" value="{{ company.project_limit }}">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small">Storage Limit (MB)</label>
+              <input type="number" name="storage_limit_mb" class="form-control form-control-sm" value="{{ company.storage_limit_mb }}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-save me-1"></i>Save Changes</button>
+    <a href="{% url 'company_detail' company.pk %}" class="btn btn-outline-secondary btn-lg ms-2">Cancel</a>
+  </form>
+</div>
+{% endblock %}

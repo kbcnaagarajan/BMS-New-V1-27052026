@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}{{ project.project_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="{% url 'project_list' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Projects
+        </a>
+        <div>
+            <a href="{% url 'project_edit' project.pk %}" class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="#" class="btn btn-danger btn-sm disabled">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-start border-primary border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1">Total Tasks</h6>
+                            <h3 class="mb-0">{{ total_tasks|default:"0" }}</h3>
+                        </div>
+                        <div class="text-primary fs-2">
+                            <i class="bi bi-list-task"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-success border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1">Completed</h6>
+                            <h3 class="mb-0">{{ completed_tasks|default:"0" }}</h3>
+                        </div>
+                        <div class="text-success fs-2">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-info border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1">Team Members</h6>
+                            <h3 class="mb-0">{{ team|length|default:"0" }}</h3>
+                        </div>
+                        <div class="text-info fs-2">
+                            <i class="bi bi-people"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-start border-warning border-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-subtitle text-muted mb-1">Budget Used</h6>
+                            <h3 class="mb-0">$0</h3>
+                        </div>
+                        <div class="text-warning fs-2">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header"><h5 class="card-title mb-0">Project Info</h5></div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tr>
+                            <td class="text-muted" style="width: 140px;">Client</td>
+                            <td>{{ project.client.company_name|default:"-" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Manager</td>
+                            <td>{{ project.project_manager.get_full_name|default:project.project_manager.email|default:"-" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Start Date</td>
+                            <td>{{ project.start_date|date:"M d, Y"|default:"-" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">End Date</td>
+                            <td>{{ project.expected_end_date|date:"M d, Y"|default:"-" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Status</td>
+                            <td>
+                                {% with s=project.status|lower %}
+                                {% if s == 'active' or s == 'approved' or s == 'kickoff_scheduled' %}
+                                    <span class="badge bg-primary">{{ project.get_status_display }}</span>
+                                {% elif s == 'on_hold' or s == 'delayed' %}
+                                    <span class="badge bg-warning text-dark">{{ project.get_status_display }}</span>
+                                {% elif s == 'completed' or s == 'closed' %}
+                                    <span class="badge bg-success">{{ project.get_status_display }}</span>
+                                {% elif s == 'cancelled' %}
+                                    <span class="badge bg-danger">{{ project.get_status_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ project.get_status_display }}</span>
+                                {% endif %}
+                                {% endwith %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Health</td>
+                            <td>
+                                {% if project.health == "green" %}
+                                    <span class="health-green badge bg-success">Good</span>
+                                {% elif project.health == "amber" %}
+                                    <span class="health-amber badge bg-warning text-dark">At Risk</span>
+                                {% elif project.health == "red" %}
+                                    <span class="health-red badge bg-danger">Critical</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">N/A</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <h6>Description</h6>
+                    <p class="text-muted mb-0">{{ project.description|default:"No description provided."|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header"><h5 class="card-title mb-0">Progress</h5></div>
+                <div class="card-body d-flex flex-column">
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            <canvas id="progressCircle" width="140" height="140"></canvas>
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <h3 class="mb-0">0%</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-thin progress mb-4" style="height: 8px;">
+                        <div class="progress-bar" role="progressbar"
+                             style="width: 0%;"
+                             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <h6>Milestones</h6>
+                    <ul class="list-group list-group-flush flex-grow-1">
+                        {% for milestone in milestones %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            <span>
+                                {% if milestone.completed %}
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                {% else %}
+                                    <i class="bi bi-circle text-muted me-2"></i>
+                                {% endif %}
+                                {{ milestone.name }}
+                            </span>
+                            <small class="text-muted">{{ milestone.due_date|date:"M d, Y" }}</small>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted px-0">No milestones defined.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Tasks</h5>
+            <a href="{% url 'task_add' %}?project={{ project.pk }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg"></i> Add Task
+            </a>
+        </div>
+        <div class="card-body">
+            <table id="taskTable" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Assignee</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>% Done</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.assigned_to.get_full_name|default:task.assigned_to.email|default:"Unassigned" }}</td>
+                        <td>{{ task.due_date|date:"M d, Y"|default:"-" }}</td>
+                        <td>
+                            {% if task.priority == "High" %}
+                                <span class="badge bg-danger">{{ task.priority }}</span>
+                            {% elif task.priority == "Medium" %}
+                                <span class="badge bg-warning text-dark">{{ task.priority }}</span>
+                            {% elif task.priority == "Low" %}
+                                <span class="badge bg-info">{{ task.priority }}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ task.priority }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ task.status|default:"-" }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="progress-thin progress flex-grow-1" style="height: 6px;">
+                                    <div class="progress-bar" role="progressbar"
+                                         style="width: {{ task.progress|default:0 }}%;"
+                                         aria-valuenow="{{ task.progress|default:0 }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <span class="ms-2 small">{{ task.progress|default:0 }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'task_edit' task.pk %}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No tasks found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header"><h5 class="card-title mb-0">Team</h5></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in team %}
+                        <tr>
+                            <td>{{ member.user.get_full_name|default:member.user.email }}</td>
+                            <td>{{ member.role|default:"Member" }}</td>
+                            <td>{{ member.user.email|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">No team members assigned.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header"><h5 class="card-title mb-0">Recent Activity</h5></div>
+        <div class="card-body">
+            <ul class="timeline">
+                {% for activity in activities %}
+                <li class="timeline-item mb-3">
+                    <div class="d-flex">
+                        <div class="timeline-icon me-3">
+                            {% if activity.action == "created" %}
+                                <span class="badge bg-success rounded-circle p-2"><i class="bi bi-plus"></i></span>
+                            {% elif activity.action == "updated" %}
+                                <span class="badge bg-info rounded-circle p-2"><i class="bi bi-pencil"></i></span>
+                            {% elif activity.action == "completed" %}
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check"></i></span>
+                            {% else %}
+                                <span class="badge bg-secondary rounded-circle p-2"><i class="bi bi-clock"></i></span>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ activity.user.get_full_name|default:activity.user.email }}</strong>
+                                <small class="text-muted">{{ activity.timestamp|timesince }} ago</small>
+                            </div>
+                            <p class="mb-0 text-muted">{{ activity.description }}</p>
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="text-muted">No recent activity.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        if ($('#taskTable').length) {
+            $('#taskTable').DataTable({
+                order: [[2, 'asc']],
+                pageLength: 10,
+            });
+        }
+
+        var canvas = document.getElementById('progressCircle');
+        if (canvas) {
+            var ctx = canvas.getContext('2d');
+            var progress = 0;
+            var x = 70, y = 70, r = 60, lineWidth = 10;
+            var startAngle = -Math.PI / 2;
+            var endAngle = startAngle + (progress / 100) * 2 * Math.PI;
+
+            ctx.clearRect(0, 0, 140, 140);
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#e9ecef';
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x, y, r, startAngle, endAngle);
+            ctx.strokeStyle = progress >= 100 ? '#198754' : progress >= 50 ? '#0d6efd' : '#ffc107';
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+        }
+    });
+</script>
+{% endblock %}

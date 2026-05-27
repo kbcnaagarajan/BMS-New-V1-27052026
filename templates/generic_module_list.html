@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block page_title %}{{ page_title }}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">{{ page_title }}</h4>
+    {% if not is_reports %}
+    <a href="{% url module_key|add:'_add' %}" class="btn btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>Add {{ page_title|lower }}
+    </a>
+    {% endif %}
+  </div>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 datatable">
+          <thead class="table-light">
+            <tr>
+              {% for h in headers %}
+                <th class="{% if forloop.first %}ps-3{% elif forloop.last %}pe-3 text-end{% endif %}">{{ h }}</th>
+              {% endfor %}
+              {% if not is_reports %}<th class="pe-3 text-end">Actions</th>{% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr>
+              {% for val in row.vals %}
+                <td class="{% if forloop.first %}ps-3 fw-medium{% endif %}">{{ val }}</td>
+              {% endfor %}
+              {% if not is_reports %}
+              <td class="pe-3 text-end">
+                <div class="btn-group btn-group-sm">
+                  <a href="{% url module_key|add:'_detail' row.pk %}" class="btn btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
+                  <a href="{% url module_key|add:'_edit' row.pk %}" class="btn btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                  <a href="{% url module_key|add:'_delete' row.pk %}" class="btn btn-outline-secondary text-danger" title="Delete"><i class="bi bi-trash"></i></a>
+                </div>
+              </td>
+              {% endif %}
+            </tr>
+            {% empty %}
+            <tr><td colspan="{% if is_reports %}{{ headers|length }}{% else %}{{ headers|length|add:1 }}{% endif %}" class="text-center text-muted py-5">No {{ page_title|lower }} found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

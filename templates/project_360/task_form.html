@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}{% if edit %}Edit Task{% else %}Add Task{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">{% if edit %}Edit Task{% else %}Add Task{% endif %}</h4>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="id_title" class="form-label">Title <span class="text-danger">*</span></label>
+                        <input type="text" name="title" id="id_title" class="form-control" value="{{ form.title.value|default:'' }}" required>
+                        {% if form.title.errors %}<div class="text-danger small">{{ form.title.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_project" class="form-label">Project <span class="text-danger">*</span></label>
+                        <select name="project" id="id_project" class="form-select" required>
+                            <option value="">---------</option>
+                            {% for p in projects %}
+                            <option value="{{ p.pk }}" {% if form.project.value|stringformat:"s" == p.pk|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.project.errors %}<div class="text-danger small">{{ form.project.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-12">
+                        <label for="id_description" class="form-label">Description</label>
+                        <textarea name="description" id="id_description" class="form-control" rows="3">{{ form.description.value|default:'' }}</textarea>
+                        {% if form.description.errors %}<div class="text-danger small">{{ form.description.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_assigned_to" class="form-label">Assigned To</label>
+                        <select name="assigned_to" id="id_assigned_to" class="form-select">
+                            <option value="">---------</option>
+                            {% for u in users %}
+                            <option value="{{ u.pk }}" {% if form.assigned_to.value|stringformat:"s" == u.pk|stringformat:"s" %}selected{% endif %}>{{ u.get_full_name|default:u.email }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.assigned_to.errors %}<div class="text-danger small">{{ form.assigned_to.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_start_date" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" id="id_start_date" class="form-control" value="{{ form.start_date.value|date:'Y-m-d'|default:'' }}">
+                        {% if form.start_date.errors %}<div class="text-danger small">{{ form.start_date.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_due_date" class="form-label">Due Date</label>
+                        <input type="date" name="due_date" id="id_due_date" class="form-control" value="{{ form.due_date.value|date:'Y-m-d'|default:'' }}">
+                        {% if form.due_date.errors %}<div class="text-danger small">{{ form.due_date.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_priority" class="form-label">Priority</label>
+                        <select name="priority" id="id_priority" class="form-select">
+                            <option value="Low" {% if form.priority.value == "Low" %}selected{% endif %}>Low</option>
+                            <option value="Medium" {% if form.priority.value == "Medium" %}selected{% endif %}>Medium</option>
+                            <option value="High" {% if form.priority.value == "High" %}selected{% endif %}>High</option>
+                        </select>
+                        {% if form.priority.errors %}<div class="text-danger small">{{ form.priority.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_status" class="form-label">Status</label>
+                        <select name="status" id="id_status" class="form-select">
+                            <option value="Not Started" {% if form.status.value == "Not Started" %}selected{% endif %}>Not Started</option>
+                            <option value="In Progress" {% if form.status.value == "In Progress" %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if form.status.value == "Completed" %}selected{% endif %}>Completed</option>
+                            <option value="On Hold" {% if form.status.value == "On Hold" %}selected{% endif %}>On Hold</option>
+                            <option value="Cancelled" {% if form.status.value == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                        </select>
+                        {% if form.status.errors %}<div class="text-danger small">{{ form.status.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_progress" class="form-label">Progress (%)</label>
+                        <input type="number" name="progress" id="id_progress" class="form-control" min="0" max="100" value="{{ form.progress.value|default:'0' }}">
+                        {% if form.progress.errors %}<div class="text-danger small">{{ form.progress.errors.0 }}</div>{% endif %}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

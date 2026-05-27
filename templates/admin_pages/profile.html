@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm text-center">
+        <div class="card-body py-5">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary mb-3" style="width:80px;height:80px;">
+            <i class="bi bi-person-fill fs-1"></i>
+          </div>
+          <h5 class="fw-bold mb-1">{{ user.get_full_name|default:user.email }}</h5>
+          <p class="text-muted small mb-3">{{ user.email }}</p>
+          <span class="badge bg-primary bg-opacity-10 text-primary mb-2">{{ user.roles.all.0.name|default:"User" }}</span>
+          <div class="mt-3">
+            <small class="text-muted d-block">Member since {{ user.date_joined|date:"M Y" }}</small>
+            <small class="text-muted d-block">Last login {{ user.last_login|timesince }} ago</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="card-title mb-0 fw-semibold">Account Details</h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">Username</label>
+              <p class="fw-medium mb-0">{{ user.email }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">Email</label>
+              <p class="fw-medium mb-0">{{ user.email }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">First Name</label>
+              <p class="fw-medium mb-0">{{ user.first_name|default:"—" }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">Last Name</label>
+              <p class="fw-medium mb-0">{{ user.last_name|default:"—" }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">Role</label>
+              <p class="fw-medium mb-0">{{ user.roles.all.0.name|default:"No role assigned" }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label text-muted small text-uppercase fw-semibold">Company</label>
+              <p class="fw-medium mb-0">{{ user.company.name|default:"—" }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="card-title mb-0 fw-semibold">Permissions</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-borderless mb-0 align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th class="ps-3">Module</th>
+                  <th class="text-center">View</th>
+                  <th class="text-center">Add</th>
+                  <th class="text-center">Change</th>
+                  <th class="text-center pe-3">Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for perm in permission_summary %}
+                <tr>
+                  <td class="ps-3 fw-medium">{{ perm.module }}</td>
+                  <td class="text-center">
+                    {% if perm.view %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-lg text-muted"></i>{% endif %}
+                  </td>
+                  <td class="text-center">
+                    {% if perm.add %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-lg text-muted"></i>{% endif %}
+                  </td>
+                  <td class="text-center">
+                    {% if perm.change %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-lg text-muted"></i>{% endif %}
+                  </td>
+                  <td class="text-center pe-3">
+                    {% if perm.delete %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-lg text-muted"></i>{% endif %}
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5" class="text-center text-muted py-3">No permissions available.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom py-3">
+          <h5 class="card-title mb-0 fw-semibold">Change Password</h5>
+        </div>
+        <div class="card-body">
+          <form method="post" action="#">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="id_old_password" class="form-label small fw-semibold">Current Password</label>
+                <input type="password" name="old_password" id="id_old_password" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label for="id_new_password1" class="form-label small fw-semibold">New Password</label>
+                <input type="password" name="new_password1" id="id_new_password1" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label for="id_new_password2" class="form-label small fw-semibold">Confirm New Password</label>
+                <input type="password" name="new_password2" id="id_new_password2" class="form-control" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">
+              <i class="bi bi-lock me-1"></i>Update Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,924 @@
+================================================================================
+  KARTHIKAI OMS - COMPLETE SYSTEM AUDIT & DEVLOPMENT LOG
+  Date: 2026-05-27
+  Framework: Django 5.2.14 / SQLite / Bootstrap 5 CDN
+  Repository: BMS-New
+================================================================================
+
+TABLE OF CONTENTS
+  1. SYSTEM OVERVIEW
+  2. ARCHITECTURE
+  3. USER PROFILES (4 TYPES)
+  4. PORTALS (2)
+  5. MODULES & CRUD OPERATIONS (22 modules)
+  6. RBAC SYSTEM
+  7. DATA SCOPING RULES
+  8. WORKFLOWS
+  9. URL STRUCTURE (147 routes)
+  10. TEMPLATE STRUCTURE (28 templates)
+  11. VALIDATIONS
+  12. SESSION FIXES & BUG FIXES LOG
+  13. SEED DATA
+  14. TEST USERS
+  15. KNOWN LIMITATIONS & NEXT STEPS
+
+
+================================================================================
+1. SYSTEM OVERVIEW
+================================================================================
+
+KarthikAi-OMS is a multi-tenant Business Management System with role-based
+access control (RBAC), supporting four primary user profiles:
+
+  - Super Admin (platform-level)
+  - Company Admin (tenant-level)
+  - Project Manager (managed projects scope)
+  - Employee / Staff (self-only scope)
+
+The system manages:
+  - Companies (tenants) with subscription/packaging
+  - Client CRM (clients, contacts)
+  - Project 360 (projects, tasks, milestones, deliverables, team)
+  - Employee Operations (timesheets, leaves, attendance, expenses)
+  - Collaboration (meetings, documents)
+  - Finance (invoices, payments)
+  - Issues & Risks (issues, risks, change requests, support tickets)
+  - Client Portal (client-facing dashboard and project views)
+  - Reports & Analytics
+  - Administration (users, roles/permissions, company settings)
+
+RBAC is implemented via Role model (M2M to User) with Permission model
+(linked to Module). Data scoping uses centralized Q-object filters per
+module per role type.
+
+
+================================================================================
+2. ARCHITECTURE
+================================================================================
+
+2.1 Directory Structure
+-----------------------
+BMS-New/
+  manage.py
+  KarthikAi_OMS/           # Django project settings
+  user_management/          # Auth, RBAC, companies, users, generic CRUD engine
+    models.py               # User, Company, Role, Permission, Module, etc.
+    rbac.py                 # build_user_menu(), SCOPE_CONFIG, get_company_scope_filter()
+    frontend_views.py       # ALL views (custom + generic CRUD), 1302 lines
+    frontend_urls.py        # ALL URL patterns, 147 routes
+    seed_data.py            # Module/permission/role seeder
+  client_crm/               # Client, ClientContact models
+  project_360/              # Project, ProjectTask, ProjectTeamMember, etc.
+  employee_operations/      # Timesheet, LeaveRequest, Attendance, Expense
+  meetings_documents/       # Meeting, Document
+  issues_risks/             # ProjectIssue, ProjectRisk, ChangeRequest, SupportTicket
+  billing/                  # Invoice, Payment
+  templates/                # 28 templates (see section 10)
+
+2.2 Authentication
+-------------------
+- Custom User model (email-based, no username)
+- CustomUserManager with create_user / create_superuser
+- USERNAME_FIELD = 'email'
+- Login via email + password
+- Session-based auth using Django's auth framework
+- Login view: authenticate() -> auth_login() -> redirect('dashboard')
+- Logout view: auth_logout() -> redirect('login')
+
+2.3 Technology Stack
+---------------------
+- Backend: Django 5.2.14, SQLite
+- Frontend: Bootstrap 5.3.2 CDN, Bootstrap Icons 1.11.3
+- JS Libraries: jQuery 3.7.1, DataTables 1.13.7, Chart.js 4.4.1, Select2 4.1.0
+- No Django forms used -- all form rendering is manual via template loops
+
+
+================================================================================
+3. USER PROFILES (4 TYPES)
+================================================================================
+
+3.1 Super Admin (user_type='super_admin')
+-------------------------------------------
+  Permission: Unrestricted access to entire system
+  Data Scope: No filter (sees all companies, all data)
+  Menus: Dashboard, all group menus, Companies, all CRUD modules
+  Capabilities:
+    - Create/Edit/Delete companies
+    - Monitor all tenant activity
+    - View all projects, tasks, invoices across all companies
+    - Invite company admins via email token
+    - Toggle company active/inactive
+    - Change subscription status
+    - View global reports
+  Restrictions: None (full platform access)
+
+3.2 Company Admin (user_type='company_admin')
+-----------------------------------------------
+  Permission: Full access within their own company
+  Data Scope: company-scoped (all modules filtered by user.company)
+  Menus: Dashboard, all group menus, all modules within their company
+  Capabilities:
+    - Full CRUD on all modules within their company
+    - Manage users, roles, permissions within their company
+    - View and edit company settings
+    - Manage all projects, clients, contacts
+    - View all employee data (timesheets, leaves, attendance, expenses)
+  Restrictions:
+    - Cannot access other companies' data
+    - Cannot create companies
+    - Cannot access Super Admin platform pages
+
+3.3 Project Manager (user_type='project_manager')
+---------------------------------------------------
+  Permission: Manage assigned projects and related data
+  Data Scope: Projects where project_manager=user, and all downstream data
+             (tasks, milestones, deliverables, meetings, documents, team,
+              issues, risks, change requests, support tickets, invoices,
+              payments, expenses) scoped to those projects.
+             Timesheets: company-scoped (can view all employee timesheets)
+             Leaves/Attendance: self-only
+             Users/Roles: company-scoped
+             Contacts/Clients: company-scoped
+  Menus: Dashboard, Clients, Contacts, Projects, Tasks, Milestones,
+         Deliverables, Meetings, Documents, Team, Issues, Risks,
+         Change Requests, Support Tickets, Timesheets, Leave, Attendance,
+         Settings
+  Capabilities:
+    - View/edit assigned projects
+    - Create/edit tasks within managed projects
+    - View team members
+    - Create/edit meetings, documents, milestones, deliverables
+    - View all timesheets (company-scoped for TimesheetEntry)
+    - Log own leave and attendance
+  Restrictions:
+    - Cannot manage projects they're not assigned as manager
+    - Personal data (leaves, attendance) is self-only
+    - Cannot delete most data (edit only)
+    - Cannot access admin panels (users, roles)
+
+3.4 Employee (user_type='employee' or 'staff')
+-------------------------------------------------
+  Permission: Self-only data + assigned project data
+  Data Scope:
+    Personal modules (timesheets, leaves, attendance, expenses): employee=user
+    Tasks: assigned_to=user OR team_members__user=user
+    Projects: team_members__user=user (projects they're team members of)
+    Project-related (milestones, deliverables, meetings, documents, team,
+      issues, risks, change requests, support tickets):
+      project__team_members__user=user
+    Users: pk=user.pk (self only)
+    Contacts, Clients, Invoices, Payments, Roles, Settings: pk=None (no access)
+  Menus: Dashboard, (scoped) Projects, Tasks, Timesheets, Leave,
+         Attendance, Expenses, Meetings, Documents
+  Capabilities:
+    - Log timesheets (auto-assigned to self)
+    - Apply for leave (auto-assigned to self)
+    - Mark attendance (auto-assigned to self)
+    - Log expenses (auto-assigned to self)
+    - View assigned tasks and projects
+    - View team members on their projects
+    - View meetings and documents on their projects
+  Restrictions:
+    - Employee FK is always auto-set to self (readonly)
+    - Cannot view other employees' data
+    - Cannot access contacts, clients, invoices, payments, roles, settings
+    - Cannot manage users or roles
+
+
+================================================================================
+4. PORTALS (2)
+================================================================================
+
+4.1 Admin Portal (default)
+---------------------------
+  URL prefix: / (no prefix) and /admin-pages/
+  Access: All authenticated users
+  Layout: Sidebar + Top Navbar + Content area (base.html)
+  Sidebar: Dynamic menu built from RBAC permissions (build_user_menu())
+  Top Navbar: Page title, user avatar dropdown (Profile, Logout)
+
+4.2 Client Portal
+-------------------
+  URL prefix: /portal/
+  Access: client_admin and client_user roles only
+  Pages:
+    - /portal/ (portal_dashboard) - Client dashboard with project/invoice summary
+    - /portal/projects/ (portal_projects) - Client project list
+  Layout: Same base.html with client-specific content
+  Data Scope: Projects filtered to client's company
+  Capabilities:
+    - View-only (no create/edit/delete)
+    - Limited to their own company's client data
+
+
+================================================================================
+5. MODULES & CRUD OPERATIONS (22 modules)
+================================================================================
+
+Key:  C = Create, R = Read/List, U = Update/Edit, D = Delete
+      ✓ = Implemented, ✗ = Not implemented, ◐ = Partial/Generic
+
+Module                  R   C   U   D   Implementation
+─────────────────────────────────────────────────────
+Dashboard               ✓  --  --  --  Custom view (admin_pages/dashboard.html)
+Clients                 ✓   ✓   ✓  --  Custom views (client_list/detail/form)
+Contacts                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['contacts'])
+Projects                ✓   ✓   ✓  --  Custom views (project_list/detail/form)
+Tasks                   ✓   ✓   ✓  --  Custom views (task_list/form)
+Milestones              ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['milestones'])
+Deliverables            ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['deliverables'])
+Meetings                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['meetings'])
+Documents               ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['documents'])
+Team                    ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['team'])
+Invoices                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['invoices'])
+Payments                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['payments'])
+Expenses                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['expenses'])
+Issues                  ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['issues'])
+Risks                   ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['risks'])
+Change Requests         ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['change_requests'])
+Support Tickets         ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['support_tickets'])
+Timesheets              ✓   ✓   ✓   ✓  Generic CRUD (timesheets) + Custom list view
+Leaves                  ✓   ✓   ✓   ✓  Generic CRUD (leaves) + Custom list view
+Attendance              ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['attendance'])
+Settings                ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['settings'])
+Users                   ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['users'])
+Roles                   ✓   ✓   ✓   ✓  Generic CRUD (_MODEL_CONFIG['roles'])
+Reports                 ✓  --  --  --  Custom view (reports_dashboard)
+Portal Dashboard        ✓  --  --  --  Custom view (portal_dashboard)
+Portal Projects         ✓  --  --  --  Custom view (portal_projects)
+
+5.1 Generic CRUD Engine
+-------------------------
+  Four unified functions in frontend_views.py:
+    _module_list(request, key)    -> generic_module_list.html
+    _module_form(request, key, pk)-> generic_module_form.html
+    _module_detail(request, key, pk)-> generic_module_detail.html
+    _module_delete(request, key, pk)-> generic_module_confirm_delete.html
+
+  _MODEL_CONFIG dict maps each key to:
+    model, list_fields, form_fields, redirect URL name
+
+  Key benefits:
+    - Automatic field introspection via _build_fields_meta()
+    - FK dropdowns scoped via _get_company_fk_queryset()
+    - Role-based scoping via _get_role_scope()
+    - Auto-save for company, client, created_by, employee, invoice_number
+
+5.2 Custom Views (non-generic)
+--------------------------------
+  - dashboard() - Super admin vs company dashboard with stats
+  - client_list() - Annotated with project_count, DataTable
+  - client_detail() - Client view with projects, notes
+  - client_form() - Client create/edit with manual POST handling
+  - project_list() - Annotated with task_count
+  - project_detail() - Project detail with tasks, team, activity
+  - project_form() - Project create/edit with manual POST handling
+  - task_list() - Task list with filters
+  - task_form() - Task create/edit
+  - employee_list() - Employee list
+  - employee_detail() - Employee detail with tasks, timesheets, leave balances
+  - timesheet_list() - Custom list view over TimesheetEntry (not Timesheet)
+  - leave_list() - Leave list with employee filter
+  - reports_dashboard() - Aggregate counts
+  - portal_dashboard() / portal_projects() - Client portal views
+
+
+================================================================================
+6. RBAC SYSTEM
+================================================================================
+
+6.1 Models
+-----------
+  Module      - Screen/module for menu & permission control (key-based)
+  Permission  - Granular permission: codename, permission_type, linked to Module
+  Role        - Collection of permissions, linked to Company (null for system roles)
+  User.roles  - M2M to Role
+
+6.2 System Roles (seeded)
+--------------------------
+  10 system roles defined in seed_data.py SYSTEM_ROLES dict:
+    1. super_admin       - __all__ modules, __all__ permissions
+    2. company_admin     - __all__ modules, __all__ permissions (within company)
+    3. management        - view/export on most modules (read-only oversight)
+    4. delivery_manager  - view/export on most modules (read-only oversight)
+    5. project_manager   - view/create/edit/export on project-related modules
+    6. account_manager   - view/create/edit on client/finance modules
+    7. employee          - view/create/edit on work-related modules
+    8. hr_manager        - view/create/edit on employee/people modules
+    9. finance_user      - view/create/edit/export on financial modules
+    10. client_admin     - view only on portal modules
+    11. client_user      - view only on portal modules
+
+6.3 Permission Types
+---------------------
+  view, create, edit, delete, approve, export
+
+6.4 User Methods
+-----------------
+  - has_module_access(module_key)        - bool
+  - has_perm_in_module(key, perm_type)   - bool
+  - get_module_permissions(module_key)   - list of permission type strings
+  - get_accessible_modules()             - QuerySet of Module
+  - is_company_admin_user()              - bool
+  - is_super_admin (property)            - bool (is_superuser OR user_type)
+  - is_project_manager (property)        - bool
+
+6.5 Menu Building (rbac.py: build_user_menu())
+------------------------------------------------
+  - Queries all active menu-item modules
+  - Separates standalone (Dashboard) from grouped items (key starts with 'group_')
+  - For each group, checks children modules accessible to user
+  - Groups with no visible children are excluded
+  - Returns list of dicts with key, name, icon, path, permissions, children
+
+6.6 SCOPE_CONFIG (rbac.py)
+----------------------------
+  Maps model labels (e.g. 'client_crm.Client') to filter paths
+  (e.g. 'company', 'client__company', 'project__client__company')
+  Used by get_company_scope_filter() for Q-object company scoping
+
+
+================================================================================
+7. DATA SCOPING RULES
+================================================================================
+
+7.1 Centralized Scoping (frontend_views.py: _get_role_scope())
+----------------------------------------------------------------
+  Single function that returns a Q() object filter per module key per user role.
+  Called by all 4 generic CRUD helpers and all 18 custom views.
+
+7.2 Scoping by Role
+--------------------
+  SUPER ADMIN:
+    Q() - no filter, sees everything
+
+  COMPANY ADMIN / MANAGEMENT / DELIVERY MANAGER / ACCOUNT MANAGER / HR / FINANCE:
+    Company-scoped: {model_filter_path: user.company}
+    Mapping in _company_scope_q():
+      clients -> company
+      contacts -> client__company
+      projects -> client__company
+      tasks/milestones/deliverables -> project__client__company
+      meetings/documents/team -> project__client__company
+      invoices -> client__company
+      payments -> invoice__client__company
+      expenses/attendance/timesheets/leaves -> employee__company
+      issues/risks/change_requests/support_tickets -> project__client__company
+      users/roles -> company
+      settings -> pk (company.pk)
+
+  PROJECT MANAGER:
+    projects -> Q(project_manager=user)
+    tasks, milestones, deliverables, meetings, documents, team, expenses,
+      issues, risks, change_requests, support_tickets ->
+      Q(project__project_manager=user)
+    invoices -> Q(project__project_manager=user)
+    payments -> Q(invoice__project__project_manager=user)
+    timesheets -> Q(employee__company=company) [company-wide timesheet view]
+    leaves, attendance -> Q(employee=user) [self-only]
+    users -> Q(company=company)
+    roles -> Q(company=company) | Q(is_system_role=True)
+    settings -> Q(pk=company.pk)
+    clients -> Q(company=company)
+    contacts -> Q(client__company=company)
+
+  EMPLOYEE:
+    timesheets, leaves, attendance, expenses -> Q(employee=user)
+    tasks -> Q(assigned_to=user) | Q(project__team_members__user=user)
+    projects -> Q(team_members__user=user, team_members__is_active=True)
+    milestones, deliverables, meetings, documents, team, issues, risks,
+      change_requests, support_tickets ->
+      Q(project__team_members__user=user)
+    users -> Q(pk=user.pk)
+    contacts, clients, invoices, payments, roles, settings -> Q(pk=None)
+
+
+================================================================================
+8. WORKFLOWS
+================================================================================
+
+8.1 Company Registration / Admin Invite
+------------------------------------------
+  1. Super Admin navigates to /companies/add/
+  2. Fills company details, selects package (optional), enters admin email/name
+  3. System creates Company record with trial subscription
+  4. System generates 64-char random token and CompanyInvite record
+  5. Token NOT emailed (requires email integration)
+  6. Admin visits /invite/<token>/ - sets password, accepts invite
+  7. System creates User (company_admin role), links as company admin
+  8. Company activated (is_active=True, subscription_status='active')
+  9. User auto-logged in, redirected to dashboard
+
+8.2 Employee Timesheet Entry
+-----------------------------
+  1. Employee clicks "Add Timesheet" (timesheets/add/)
+  2. Form auto-fills employee field to self (readonly)
+  3. Employee fills week_start_date, week_end_date, notes
+  4. System auto-sets employee = request.user for employee role
+  5. On save, redirects to timesheet list
+  6. NOTE: TimesheetEntry model queried in timesheet_list (custom view)
+          but Timesheet model is used in generic CRUD form
+
+8.3 Leave Application
+----------------------
+  1. Employee clicks "Apply Leave" (leaves/add/)
+  2. Form auto-fills employee field to self (readonly)
+  3. Employee selects leave_policy (dropdown -- requires seed data)
+  4. Employee fills dates, reason, handover_to
+  5. On save, redirects to leave list
+
+8.4 Project Creation
+---------------------
+  1. User clicks "Add Project" (projects/add/)
+  2. Selects client from company-scoped dropdown
+  3. Selects project manager from user list
+  4. Fills project details (name, code auto-generated, dates, budget, etc.)
+  5. On save, redirects to project detail view
+  6. Detail view shows tasks, team members, and project activity
+
+8.5 Task Management
+--------------------
+  1. User can add task from /tasks/add/ or from project detail
+  2. Assignee dropdown lists all active users
+  3. Task has status workflow: todo -> in_progress -> done
+  4. Task list with DataTable for sorting/searching
+  5. Each project detail page includes scoped task table
+
+8.6 Company Monitoring (Super Admin)
+--------------------------------------
+  1. Super Admin sees platform dashboard with global stats
+  2. Can view all companies, their user/client/project counts
+  3. Each company detail page shows projects, users, clients, invoices,
+     support tickets
+  4. Can toggle company active/inactive status
+  5. Can edit company details and subscription
+
+8.7 User & Role Management
+----------------------------
+  1. Company Admin navigates to User Management (/users/)
+  2. Can add/edit/delete users within company
+  3. Roles & Permissions (/roles/) managed per company
+  4. System roles are shared (company=None), custom roles are company-scoped
+
+8.8 Client Portal Workflow
+------------------------------
+  1. Client Admin/User logs in
+  2. Sees portal dashboard with their projects and invoice summary
+  3. Can view project list (/portal/projects/)
+  4. View-only access (no edit/create/delete capabilities)
+
+
+================================================================================
+9. URL STRUCTURE (147 routes)
+================================================================================
+
+Auth:
+  /login/                       POST login_view
+  /logout/                      GET  logout_view
+
+Dashboard:
+  /                             GET  dashboard
+  /dashboard/                   GET  dashboard
+
+Profile:
+  /profile/                     GET  profile
+
+Companies (Super Admin):
+  /companies/                   GET  company_list
+  /companies/add/               GET/POST company_create
+  /companies/<pk>/              GET  company_detail
+  /companies/<pk>/edit/         GET/POST company_edit
+  /companies/<pk>/toggle-active/GET  company_toggle_active
+  /invite/<token>/              GET/POST company_invite_accept
+
+Client CRM:
+  /clients/                     GET  client_list
+  /clients/add/                 GET/POST client_form
+  /clients/<pk>/                GET  client_detail
+  /clients/<pk>/edit/           GET/POST client_form
+  /contacts/                    GET  contact_list (2 names: contact_list, contacts_list)
+  /contacts/add/                GET/POST contacts_form
+  /contacts/<pk>/               GET  contacts_detail
+  /contacts/<pk>/edit/          GET/POST contacts_form
+  /contacts/<pk>/delete/        POST generic_delete
+
+Project 360:
+  /projects/                    GET  project_list
+  /projects/add/                GET/POST project_form
+  /projects/<pk>/               GET  project_detail
+  /projects/<pk>/edit/          GET/POST project_form
+  /tasks/                       GET  task_list
+  /tasks/add/                   GET/POST task_form
+  /tasks/<pk>/edit/             GET/POST task_form
+  /milestones/                  GET  milestones_list
+  /milestones/add/              GET/POST milestones_form
+  /milestones/<pk>/             GET  milestones_detail
+  /milestones/<pk>/edit/        GET/POST milestones_form
+  /milestones/<pk>/delete/      POST generic_delete
+  /deliverables/                GET  deliverables_list
+  /deliverables/add/            GET/POST deliverables_form
+  /deliverables/<pk>/           GET  deliverables_detail
+  /deliverables/<pk>/edit/      GET/POST deliverables_form
+  /deliverables/<pk>/delete/    POST generic_delete
+
+Employee Operations:
+  /employees/                   GET  employee_list
+  /employees/<pk>/              GET  employee_detail
+  /timesheets/                  GET  timesheet_list
+  /timesheets/add/              GET/POST timesheet_form
+  /timesheets/<pk>/             GET  timesheet_detail
+  /timesheets/<pk>/edit/        GET/POST timesheet_form
+  /timesheets/<pk>/delete/      POST generic_delete
+  /leaves/                      GET  leave_list
+  /leaves/add/                  GET/POST leave_form
+  /leaves/<pk>/                 GET  leave_detail
+  /leaves/<pk>/edit/            GET/POST leave_form
+  /leaves/<pk>/delete/          POST generic_delete
+  /attendance/                  GET  attendance_list
+  /attendance/add/              GET/POST attendance_form
+  /attendance/<pk>/             GET  attendance_detail
+  /attendance/<pk>/edit/        GET/POST attendance_form
+  /attendance/<pk>/delete/      POST generic_delete
+
+Collaboration:
+  /meetings/                    GET  meetings_list
+  /meetings/add/                GET/POST meetings_form
+  /meetings/<pk>/               GET  meetings_detail
+  /meetings/<pk>/edit/          GET/POST meetings_form
+  /meetings/<pk>/delete/        POST generic_delete
+  /documents/                   GET  documents_list
+  /documents/add/               GET/POST documents_form
+  /documents/<pk>/              GET  documents_detail
+  /documents/<pk>/edit/         GET/POST documents_form
+  /documents/<pk>/delete/       POST generic_delete
+  /team/                        GET  team_list
+  /team/add/                    GET/POST team_form
+  /team/<pk>/                   GET  team_detail
+  /team/<pk>/edit/              GET/POST team_form
+  /team/<pk>/delete/            POST generic_delete
+
+Finance:
+  /invoices/                    GET  invoices_list
+  /invoices/add/                GET/POST invoices_form
+  /invoices/<pk>/               GET  invoices_detail
+  /invoices/<pk>/edit/          GET/POST invoices_form
+  /invoices/<pk>/delete/        POST generic_delete
+  /payments/                    GET  payments_list
+  /payments/add/                GET/POST payments_form
+  /payments/<pk>/               GET  payments_detail
+  /payments/<pk>/edit/          GET/POST payments_form
+  /payments/<pk>/delete/        POST generic_delete
+  /expenses/                    GET  expenses_list
+  /expenses/add/                GET/POST expenses_form
+  /expenses/<pk>/               GET  expenses_detail
+  /expenses/<pk>/edit/          GET/POST expenses_form
+  /expenses/<pk>/delete/        POST generic_delete
+
+Issues & Risks:
+  /issues/                      GET  issues_list
+  /issues/add/                  GET/POST issues_form
+  /issues/<pk>/                 GET  issues_detail
+  /issues/<pk>/edit/            GET/POST issues_form
+  /issues/<pk>/delete/          POST generic_delete
+  /risks/                       GET  risks_list
+  /risks/add/                   GET/POST risks_form
+  /risks/<pk>/                  GET  risks_detail
+  /risks/<pk>/edit/             GET/POST risks_form
+  /risks/<pk>/delete/           POST generic_delete
+  /change-requests/             GET  change_requests_list
+  /change-requests/add/         GET/POST change_requests_form
+  /change-requests/<pk>/        GET  change_requests_detail
+  /change-requests/<pk>/edit/   GET/POST change_requests_form
+  /change-requests/<pk>/delete/ POST generic_delete
+  /support-tickets/             GET  support_tickets_list
+  /support-tickets/add/         GET/POST support_tickets_form
+  /support-tickets/<pk>/        GET  support_tickets_detail
+  /support-tickets/<pk>/edit/   GET/POST support_tickets_form
+  /support-tickets/<pk>/delete/ POST generic_delete
+
+Reports & Admin:
+  /reports/                     GET  reports_dashboard
+  /settings/                    GET  settings_view
+  /settings/<pk>/               GET  settings_form
+  /settings/<pk>/edit/          GET/POST settings_form
+  /settings/<pk>/delete/        POST generic_delete
+  /users/                       GET  users_list
+  /users/add/                   GET/POST users_form
+  /users/<pk>/                  GET  users_detail
+  /users/<pk>/edit/             GET/POST users_form
+  /users/<pk>/delete/           POST generic_delete
+  /roles/                       GET  roles_list
+  /roles/add/                   GET/POST roles_form
+  /roles/<pk>/                  GET  roles_detail
+  /roles/<pk>/edit/             GET/POST roles_form
+  /roles/<pk>/delete/           POST generic_delete
+
+Client Portal:
+  /portal/                      GET  portal_dashboard
+  /portal/projects/             GET  portal_projects
+
+
+================================================================================
+10. TEMPLATE STRUCTURE (28 templates)
+================================================================================
+
+10.1 Base Template
+------------------
+  base.html - Full layout with:
+    - Bootstrap 5.3.2, Bootstrap Icons, DataTables, Chart.js, Select2 CDN
+    - Fixed sidebar (260px) with dynamic RBAC menu
+    - Fixed top navbar (56px) with page title and user dropdown
+    - Main content area with block content
+    - Global DataTables init: $('.datatable').DataTable({pageLength:25})
+    - Global Select2 init: $('.select2').select2()
+    - Toast notification container
+    - block extra_js for page-specific scripts
+
+10.2 Generic Templates
+-----------------------
+  generic_module_list.html         - DataTable listing (class="datatable")
+  generic_module_form.html         - Form with auto-rendered fields
+                                     (text, select, date, textarea, checkbox,
+                                      readonly, hidden)
+  generic_module_detail.html       - Detail view with field values
+  generic_module_confirm_delete.html- Delete confirmation
+
+10.3 Custom Templates
+-----------------------
+  Auth:                             login.html
+  Admin:                            admin_pages/dashboard.html
+                                    admin_pages/profile.html
+                                    admin_pages/company_list.html
+                                    admin_pages/company_detail.html
+                                    admin_pages/company_create.html
+                                    admin_pages/company_edit.html
+                                    admin_pages/invite_accept.html
+                                    admin_pages/invite_expired.html
+  Client CRM:                       client_crm/client_list.html
+                                    client_crm/client_detail.html
+                                    client_crm/client_form.html
+                                    client_crm/contact_list.html
+  Project 360:                      project_360/project_list.html
+                                    project_360/project_detail.html
+                                    project_360/project_form.html
+                                    project_360/task_list.html
+                                    project_360/task_form.html
+  Employee Ops:                     employee_operations/employee_list.html
+                                    employee_operations/employee_detail.html
+                                    employee_operations/timesheet_list.html
+                                    employee_operations/leave_list.html
+  Client Portal:                    client_portal/portal_dashboard.html
+                                    client_portal/portal_projects.html
+  Partials:                         partials/stats_row.html
+
+
+================================================================================
+11. VALIDATIONS
+================================================================================
+
+11.1 Login
+-----------
+  - Email + password required
+  - authenticate() validates credentials
+  - Error message "Invalid email or password" on failure
+
+11.2 Company Creation (Super Admin)
+-------------------------------------
+  - Only super admins can create (returns 403 otherwise)
+  - Company name required
+  - Admin email and first name required for invite creation
+  - Password >= 6 chars on invite accept
+  - Password confirmation must match
+
+11.3 Generic Module Forms
+---------------------------
+  - @login_required on all views
+  - pk lookup uses get_object_or_404 with scope filter (404 if not in scope)
+  - Invalid module key returns HttpResponseForbidden
+  - FK fields: set to None if blank
+  - Boolean fields: checked via 'fn in data'
+  - Numeric fields: default to 0/0.0 if blank
+  - Date fields: set to None if blank
+  - Text fields: default to '' if blank
+  - Employee auto-set to self for employee/staff roles (overrides POST data)
+  - Company auto-set on create for models with company field
+  - Client auto-set on create for models with client field (first client in company)
+  - created_by auto-set on create
+
+11.4 Model-level Validations
+------------------------------
+  - Company: unique_together constraints on departments (company+name),
+    designations (company+title)
+  - CompanyInvite: unique_together on company+email
+  - Module: unique key
+  - Permission: unique_together on module+codename
+  - Role: unique? None specified (duplicate names allowed per company)
+  - User: unique email, unique employee_id (nullable)
+  - Email normalization via CustomUserManager
+
+11.5 URL Security
+-------------------
+  - All views decorated with @login_required (except login, logout, invite accept)
+  - contacts_form was missing @login_required (FIXED in session)
+  - company_create/company_edit/company_toggle_active check is_super_admin
+  - company_detail checks is_super_admin or company_id match
+  - settings_form checks company ownership
+  - Data scoping prevents access to out-of-scope records
+    (get_object_or_404 with scope filter = 404 on non-owned records)
+
+
+================================================================================
+12. SESSION FIXES & BUG FIXES LOG
+================================================================================
+
+12.1 Employee Readonly Field Empty Value (FIXED 2026-05-27)
+-------------------------------------------------------------
+  Issue: Employee FK readonly field showed value="" in forms for
+         Employee role users
+  Root Cause: _module_form auto-set fm['value_id'] = request.user.pk for
+              employee FK, but fm['value_str'] was initialized to '' by
+              _build_fields_meta (because obj is None on new forms)
+  Fix: Added fm['value_str'] = str(request.user) alongside value_id
+  File: user_management/frontend_views.py, _module_form(), ~line 907
+
+12.2 Reports Dashboard DataTables Column Mismatch (FIXED 2026-05-27)
+----------------------------------------------------------------------
+  Issue: DataTables warning "Incorrect column count" on DataTables_Table_0
+         when viewing reports
+  Root Cause: reports_dashboard passed rows as flat lists ['Metric','Value']
+              but generic_module_list.html expects {'vals':[...], 'pk':...}
+              dict format. Each row rendered only 1 TD (actions) vs 2 TH
+              headers, causing column mismatch.
+  Fix: Wrapped each row: [{'vals': r, 'pk': None} for r in data]
+  File: user_management/frontend_views.py, reports_dashboard(), ~line 1225
+
+12.3 DataTables Double Initialization (FIXED earlier)
+-------------------------------------------------------
+  Issue: $('.datatable').DataTable() in base.html initialized tables that
+         also had their own per-ID DataTable() calls
+  Fix: Removed 'datatable' CSS class from 6 custom tables
+       (clientTable, contactTable, taskTable, employeeTable,
+        timesheetTable, leaveTable) so global init doesn't apply;
+       these tables use their own dedicated DataTable() calls
+  Files: client_list.html, contact_list.html, project_detail.html,
+         employee_list.html, timesheet_list.html, leave_list.html
+
+12.4 Contacts Form Missing @login_required (FIXED earlier)
+------------------------------------------------------------
+  Issue: contacts_form view was not decorated with @login_required
+  Fix: Added @login_required decorator
+  File: user_management/frontend_views.py
+
+12.5 Contacts Add Button href="#" (FIXED earlier)
+---------------------------------------------------
+  Issue: "Add Contact" button in contact_list.html pointed to #
+  Fix: Changed to href="{% url 'contacts_add' %}"
+  File: templates/client_crm/contact_list.html
+
+12.6 Timesheets Add/Edit/Delete Buttons href="#" (FIXED earlier)
+------------------------------------------------------------------
+  Issue: Add, Edit, Delete buttons in timesheet_list.html pointed to #
+  Fix: Changed to real {% url %} tags; re-enabled disabled buttons
+  File: templates/employee_operations/timesheet_list.html
+
+12.7 Apply Leave Button href="#" (FIXED 2026-05-27)
+------------------------------------------------------
+  Issue: "Apply Leave" button in leave_list.html pointed to #
+  Fix: Changed to href="{% url 'leaves_add' %}"
+  File: templates/employee_operations/leave_list.html
+
+12.8 Employee List Add/Edit Buttons href="#" (FIXED 2026-05-27)
+-----------------------------------------------------------------
+  Issue: "Add Employee" and Edit buttons in employee_list.html pointed to #
+  Fix: Add -> href="{% url 'users_add' %}"
+       Edit -> href="{% url 'users_edit' emp.pk %}"
+  File: templates/employee_operations/employee_list.html
+
+12.9 Project Delete Button href="#" (still disabled)
+------------------------------------------------------
+  Issue: "Delete" button on project_detail.html points to # with disabled class
+  Status: Left as intentionally disabled (projects require soft-delete workflow)
+  File: templates/project_360/project_detail.html
+
+12.10 Email Integration for Invites (NOT YET IMPLEMENTED)
+----------------------------------------------------------
+  Issue: CompanyInvite token is generated but never emailed
+  Status: Requires email backend configuration + email sending logic
+
+12.11 Leave Policy Seed Data Missing
+--------------------------------------
+  Issue: leave_policy dropdown in leave form has no options
+  Status: Requires LeavePolicy seed data to be added to seed script
+
+12.12 ExpenseCategory Seed Data Missing
+-----------------------------------------
+  Issue: category dropdown in expense form has no options
+  Status: Requires seed data for ExpenseCategory model
+
+
+================================================================================
+13. SEED DATA
+================================================================================
+
+13.1 Seeder Script (seed_data.py)
+-----------------------------------
+  Run: python seed_data.py
+  Creates:
+    - 9 group modules (parent=None, key='group_*')
+    - 23 menu item modules (children of groups + standalone Dashboard)
+    - 138 permissions (6 types x 23 modules)
+    - 11 system roles (super_admin through client_user)
+    - Assigns super_admin role to all superusers
+
+13.2 Module Hierarchy
+----------------------
+  Standalone:   Dashboard
+  group_client:   Clients, Contacts
+  group_project:  Projects, Tasks, Milestones, Deliverables
+  group_collab:   Meetings, Documents, Team
+  group_finance:  Invoices, Payments, Expenses
+  group_issues:   Issues, Risks, Change Requests, Support Tickets
+  group_people:   Employees, Timesheets, Leave, Attendance
+  group_reports:  Reports
+  group_admin:    Company Settings, User Management, Roles & Permissions
+  group_portal:   Portal Dashboard, Portal Projects
+
+
+================================================================================
+14. TEST USERS
+================================================================================
+
+  Email                      Password      Role             Company
+  ─────────────────────────────────────────────────────────────────
+  admin@karthikai.com        admin123      super_admin      (none)
+  company@testco.com         admin123      company_admin    TestCo
+  pm@testco.com              admin123      project_manager  TestCo
+  emp@testco.com              admin123      employee         TestCo
+
+  TestCo company is the primary test tenant with:
+    - 2 sample projects (Alpha, Beta)
+    - 1 sample client
+    - Created via seed_company() function (in seed_data.py or manual)
+
+
+================================================================================
+15. KNOWN LIMITATIONS & NEXT STEPS
+================================================================================
+
+15.1 Missing Seed Data
+-----------------------
+  - LeavePolicy records (leave form dropdown empty)
+  - ExpenseCategory records (expense form dropdown empty)
+  - TimesheetEntry records (timesheet list empty)
+  - Invoice, Payment records (finance modules empty)
+  - Sample Meeting, Document records (collaboration modules empty)
+  - Sample Issue, Risk, ChangeRequest, SupportTicket records
+
+15.2 Missing Features
+----------------------
+  - Invite email sending (token generated but not emailed)
+  - Password change required flag for first login after invite
+  - Password reset workflow
+  - Soft delete for projects (currently hard delete via generic_delete)
+  - File upload handling for documents
+  - Activity log / audit trail (UserActivity model exists but not fully wired)
+  - Dashboard charts (Chart.js loaded but no charts rendered)
+  - Notifications (Notification model exists but no in-app notifications)
+  - Timesheet with entries (TimesheetEntry model separate from Timesheet)
+  - Leave balance tracking (LeaveBalance model exists)
+  - WFH requests (WFHRequest model exists but no CRUD)
+
+15.3 Technical Debt
+---------------------
+  - All form handling is manual (no Django ModelForms)
+  - All validation is manual in POST handlers
+  - No unit tests
+  - No API endpoints (no REST framework)
+  - Generic CRUD templates lack advanced field types
+    (file upload, rich text, multi-select)
+  - _MODEL_CONFIG form_fields may not include all required fields for
+    some models (e.g., Invoice line items, Timesheet entries)
+  - timesheet_list custom view queries TimesheetEntry but generic
+    _module_form creates Timesheet records -- mismatch needs resolution
+  - client_list/contact_list duplicate between custom views and
+    generic CRUD (contact_list is custom but has generic CRUD routes)
+
+15.4 Next Logical Steps
+------------------------
+  A. Seed all missing data (LeavePolicy, ExpenseCategory, sample records)
+  B. Implement email sending for invites
+  C. Add password change required flag on first login
+  D. Build dedicated form templates for complex modules
+     (Timesheet with entries, Invoice with line items)
+  E. Add dashboard charts (project status pie, revenue trend, task completion)
+  F. Implement file upload handling for documents/project deliverables
+  G. Wire up activity logging via UserActivity model
+  H. Add leave balance tracking and auto-deduction on approval
+  I. Implement TimesheetEntry CRUD within timesheet add/edit
+  J. Add search/filter across all list pages
+  K. Build notification system (in-app + email)
+  L. Add unit tests for all views, models, and RBAC logic
+
+================================================================================
+END OF AUDIT
+================================================================================

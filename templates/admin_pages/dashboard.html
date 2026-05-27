@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+{% if is_platform %}
+{# ====== SUPER ADMIN PLATFORM DASHBOARD ====== #}
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-building"></i></div>
+      <div class="stat-value">{{ active_companies|default:"0" }}</div>
+      <div class="stat-label">Active Companies</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-kanban"></i></div>
+      <div class="stat-value">{{ total_projects|default:"0" }}</div>
+      <div class="stat-label">Total Projects</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-building"></i></div>
+      <div class="stat-value">{{ total_clients|default:"0" }}</div>
+      <div class="stat-label">Total Clients</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-people"></i></div>
+      <div class="stat-value">{{ total_employees|default:"0" }}</div>
+      <div class="stat-label">Users</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-building me-2"></i>Registered Companies</span>
+        <a href="{% url 'company_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle datatable">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Company</th>
+              <th>Status</th>
+              <th>Users</th>
+              <th>Clients</th>
+              <th>Projects</th>
+              <th class="pe-3">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in companies %}
+            <tr>
+              <td class="ps-3 fw-medium"><a href="{% url 'company_detail' c.pk %}">{{ c.name }}</a></td>
+              <td>
+                {% if c.is_active %}
+                  <span class="health-green">Active</span>
+                {% else %}
+                  <span class="health-red">Inactive</span>
+                {% endif %}
+              </td>
+              <td>{{ c.total_users|default:"0" }}/{{ c.user_limit|default:"—" }}</td>
+              <td>{{ c.total_clients|default:"0" }}/{{ c.client_limit|default:"—" }}</td>
+              <td>{{ c.total_projects|default:"0" }}/{{ c.project_limit|default:"—" }}</td>
+              <td class="pe-3">{{ c.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-4">No companies registered yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white fw-semibold"><i class="bi bi-ticket me-2"></i>Open Support Tickets</div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          {% for t in recent_support_tickets %}
+          <li class="list-group-item py-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="d-block fw-medium">{{ t.title|truncatewords:8 }}</small>
+                <small class="text-muted">{{ t.project.client.company.name|default:"—" }}</small>
+              </div>
+              <span class="status-badge {% if t.priority == 'urgent' %}bg-danger bg-opacity-10 text-danger{% elif t.priority == 'high' %}bg-warning bg-opacity-10 text-warning{% else %}bg-info bg-opacity-10 text-info{% endif %}">
+                {{ t.get_priority_display }}
+              </span>
+            </div>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-center text-muted py-4">No open tickets</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+{# ====== COMPANY USER DASHBOARD ====== #}
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-kanban"></i></div>
+      <div class="stat-value">{{ total_projects|default:"0" }}</div>
+      <div class="stat-label">Total Projects</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-building"></i></div>
+      <div class="stat-value">{{ total_clients|default:"0" }}</div>
+      <div class="stat-label">Total Clients</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-list-check"></i></div>
+      <div class="stat-value">{{ total_tasks|default:"0" }}</div>
+      <div class="stat-label">Open Tasks</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-people"></i></div>
+      <div class="stat-value">{{ total_employees|default:"0" }}</div>
+      <div class="stat-label">Employees</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white fw-semibold">Project Health</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0 align-middle datatable">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Project</th>
+              <th>Status</th>
+              <th>Health</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for project in projects %}
+            <tr>
+              <td class="ps-3 fw-medium">{{ project.project_name }}</td>
+              <td>
+                {% with s=project.status|lower %}
+                {% if s == 'active' or s == 'approved' or s == 'kickoff_scheduled' %}
+                  <span class="status-badge bg-success bg-opacity-10 text-success">{{ project.get_status_display }}</span>
+                {% elif s == 'on_hold' or s == 'delayed' %}
+                  <span class="status-badge bg-warning bg-opacity-10 text-warning">{{ project.get_status_display }}</span>
+                {% elif s == 'completed' or s == 'closed' %}
+                  <span class="status-badge bg-primary bg-opacity-10 text-primary">{{ project.get_status_display }}</span>
+                {% elif s == 'cancelled' %}
+                  <span class="status-badge bg-danger bg-opacity-10 text-danger">{{ project.get_status_display }}</span>
+                {% else %}
+                  <span class="status-badge bg-secondary bg-opacity-10 text-secondary">{{ project.get_status_display }}</span>
+                {% endif %}
+                {% endwith %}
+              </td>
+              <td>
+                {% if project.health == 'green' %}
+                  <span class="health-green">On Track</span>
+                {% elif project.health == 'amber' %}
+                  <span class="health-amber">Needs Attention</span>
+                {% elif project.health == 'red' %}
+                  <span class="health-red">Critical</span>
+                {% else %}
+                  <span class="health-green">{{ project.health }}</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" class="text-center text-muted py-4">No projects yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header bg-white fw-semibold">Upcoming Deadlines</div>
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          {% for task in upcoming_tasks %}
+          <li class="list-group-item py-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <h6 class="mb-1 fw-medium" style="font-size:13px">{{ task.title }}</h6>
+                <small class="text-muted">{{ task.project.project_name }}</small>
+              </div>
+              <div class="text-end">
+                <small class="d-block text-danger fw-semibold">{{ task.due_date|date:"M d" }}</small>
+              </div>
+            </div>
+          </li>
+          {% empty %}
+          <li class="list-group-item text-center text-muted py-4">No upcoming deadlines.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+</div>
+{% endblock %}
