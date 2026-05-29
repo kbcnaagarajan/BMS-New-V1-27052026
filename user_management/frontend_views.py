@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, Q, F
 from django.utils import timezone
 from django.http import HttpResponseForbidden
-from user_management.models import User, Company, Module, Department, Designation, Role, Package, CompanySubscription, CompanyInvite, SUPER_ADMIN_RESTRICTED_MODULES
+from user_management.models import User, Company, Module, Department, Designation, Role, Package, CompanySubscription, CompanyInvite, SUPER_ADMIN_RESTRICTED_MODULES, PLATFORM_MODULES
 from user_management.rbac import build_user_menu
 from client_crm.models import Client, ClientContact
 from project_360.models import Project, ProjectTask, ProjectTeamMember, ProjectMilestone, ProjectDeliverable
@@ -823,6 +823,19 @@ _MODEL_CONFIG = {
         'form_fields': ['employee', 'leave_policy', 'start_date', 'end_date', 'total_days', 'reason', 'handover_to'],
         'redirect': 'leaves_list',
     },
+    'packages': {
+        'model': Package,
+        'list_fields': ['name', 'code', 'price', 'billing_cycle', 'is_active'],
+        'form_fields': ['name', 'code', 'description', 'price', 'billing_cycle', 'is_active', 'is_free',
+                        'user_limit', 'client_limit', 'project_limit', 'storage_limit_mb', 'trial_days', 'features', 'sort_order'],
+        'redirect': 'packages_list',
+    },
+    'subscriptions': {
+        'model': CompanySubscription,
+        'list_fields': ['company', 'package', 'start_date', 'end_date', 'is_active'],
+        'form_fields': ['company', 'package', 'start_date', 'end_date', 'is_active', 'auto_renew', 'paid_via', 'transaction_id', 'notes'],
+        'redirect': 'subscriptions_list',
+    },
 }
 
 _FIELD_MAP = {k: (v['model'], v['list_fields']) for k, v in _MODEL_CONFIG.items()}
@@ -921,6 +934,8 @@ def _module_list(request, key, extra_ctx=None):
     ctx = get_rbac_context(request.user)
     if request.user.is_super_admin and key in SUPER_ADMIN_RESTRICTED_MODULES:
         return HttpResponseForbidden('Access denied')
+    if not request.user.is_super_admin and key in PLATFORM_MODULES:
+        return HttpResponseForbidden('Access denied')
     config = _MODEL_CONFIG.get(key)
     headers, rows = [], []
     if config:
@@ -958,6 +973,8 @@ def _module_list(request, key, extra_ctx=None):
 def _module_form(request, key, pk=None):
     ctx = get_rbac_context(request.user)
     if request.user.is_super_admin and key in SUPER_ADMIN_RESTRICTED_MODULES:
+        return HttpResponseForbidden('Access denied')
+    if not request.user.is_super_admin and key in PLATFORM_MODULES:
         return HttpResponseForbidden('Access denied')
     config = _MODEL_CONFIG.get(key)
     if not config:
@@ -1098,6 +1115,8 @@ def _module_detail(request, key, pk):
     ctx = get_rbac_context(request.user)
     if request.user.is_super_admin and key in SUPER_ADMIN_RESTRICTED_MODULES:
         return HttpResponseForbidden('Access denied')
+    if not request.user.is_super_admin and key in PLATFORM_MODULES:
+        return HttpResponseForbidden('Access denied')
     config = _MODEL_CONFIG.get(key)
     if not config:
         return HttpResponseForbidden('Invalid module')
@@ -1125,6 +1144,10 @@ def _module_detail(request, key, pk):
 
 
 def _module_delete(request, key, pk):
+    if request.user.is_super_admin and key in SUPER_ADMIN_RESTRICTED_MODULES:
+        return HttpResponseForbidden('Access denied')
+    if not request.user.is_super_admin and key in PLATFORM_MODULES:
+        return HttpResponseForbidden('Access denied')
     config = _MODEL_CONFIG.get(key)
     if not config:
         return HttpResponseForbidden('Invalid module')
@@ -1196,6 +1219,14 @@ def support_tickets_list(request):
 def attendance_list(request):
     return _module_list(request, 'attendance')
 
+@login_required
+def packages_list(request):
+    return _module_list(request, 'packages')
+
+@login_required
+def subscriptions_list(request):
+    return _module_list(request, 'subscriptions')
+
 # --- Individual Form Views (Add / Edit) ---
 
 @login_required
@@ -1249,6 +1280,14 @@ def support_tickets_form(request, pk=None):
 @login_required
 def attendance_form(request, pk=None):
     return _module_form(request, 'attendance', pk)
+
+@login_required
+def packages_form(request, pk=None):
+    return _module_form(request, 'packages', pk)
+
+@login_required
+def subscriptions_form(request, pk=None):
+    return _module_form(request, 'subscriptions', pk)
 
 @login_required
 def timesheet_form(request, pk=None):
@@ -1327,6 +1366,14 @@ def attendance_detail(request, pk):
 @login_required
 def team_detail(request, pk):
     return _module_detail(request, 'team', pk)
+
+@login_required
+def packages_detail(request, pk):
+    return _module_detail(request, 'packages', pk)
+
+@login_required
+def subscriptions_detail(request, pk):
+    return _module_detail(request, 'subscriptions', pk)
 
 # --- Individual Delete Views ---
 

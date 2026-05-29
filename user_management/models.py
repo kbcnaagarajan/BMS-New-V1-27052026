@@ -471,10 +471,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             is_active=True
         ).distinct()
         if role_modules.exists():
-            return role_modules
+            return role_modules.exclude(key__in=PLATFORM_MODULES)
         user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
         if user_type_module_keys == '__all__':
-            return Module.objects.filter(is_active=True)
+            return Module.objects.filter(is_active=True).exclude(key__in=PLATFORM_MODULES)
         if user_type_module_keys:
             return Module.objects.filter(key__in=user_type_module_keys, is_active=True)
         return Module.objects.none()
@@ -563,3 +563,5 @@ SUPER_ADMIN_RESTRICTED_MODULES = [
 SA_ALLOWED_MODULES = [
     'dashboard', 'companies', 'packages', 'subscriptions', 'reports',
 ]
+
+PLATFORM_MODULES = {'companies', 'packages', 'subscriptions'}

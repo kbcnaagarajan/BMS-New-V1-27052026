@@ -126,6 +126,17 @@ urlpatterns = [
 
     # Reports & Admin
     path('reports/', v.reports_dashboard, name='reports_list'),
+    # Packages & Subscriptions (super admin)
+    path('packages/', v.packages_list, name='packages_list'),
+    path('packages/add/', v.packages_form, name='packages_add'),
+    path('packages/<int:pk>/', v.packages_detail, name='packages_detail'),
+    path('packages/<int:pk>/edit/', v.packages_form, name='packages_edit'),
+    path('packages/<int:pk>/delete/', v.generic_delete, {'key': 'packages'}, name='packages_delete'),
+    path('subscriptions/', v.subscriptions_list, name='subscriptions_list'),
+    path('subscriptions/add/', v.subscriptions_form, name='subscriptions_add'),
+    path('subscriptions/<int:pk>/', v.subscriptions_detail, name='subscriptions_detail'),
+    path('subscriptions/<int:pk>/edit/', v.subscriptions_form, name='subscriptions_edit'),
+    path('subscriptions/<int:pk>/delete/', v.generic_delete, {'key': 'subscriptions'}, name='subscriptions_delete'),
     path('settings/', v.settings_view, name='settings_list'),
     path('settings/<int:pk>/', v.settings_form, name='settings_detail'),
     path('settings/<int:pk>/edit/', v.settings_form, name='settings_edit'),
