@@ -1,0 +1,117 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PROJECTS & TASKS
+      - link " Projects" [ref=e13] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Projects
+      - link " Tasks" [ref=e17] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Tasks
+      - generic [ref=e20]: COLLABORATION
+      - link " Meetings" [ref=e22] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Meetings
+      - link " Documents" [ref=e26] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Documents
+      - generic [ref=e29]: FINANCE
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: PEOPLE
+      - link " Timesheets" [ref=e36] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Timesheets
+      - link " Leave" [ref=e40] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e41]: 
+        - generic [ref=e42]: Leave
+      - link " Attendance" [ref=e44] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e45]: 
+        - generic [ref=e46]: Attendance
+  - navigation [ref=e47]:
+    - text: 
+    - generic [ref=e48]: Dashboard
+    - generic [ref=e50]:
+      - button "E Employee User" [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: E
+        - generic [ref=e53]: Employee User
+      - text:  
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e58]:
+        - generic [ref=e60]: 
+        - generic [ref=e61]: "1"
+        - generic [ref=e62]: Total Projects
+      - generic [ref=e64]:
+        - generic [ref=e66]: 
+        - generic [ref=e67]: "0"
+        - generic [ref=e68]: Total Clients
+      - generic [ref=e70]:
+        - generic [ref=e72]: 
+        - generic [ref=e73]: "1"
+        - generic [ref=e74]: Open Tasks
+      - generic [ref=e76]:
+        - generic [ref=e78]: 
+        - generic [ref=e79]: "1"
+        - generic [ref=e80]: Employees
+    - generic [ref=e81]:
+      - generic [ref=e83]:
+        - generic [ref=e84]: Project Health
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - generic [ref=e90]:
+              - text: Show
+              - combobox "Show entries" [ref=e91]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e95]
+          - table [ref=e98]:
+            - rowgroup [ref=e99]:
+              - 'row "Project: activate to sort column descending Status: activate to sort column ascending Health: activate to sort column ascending" [ref=e100]':
+                - 'columnheader "Project: activate to sort column descending" [ref=e101] [cursor=pointer]': Project
+                - 'columnheader "Status: activate to sort column ascending" [ref=e102] [cursor=pointer]': Status
+                - 'columnheader "Health: activate to sort column ascending" [ref=e103] [cursor=pointer]': Health
+            - rowgroup [ref=e104]:
+              - row "Website Redesign Active On Track" [ref=e105]:
+                - cell "Website Redesign" [ref=e106]
+                - cell "Active" [ref=e107]:
+                  - generic [ref=e108]: Active
+                - cell "On Track" [ref=e109]
+          - generic [ref=e110]:
+            - status [ref=e112]: Showing 1 to 1 of 1 entries
+            - list [ref=e115]:
+              - listitem [ref=e116]:
+                - link "Previous" [disabled]
+              - listitem [ref=e117]:
+                - link "1" [ref=e118] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e119]:
+                - link "Next" [disabled]
+      - generic [ref=e121]:
+        - generic [ref=e122]: Upcoming Deadlines
+        - list [ref=e124]:
+          - listitem [ref=e125]:
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - heading "Setup homepage" [level=6] [ref=e128]
+                - text: Website Redesign
+              - generic [ref=e130]: Jun 10

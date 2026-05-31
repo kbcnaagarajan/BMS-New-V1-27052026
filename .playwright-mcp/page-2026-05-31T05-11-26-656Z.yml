@@ -1,0 +1,75 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+      - link " Portal Invoices" [ref=e17] [cursor=pointer]:
+        - /url: /portal/invoices/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Portal Invoices
+      - link " Portal Documents" [ref=e21] [cursor=pointer]:
+        - /url: /portal/documents/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Portal Documents
+      - link " Portal Tickets" [ref=e25] [cursor=pointer]:
+        - /url: /portal/tickets/
+        - generic [ref=e26]: 
+        - generic [ref=e27]: Portal Tickets
+  - navigation [ref=e28]:
+    - text: 
+    - generic [ref=e29]: Portal Support Tickets
+    - generic [ref=e31]:
+      - button "C Client User" [ref=e32] [cursor=pointer]:
+        - generic [ref=e33]: C
+        - generic [ref=e34]: Client User
+      - text:  
+  - generic [ref=e36]:
+    - heading "Support Tickets" [level=4] [ref=e38]
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e46]:
+          - text: Show
+          - combobox "Show entries" [ref=e47]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e51]
+      - table [ref=e54]:
+        - rowgroup [ref=e55]:
+          - 'row "Title: activate to sort column descending Project: activate to sort column ascending Priority: activate to sort column ascending Status: activate to sort column ascending Assigned To: activate to sort column ascending Created: activate to sort column ascending" [ref=e56]':
+            - 'columnheader "Title: activate to sort column descending" [ref=e57] [cursor=pointer]': Title
+            - 'columnheader "Project: activate to sort column ascending" [ref=e58] [cursor=pointer]': Project
+            - 'columnheader "Priority: activate to sort column ascending" [ref=e59] [cursor=pointer]': Priority
+            - 'columnheader "Status: activate to sort column ascending" [ref=e60] [cursor=pointer]': Status
+            - 'columnheader "Assigned To: activate to sort column ascending" [ref=e61] [cursor=pointer]': Assigned To
+            - 'columnheader "Created: activate to sort column ascending" [ref=e62] [cursor=pointer]': Created
+        - rowgroup [ref=e63]:
+          - row "Login issue in client portal LiveOrg Project A Medium Open PM User May 31, 2026" [ref=e64]:
+            - cell "Login issue in client portal" [ref=e65]
+            - cell "LiveOrg Project A" [ref=e66]
+            - cell "Medium" [ref=e67]
+            - cell "Open" [ref=e68]
+            - cell "PM User" [ref=e69]
+            - cell "May 31, 2026" [ref=e70]
+      - generic [ref=e71]:
+        - status [ref=e73]: Showing 1 to 1 of 1 entries
+        - list [ref=e76]:
+          - listitem [ref=e77]:
+            - link "Previous" [disabled]
+          - listitem [ref=e78]:
+            - link "1" [ref=e79] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e80]:
+            - link "Next" [disabled]

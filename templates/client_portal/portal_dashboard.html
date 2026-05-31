@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container-fluid">
     <div class="mb-4">
-        <h4 class="fw-bold mb-1">Welcome {{ client.company_name }}</h4>
+        <h4 class="fw-bold mb-1">Welcome {{ client.name }}</h4>
         <p class="text-muted mb-0">Your personalized client dashboard</p>
     </div>
 
@@ -89,7 +89,7 @@
                             <tbody>
                                 {% for project in my_projects %}
                                 <tr>
-                                    <td class="ps-3 fw-medium">{{ project.name }}</td>
+                                    <td class="ps-3 fw-medium">{{ project.project_name }}</td>
                                     <td>
                                         {% if project.status == "Active" %}
                                             <span class="badge bg-success">Active</span>

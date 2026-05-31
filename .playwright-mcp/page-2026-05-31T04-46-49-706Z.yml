@@ -1,0 +1,174 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: ISSUES & RISKS
+      - link " Issues" [ref=e52] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Issues
+      - link " Risks" [ref=e56] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Risks
+      - link " Change Requests" [ref=e60] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Change Requests
+      - link " Support Tickets" [ref=e64] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e65]: 
+        - generic [ref=e66]: Support Tickets
+      - generic [ref=e67]: PEOPLE
+      - link " Timesheets" [ref=e69] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Timesheets
+      - link " Leave" [ref=e73] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Leave
+      - link " Attendance" [ref=e77] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Attendance
+      - generic [ref=e80]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e82] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Reports
+  - navigation [ref=e85]:
+    - text: 
+    - generic [ref=e86]: "Client:"
+    - generic [ref=e88]:
+      - button "P PM User" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: P
+        - generic [ref=e91]: PM User
+      - text:  
+  - generic [ref=e93]:
+    - link " Back to Clients" [ref=e95] [cursor=pointer]:
+      - /url: /clients/
+      - generic [ref=e96]: 
+      - text: Back to Clients
+    - generic [ref=e97]:
+      - generic [ref=e99]:
+        - generic [ref=e100]:
+          - generic [ref=e101]: 
+          - heading "Company Info" [level=5] [ref=e102]
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - generic [ref=e106]: Company Name
+            - generic [ref=e107]: LiveOrg Client A
+          - generic [ref=e108]:
+            - generic [ref=e109]: Client Code
+            - generic [ref=e110]: CL-20260531044648
+          - generic [ref=e111]:
+            - generic [ref=e112]: Email
+            - link "contact@liveorgclienta.com" [ref=e114] [cursor=pointer]:
+              - /url: mailto:contact@liveorgclienta.com
+          - generic [ref=e115]:
+            - generic [ref=e116]: Phone
+            - generic [ref=e117]: "5555555555"
+          - generic [ref=e118]:
+            - generic [ref=e119]: Website
+            - generic [ref=e120]: https://liveorgclienta.com
+          - generic [ref=e121]:
+            - generic [ref=e122]: Address
+            - generic [ref=e123]: Nairobi CBD
+          - generic [ref=e124]:
+            - generic [ref=e125]: Tax / GST Number
+            - generic [ref=e126]: TX-531A
+          - generic [ref=e127]:
+            - generic [ref=e128]: Status
+            - generic [ref=e129]: Active
+      - generic [ref=e131]:
+        - generic [ref=e132]:
+          - generic [ref=e133]: 
+          - heading "Account Manager" [level=5] [ref=e134]
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e138]: Assigned Manager
+            - generic [ref=e139]: —
+          - generic [ref=e140]:
+            - generic [ref=e141]: Client Type
+            - generic [ref=e142]: Company
+          - generic [ref=e143]:
+            - generic [ref=e144]: Industry
+            - generic [ref=e145]: —
+    - generic [ref=e148]:
+      - generic [ref=e149]:
+        - heading " Active Projects" [level=5] [ref=e150]:
+          - generic [ref=e151]: 
+          - text: Active Projects
+        - generic [ref=e152]: "0"
+      - table [ref=e155]:
+        - rowgroup [ref=e156]:
+          - row "Project Name Manager Status Health Progress" [ref=e157]:
+            - columnheader "Project Name" [ref=e158]
+            - columnheader "Manager" [ref=e159]
+            - columnheader "Status" [ref=e160]
+            - columnheader "Health" [ref=e161]
+            - columnheader "Progress" [ref=e162]
+        - rowgroup [ref=e163]:
+          - row "No active projects." [ref=e164]:
+            - cell "No active projects." [ref=e165]
+    - generic [ref=e166]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - generic [ref=e170]: 
+          - heading "Recent Activity" [level=5] [ref=e171]
+        - generic [ref=e174]:
+          - generic [ref=e175]: 
+          - text: No recent activity.
+      - generic [ref=e177]:
+        - heading " Notes" [level=5] [ref=e179]:
+          - generic [ref=e180]: 
+          - text: Notes
+        - generic [ref=e182]:
+          - generic [ref=e183]: 
+          - text: No notes yet.

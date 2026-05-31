@@ -1,0 +1,235 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: FINANCE
+      - link " Invoices" [ref=e52] [cursor=pointer]:
+        - /url: /invoices/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Invoices
+      - link " Payments" [ref=e56] [cursor=pointer]:
+        - /url: /payments/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Payments
+      - link " Expenses" [ref=e60] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Expenses
+      - generic [ref=e63]: ISSUES & RISKS
+      - link " Issues" [ref=e65] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e66]: 
+        - generic [ref=e67]: Issues
+      - link " Risks" [ref=e69] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Risks
+      - link " Change Requests" [ref=e73] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Change Requests
+      - link " Support Tickets" [ref=e77] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Support Tickets
+      - generic [ref=e80]: PEOPLE
+      - link " Employees" [ref=e82] [cursor=pointer]:
+        - /url: /employees/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Employees
+      - link " Timesheets" [ref=e86] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e87]: 
+        - generic [ref=e88]: Timesheets
+      - link " Leave" [ref=e90] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e91]: 
+        - generic [ref=e92]: Leave
+      - link " Attendance" [ref=e94] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e95]: 
+        - generic [ref=e96]: Attendance
+      - generic [ref=e97]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e99] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e100]: 
+        - generic [ref=e101]: Reports
+      - generic [ref=e102]: ADMINISTRATION
+      - link " Company Settings" [ref=e104] [cursor=pointer]:
+        - /url: /settings/
+        - generic [ref=e105]: 
+        - generic [ref=e106]: Company Settings
+      - link " Departments" [ref=e108] [cursor=pointer]:
+        - /url: /departments/
+        - generic [ref=e109]: 
+        - generic [ref=e110]: Departments
+      - link " Designations" [ref=e112] [cursor=pointer]:
+        - /url: /designations/
+        - generic [ref=e113]: 
+        - generic [ref=e114]: Designations
+      - link " User Management" [ref=e116] [cursor=pointer]:
+        - /url: /users/
+        - generic [ref=e117]: 
+        - generic [ref=e118]: User Management
+      - link " Roles & Permissions" [ref=e120] [cursor=pointer]:
+        - /url: /roles/
+        - generic [ref=e121]: 
+        - generic [ref=e122]: Roles & Permissions
+      - generic [ref=e123]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e125] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e126]: 
+        - generic [ref=e127]: Portal Dashboard
+      - link " Portal Projects" [ref=e129] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e130]: 
+        - generic [ref=e131]: Portal Projects
+  - navigation [ref=e132]:
+    - text: 
+    - generic [ref=e133]: Users
+    - generic [ref=e135]:
+      - button "L Live Admin" [ref=e136] [cursor=pointer]:
+        - generic [ref=e137]: L
+        - generic [ref=e138]: Live Admin
+      - text:  
+  - generic [ref=e140]:
+    - generic [ref=e141]:
+      - heading "Users" [level=4] [ref=e142]
+      - link " Add users" [ref=e143] [cursor=pointer]:
+        - /url: /users/add/
+        - generic [ref=e144]: 
+        - text: Add users
+    - generic [ref=e148]:
+      - generic [ref=e149]:
+        - generic [ref=e152]:
+          - text: Show
+          - combobox "Show entries" [ref=e153]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e157]
+      - table [ref=e160]:
+        - rowgroup [ref=e161]:
+          - 'row "Full Name: activate to sort column descending Email: activate to sort column ascending Is Active: activate to sort column ascending Actions: activate to sort column ascending" [ref=e162]':
+            - 'columnheader "Full Name: activate to sort column descending" [ref=e163] [cursor=pointer]': Full Name
+            - 'columnheader "Email: activate to sort column ascending" [ref=e164] [cursor=pointer]': Email
+            - 'columnheader "Is Active: activate to sort column ascending" [ref=e165] [cursor=pointer]': Is Active
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e166] [cursor=pointer]': Actions
+        - rowgroup [ref=e167]:
+          - row "Emp User emp@liveorg531a.com True   " [ref=e168]:
+            - cell "Emp User" [ref=e169]
+            - cell "emp@liveorg531a.com" [ref=e170]
+            - cell "True" [ref=e171]
+            - cell "  " [ref=e172]:
+              - generic [ref=e173]:
+                - link "" [ref=e174] [cursor=pointer]:
+                  - /url: /users/93/
+                  - generic [ref=e175]: 
+                - link "" [ref=e176] [cursor=pointer]:
+                  - /url: /users/93/edit/
+                  - generic [ref=e177]: 
+                - link "" [ref=e178] [cursor=pointer]:
+                  - /url: /users/93/delete/
+                  - generic [ref=e179]: 
+          - row "Finance User finance@liveorg531a.com True   " [ref=e180]:
+            - cell "Finance User" [ref=e181]
+            - cell "finance@liveorg531a.com" [ref=e182]
+            - cell "True" [ref=e183]
+            - cell "  " [ref=e184]:
+              - generic [ref=e185]:
+                - link "" [ref=e186] [cursor=pointer]:
+                  - /url: /users/94/
+                  - generic [ref=e187]: 
+                - link "" [ref=e188] [cursor=pointer]:
+                  - /url: /users/94/edit/
+                  - generic [ref=e189]: 
+                - link "" [ref=e190] [cursor=pointer]:
+                  - /url: /users/94/delete/
+                  - generic [ref=e191]: 
+          - row "Live Admin company@liveorg531a.com True   " [ref=e192]:
+            - cell "Live Admin" [ref=e193]
+            - cell "company@liveorg531a.com" [ref=e194]
+            - cell "True" [ref=e195]
+            - cell "  " [ref=e196]:
+              - generic [ref=e197]:
+                - link "" [ref=e198] [cursor=pointer]:
+                  - /url: /users/91/
+                  - generic [ref=e199]: 
+                - link "" [ref=e200] [cursor=pointer]:
+                  - /url: /users/91/edit/
+                  - generic [ref=e201]: 
+                - link "" [ref=e202] [cursor=pointer]:
+                  - /url: /users/91/delete/
+                  - generic [ref=e203]: 
+          - row "PM User pm@liveorg531a.com True   " [ref=e204]:
+            - cell "PM User" [ref=e205]
+            - cell "pm@liveorg531a.com" [ref=e206]
+            - cell "True" [ref=e207]
+            - cell "  " [ref=e208]:
+              - generic [ref=e209]:
+                - link "" [ref=e210] [cursor=pointer]:
+                  - /url: /users/92/
+                  - generic [ref=e211]: 
+                - link "" [ref=e212] [cursor=pointer]:
+                  - /url: /users/92/edit/
+                  - generic [ref=e213]: 
+                - link "" [ref=e214] [cursor=pointer]:
+                  - /url: /users/92/delete/
+                  - generic [ref=e215]: 
+      - generic [ref=e216]:
+        - status [ref=e218]: Showing 1 to 4 of 4 entries
+        - list [ref=e221]:
+          - listitem [ref=e222]:
+            - link "Previous" [disabled]
+          - listitem [ref=e223]:
+            - link "1" [ref=e224] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e225]:
+            - link "Next" [disabled]

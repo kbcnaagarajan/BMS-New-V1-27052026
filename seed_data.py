@@ -11,6 +11,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 django.setup()
 
 from user_management.models import Module, Permission, Role, User
+from employee_operations.models import LeavePolicy, ExpenseCategory
+from user_management.models import Company
 
 
 def seed_modules():
@@ -76,6 +78,9 @@ def seed_modules():
         # CLIENT PORTAL
         {'name': 'Portal Dashboard', 'key': 'portal_dashboard', 'icon': 'bi bi-speedometer2', 'path': '/portal/', 'parent': 'group_portal', 'sequence': 91},
         {'name': 'Portal Projects', 'key': 'portal_projects', 'icon': 'bi bi-kanban', 'path': '/portal/projects/', 'parent': 'group_portal', 'sequence': 92},
+        {'name': 'Portal Invoices', 'key': 'portal_invoices', 'icon': 'bi bi-receipt', 'path': '/portal/invoices/', 'parent': 'group_portal', 'sequence': 93},
+        {'name': 'Portal Documents', 'key': 'portal_documents', 'icon': 'bi bi-folder', 'path': '/portal/documents/', 'parent': 'group_portal', 'sequence': 94},
+        {'name': 'Portal Tickets', 'key': 'portal_tickets', 'icon': 'bi bi-ticket', 'path': '/portal/tickets/', 'parent': 'group_portal', 'sequence': 95},
         # PLATFORM (Super Admin only)
         {'name': 'Companies', 'key': 'companies', 'icon': 'bi bi-building', 'path': '/companies/', 'parent': 'group_platform', 'sequence': 6},
         {'name': 'Packages', 'key': 'packages', 'icon': 'bi bi-box', 'path': '/packages/', 'parent': 'group_platform', 'sequence': 7},
@@ -216,13 +221,13 @@ SYSTEM_ROLES = {
         'name': 'Client Administrator',
         'description': 'Client-side admin - sees all their projects, approves deliverables',
         'permissions': ['view'],
-        'modules': ['portal_dashboard', 'portal_projects'],
+        'modules': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
     },
     'client_user': {
         'name': 'Client User',
         'description': 'Limited client-side user - views assigned project details',
         'permissions': ['view'],
-        'modules': ['portal_dashboard', 'portal_projects'],
+        'modules': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
     },
 }
 
@@ -269,10 +274,47 @@ def assign_superadmin_role():
         print(f'Superadmin role assigned to {superusers.count()} users')
 
 
+def seed_operational_prerequisites():
+    """Seed minimum records required for core operational workflows."""
+    leave_created = 0
+    expense_created = 0
+    for company in Company.objects.all():
+        _, new_leave = LeavePolicy.objects.get_or_create(
+            company=company,
+            name='Annual Leave',
+            leave_type='annual',
+            defaults={
+                'frequency': 'yearly',
+                'max_days': 21,
+                'is_paid': True,
+                'is_carry_forward': False,
+                'requires_approval': True,
+                'min_notice_days': 1,
+                'is_active': True,
+                'description': 'Default annual leave policy seeded for operational testing.',
+            },
+        )
+        if new_leave:
+            leave_created += 1
+
+        _, new_expense = ExpenseCategory.objects.get_or_create(
+            company=company,
+            name='General',
+            defaults={
+                'description': 'Default expense category seeded for operational testing.',
+                'is_active': True,
+            },
+        )
+        if new_expense:
+            expense_created += 1
+    print(f'Operational prerequisites: LeavePolicy +{leave_created}, ExpenseCategory +{expense_created}')
+
+
 if __name__ == '__main__':
     print('=== Seeding RBAC System ===')
     modules = seed_modules()
     seed_permissions(modules)
     seed_system_roles(modules)
     assign_superadmin_role()
+    seed_operational_prerequisites()
     print('=== Seeding Complete ===')

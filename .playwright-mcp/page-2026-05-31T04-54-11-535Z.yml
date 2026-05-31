@@ -1,0 +1,102 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - generic [ref=e16]: PROJECTS & TASKS
+      - link " Projects" [ref=e18] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e19]: 
+        - generic [ref=e20]: Projects
+      - generic [ref=e21]: FINANCE
+      - link " Invoices" [ref=e23] [cursor=pointer]:
+        - /url: /invoices/
+        - generic [ref=e24]: 
+        - generic [ref=e25]: Invoices
+      - link " Payments" [ref=e27] [cursor=pointer]:
+        - /url: /payments/
+        - generic [ref=e28]: 
+        - generic [ref=e29]: Payments
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e36] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Reports
+  - navigation [ref=e39]:
+    - text: 
+    - generic [ref=e40]: New Invoice
+    - generic [ref=e42]:
+      - button "F Finance User" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: F
+        - generic [ref=e45]: Finance User
+      - text:  
+  - generic [ref=e47]:
+    - link " Back" [ref=e49] [cursor=pointer]:
+      - /url: /invoices/
+      - generic [ref=e50]: 
+      - text: Back
+    - generic [ref=e51]:
+      - heading " New Invoice" [level=5] [ref=e53]:
+        - generic [ref=e54]: 
+        - text: New Invoice
+      - generic [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]: Project *
+            - combobox "Project *" [ref=e60]:
+              - option "-- Select Project --" [selected]
+              - option "PRJ-20260531044708 - LiveOrg Project A"
+          - generic [ref=e61]:
+            - generic [ref=e62]: Client *
+            - combobox "Client *" [ref=e63]:
+              - option "-- Select Client --" [selected]
+              - option "LiveOrg Client A (CL-20260531044648)"
+          - generic [ref=e64]:
+            - generic [ref=e65]: Invoice Date *
+            - textbox "Invoice Date *" [ref=e66]
+          - generic [ref=e67]:
+            - generic [ref=e68]: Due Date *
+            - textbox "Due Date *" [ref=e69]
+          - generic [ref=e70]:
+            - generic [ref=e71]: Amount *
+            - spinbutton "Amount *" [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]: Tax Amount *
+            - spinbutton "Tax Amount *" [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]: Currency *
+            - textbox "Currency *" [ref=e78]
+          - generic [ref=e79]:
+            - generic [ref=e80]: Status *
+            - combobox "Status *" [ref=e81]:
+              - option "-- Select Status --"
+              - option "Draft" [selected]
+              - option "Sent"
+              - option "Partially Paid"
+              - option "Paid"
+              - option "Overdue"
+              - option "Cancelled"
+              - option "Written Off"
+          - generic [ref=e82]:
+            - generic [ref=e83]: Notes
+            - textbox "Notes" [ref=e84]
+        - generic [ref=e85]:
+          - button " Save" [ref=e86] [cursor=pointer]:
+            - generic [ref=e87]: 
+            - text: Save
+          - link "Cancel" [ref=e88] [cursor=pointer]:
+            - /url: /invoices/

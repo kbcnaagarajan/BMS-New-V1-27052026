@@ -62,6 +62,9 @@
 {{ block.super }}
 <script>
   $(document).ready(function() {
+    if ($('#contactTable tbody td[colspan]').length) {
+      return;
+    }
     $('#contactTable').DataTable({
       pageLength: 25,
       order: [[0, 'asc']],

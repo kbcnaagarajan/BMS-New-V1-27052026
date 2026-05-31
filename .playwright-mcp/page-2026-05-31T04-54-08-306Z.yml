@@ -1,0 +1,104 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - generic [ref=e16]: PROJECTS & TASKS
+      - link " Projects" [ref=e18] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e19]: 
+        - generic [ref=e20]: Projects
+      - generic [ref=e21]: FINANCE
+      - link " Invoices" [ref=e23] [cursor=pointer]:
+        - /url: /invoices/
+        - generic [ref=e24]: 
+        - generic [ref=e25]: Invoices
+      - link " Payments" [ref=e27] [cursor=pointer]:
+        - /url: /payments/
+        - generic [ref=e28]: 
+        - generic [ref=e29]: Payments
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e36] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Reports
+  - navigation [ref=e39]:
+    - text: 
+    - generic [ref=e40]: Dashboard
+    - generic [ref=e42]:
+      - button "F Finance User" [ref=e43] [cursor=pointer]:
+        - generic [ref=e44]: F
+        - generic [ref=e45]: Finance User
+      - text:  
+  - generic [ref=e47]:
+    - generic [ref=e48]:
+      - generic [ref=e50]:
+        - generic [ref=e52]: 
+        - generic [ref=e53]: "1"
+        - generic [ref=e54]: Total Projects
+      - generic [ref=e56]:
+        - generic [ref=e58]: 
+        - generic [ref=e59]: "1"
+        - generic [ref=e60]: Total Clients
+      - generic [ref=e62]:
+        - generic [ref=e64]: 
+        - generic [ref=e65]: "1"
+        - generic [ref=e66]: Open Tasks
+      - generic [ref=e68]:
+        - generic [ref=e70]: 
+        - generic [ref=e71]: "5"
+        - generic [ref=e72]: Employees
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - generic [ref=e76]: Project Health
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e82]:
+              - text: Show
+              - combobox "Show entries" [ref=e83]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e87]
+          - table [ref=e90]:
+            - rowgroup [ref=e91]:
+              - 'row "Project: activate to sort column descending Status: activate to sort column ascending Health: activate to sort column ascending" [ref=e92]':
+                - 'columnheader "Project: activate to sort column descending" [ref=e93] [cursor=pointer]': Project
+                - 'columnheader "Status: activate to sort column ascending" [ref=e94] [cursor=pointer]': Status
+                - 'columnheader "Health: activate to sort column ascending" [ref=e95] [cursor=pointer]': Health
+            - rowgroup [ref=e96]:
+              - row "LiveOrg Project A Active On Track" [ref=e97]:
+                - cell "LiveOrg Project A" [ref=e98]
+                - cell "Active" [ref=e99]:
+                  - generic [ref=e100]: Active
+                - cell "On Track" [ref=e101]
+          - generic [ref=e102]:
+            - status [ref=e104]: Showing 1 to 1 of 1 entries
+            - list [ref=e107]:
+              - listitem [ref=e108]:
+                - link "Previous" [disabled]
+              - listitem [ref=e109]:
+                - link "1" [ref=e110] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e111]:
+                - link "Next" [disabled]
+      - generic [ref=e113]:
+        - generic [ref=e114]: Upcoming Deadlines
+        - list [ref=e116]:
+          - listitem [ref=e117]: No upcoming deadlines.

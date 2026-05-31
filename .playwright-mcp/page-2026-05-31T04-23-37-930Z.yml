@@ -1,0 +1,145 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PROJECTS & TASKS
+      - link " Projects" [ref=e13] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Projects
+      - link " Tasks" [ref=e17] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Tasks
+      - generic [ref=e20]: COLLABORATION
+      - link " Meetings" [ref=e22] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Meetings
+      - link " Documents" [ref=e26] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Documents
+      - generic [ref=e29]: FINANCE
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: PEOPLE
+      - link " Timesheets" [ref=e36] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Timesheets
+      - link " Leave" [ref=e40] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e41]: 
+        - generic [ref=e42]: Leave
+      - link " Attendance" [ref=e44] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e45]: 
+        - generic [ref=e46]: Attendance
+  - navigation [ref=e47]:
+    - text: 
+    - generic [ref=e48]: Timesheets
+    - generic [ref=e50]:
+      - button "E Employee User" [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: E
+        - generic [ref=e53]: Employee User
+      - text:  
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - heading "Timesheets" [level=4] [ref=e57]
+      - link " Add Timesheet" [ref=e58] [cursor=pointer]:
+        - /url: /timesheets/add/
+        - generic [ref=e59]: 
+        - text: Add Timesheet
+    - generic [ref=e62]:
+      - generic [ref=e63]:
+        - generic [ref=e64]: Employee
+        - combobox [ref=e65]
+        - combobox "All Employees" [ref=e68] [cursor=pointer]:
+          - textbox "All Employees" [ref=e69]
+      - generic [ref=e70]:
+        - button " Apply" [ref=e71] [cursor=pointer]:
+          - generic [ref=e72]: 
+          - text: Apply
+        - link "Clear" [ref=e73] [cursor=pointer]:
+          - /url: /timesheets/
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e81]:
+          - text: Show
+          - combobox "Show entries" [ref=e82]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - generic [ref=e85]:
+          - text: "Search timesheets:"
+          - searchbox "Search timesheets:" [ref=e86]
+      - table [ref=e89]:
+        - rowgroup [ref=e90]:
+          - 'row "Employee: activate to sort column ascending Week Start: activate to sort column ascending Week End: activate to sort column ascending Entries: activate to sort column ascending Total Hours: activate to sort column ascending Status: activate to sort column ascending Actions: activate to sort column ascending" [ref=e91]':
+            - 'columnheader "Employee: activate to sort column ascending" [ref=e92] [cursor=pointer]': Employee
+            - 'columnheader "Week Start: activate to sort column ascending" [ref=e93] [cursor=pointer]': Week Start
+            - 'columnheader "Week End: activate to sort column ascending" [ref=e94] [cursor=pointer]': Week End
+            - 'columnheader "Entries: activate to sort column ascending" [ref=e95] [cursor=pointer]': Entries
+            - 'columnheader "Total Hours: activate to sort column ascending" [ref=e96] [cursor=pointer]': Total Hours
+            - 'columnheader "Status: activate to sort column ascending" [ref=e97] [cursor=pointer]': Status
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e98] [cursor=pointer]': Actions
+        - rowgroup [ref=e99]:
+          - row "Employee User May 27, 2026 Jun 02, 2026 0 0.00 Draft   " [ref=e100]:
+            - cell "Employee User" [ref=e101]
+            - cell "May 27, 2026" [ref=e102]
+            - cell "Jun 02, 2026" [ref=e103]
+            - cell "0" [ref=e104]
+            - cell "0.00" [ref=e105]
+            - cell "Draft" [ref=e106]:
+              - generic [ref=e107]: Draft
+            - cell "  " [ref=e108]:
+              - generic [ref=e109]:
+                - link "" [ref=e110] [cursor=pointer]:
+                  - /url: /timesheets/14/
+                  - generic [ref=e111]: 
+                - link "" [ref=e112] [cursor=pointer]:
+                  - /url: /timesheets/14/edit/
+                  - generic [ref=e113]: 
+                - link "" [ref=e114] [cursor=pointer]:
+                  - /url: /timesheets/14/delete/
+                  - generic [ref=e115]: 
+          - row "Employee User May 25, 2026 May 31, 2026 1 0.00 Draft   " [ref=e116]:
+            - cell "Employee User" [ref=e117]
+            - cell "May 25, 2026" [ref=e118]
+            - cell "May 31, 2026" [ref=e119]
+            - cell "1" [ref=e120]
+            - cell "0.00" [ref=e121]
+            - cell "Draft" [ref=e122]:
+              - generic [ref=e123]: Draft
+            - cell "  " [ref=e124]:
+              - generic [ref=e125]:
+                - link "" [ref=e126] [cursor=pointer]:
+                  - /url: /timesheets/15/
+                  - generic [ref=e127]: 
+                - link "" [ref=e128] [cursor=pointer]:
+                  - /url: /timesheets/15/edit/
+                  - generic [ref=e129]: 
+                - link "" [ref=e130] [cursor=pointer]:
+                  - /url: /timesheets/15/delete/
+                  - generic [ref=e131]: 
+      - generic [ref=e132]:
+        - status [ref=e134]: Showing 1 to 2 of 2 entries
+        - list [ref=e137]:
+          - listitem [ref=e138]:
+            - link "Previous" [disabled]
+          - listitem [ref=e139]:
+            - link "1" [ref=e140] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e141]:
+            - link "Next" [disabled]

@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+  - navigation [ref=e16]:
+    - text: 
+    - generic [ref=e17]: Client Portal
+    - generic [ref=e19]:
+      - button "C Client User" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: C
+        - generic [ref=e22]: Client User
+      - text:  
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - heading "Welcome" [level=4] [ref=e26]
+      - paragraph [ref=e27]: Your personalized client dashboard
+    - generic [ref=e28]:
+      - generic [ref=e31]:
+        - generic [ref=e33]: 
+        - generic [ref=e34]:
+          - heading "0" [level=3] [ref=e35]
+          - text: Active Projects
+      - generic [ref=e38]:
+        - generic [ref=e40]: 
+        - generic [ref=e41]:
+          - heading "0" [level=3] [ref=e42]
+          - text: Open Tickets
+      - generic [ref=e45]:
+        - generic [ref=e47]: 
+        - generic [ref=e48]:
+          - heading "0" [level=3] [ref=e49]
+          - text: Invoices Due
+      - generic [ref=e52]:
+        - generic [ref=e54]: 
+        - generic [ref=e55]:
+          - heading "0" [level=3] [ref=e56]
+          - text: Documents
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - heading " My Projects" [level=5] [ref=e61]:
+          - generic [ref=e62]: 
+          - text: My Projects
+        - link "View All" [ref=e63] [cursor=pointer]:
+          - /url: /portal/projects/
+      - table [ref=e66]:
+        - rowgroup [ref=e67]:
+          - row "Project Name Status Health Progress Last Updated" [ref=e68]:
+            - columnheader "Project Name" [ref=e69]
+            - columnheader "Status" [ref=e70]
+            - columnheader "Health" [ref=e71]
+            - columnheader "Progress" [ref=e72]
+            - columnheader "Last Updated" [ref=e73]
+        - rowgroup [ref=e74]:
+          - row "No projects found." [ref=e75]:
+            - cell "No projects found." [ref=e76]
+    - generic [ref=e79]:
+      - heading " Recent Invoices" [level=5] [ref=e81]:
+        - generic [ref=e82]: 
+        - text: Recent Invoices
+      - table [ref=e85]:
+        - rowgroup [ref=e86]:
+          - 'row "Invoice # Amount Due Date Status" [ref=e87]':
+            - 'columnheader "Invoice #" [ref=e88]'
+            - columnheader "Amount" [ref=e89]
+            - columnheader "Due Date" [ref=e90]
+            - columnheader "Status" [ref=e91]
+        - rowgroup [ref=e92]:
+          - row "No invoices found." [ref=e93]:
+            - cell "No invoices found." [ref=e94]

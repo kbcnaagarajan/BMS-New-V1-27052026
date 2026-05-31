@@ -1,0 +1,105 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PROJECTS & TASKS
+      - link " Projects" [ref=e13] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Projects
+      - link " Tasks" [ref=e17] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Tasks
+      - generic [ref=e20]: COLLABORATION
+      - link " Meetings" [ref=e22] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Meetings
+      - link " Documents" [ref=e26] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Documents
+      - generic [ref=e29]: FINANCE
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: PEOPLE
+      - link " Timesheets" [ref=e36] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Timesheets
+      - link " Leave" [ref=e40] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e41]: 
+        - generic [ref=e42]: Leave
+      - link " Attendance" [ref=e44] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e45]: 
+        - generic [ref=e46]: Attendance
+  - navigation [ref=e47]:
+    - text: 
+    - generic [ref=e48]: Attendances
+    - generic [ref=e50]:
+      - button "E Emp User" [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: E
+        - generic [ref=e53]: Emp User
+      - text:  
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - heading "Attendances" [level=4] [ref=e57]
+      - link " Add attendances" [ref=e58] [cursor=pointer]:
+        - /url: /attendance/add/
+        - generic [ref=e59]: 
+        - text: Add attendances
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e67]:
+          - text: Show
+          - combobox "Show entries" [ref=e68]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e72]
+      - table [ref=e75]:
+        - rowgroup [ref=e76]:
+          - 'row "Employee: activate to sort column descending Date: activate to sort column ascending Status: activate to sort column ascending Actions: activate to sort column ascending" [ref=e77]':
+            - 'columnheader "Employee: activate to sort column descending" [ref=e78] [cursor=pointer]': Employee
+            - 'columnheader "Date: activate to sort column ascending" [ref=e79] [cursor=pointer]': Date
+            - 'columnheader "Status: activate to sort column ascending" [ref=e80] [cursor=pointer]': Status
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e81] [cursor=pointer]': Actions
+        - rowgroup [ref=e82]:
+          - row "Emp User (emp@liveorg531a.com) 2026-05-31 present   " [ref=e83]:
+            - cell "Emp User (emp@liveorg531a.com)" [ref=e84]
+            - cell "2026-05-31" [ref=e85]
+            - cell "present" [ref=e86]
+            - cell "  " [ref=e87]:
+              - generic [ref=e88]:
+                - link "" [ref=e89] [cursor=pointer]:
+                  - /url: /attendance/2/
+                  - generic [ref=e90]: 
+                - link "" [ref=e91] [cursor=pointer]:
+                  - /url: /attendance/2/edit/
+                  - generic [ref=e92]: 
+                - link "" [ref=e93] [cursor=pointer]:
+                  - /url: /attendance/2/delete/
+                  - generic [ref=e94]: 
+      - generic [ref=e95]:
+        - status [ref=e97]: Showing 1 to 1 of 1 entries
+        - list [ref=e100]:
+          - listitem [ref=e101]:
+            - link "Previous" [disabled]
+          - listitem [ref=e102]:
+            - link "1" [ref=e103] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e104]:
+            - link "Next" [disabled]

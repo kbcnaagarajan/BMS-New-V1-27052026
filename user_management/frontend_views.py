@@ -23,6 +23,20 @@ def _sa_check(user, module_key):
         return HttpResponseForbidden()
     return None
 
+
+def _module_access_check(user, module_key):
+    """Return 403 when user has no module-level access."""
+    module_aliases = {
+        'leaves': 'leave',
+        'company_settings': 'settings',
+        'user_management': 'users',
+        'roles_permissions': 'roles',
+    }
+    check_key = module_aliases.get(module_key, module_key)
+    if not user.has_module_access(check_key):
+        return HttpResponseForbidden('Access denied')
+    return None
+
 def _get_role_scope(user, module_key):
     """
     Return a Q object filter for the given module based on the user's role.
@@ -45,6 +59,13 @@ def _get_role_scope(user, module_key):
 
     role = user.user_type
     company = user.company
+
+    # â”€â”€ Client portal roles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # Client users/admins should not access internal operational modules.
+    if role in ('client_user', 'client_admin') or user.is_client_user:
+        if module_key in ('projects',):
+            return Q(client__company=company) if company else Q(pk=None)
+        return Q(pk=None)
 
     # ── Company-level roles ───────────────────────────────────────────
     if role in ('company_admin', 'management', 'delivery_manager',
@@ -277,6 +298,27 @@ def company_create(request):
             storage_limit_mb=512,
         )
         company.save()
+        # Create minimum operational defaults for new tenant.
+        LeavePolicy.objects.get_or_create(
+            company=company,
+            name='Annual Leave',
+            leave_type='annual',
+            defaults={
+                'frequency': 'yearly',
+                'max_days': 21,
+                'is_paid': True,
+                'is_carry_forward': False,
+                'requires_approval': True,
+                'min_notice_days': 1,
+                'description': 'Default annual leave policy',
+                'is_active': True,
+            },
+        )
+        ExpenseCategory.objects.get_or_create(
+            company=company,
+            name='General',
+            defaults={'description': 'Default expense category', 'is_active': True},
+        )
 
         # Assign package
         package_id = d.get('package')
@@ -420,6 +462,9 @@ def client_list(request):
     sa_resp = _sa_check(request.user, 'clients')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'clients')
+    if access_resp:
+        return access_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     clients = Client.objects.filter(scope).annotate(project_count=Count('projects'))
@@ -431,6 +476,9 @@ def client_detail(request, pk):
     sa_resp = _sa_check(request.user, 'clients')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'clients')
+    if access_resp:
+        return access_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     client = get_object_or_404(Client.objects.filter(scope).annotate(project_count=Count('projects')), pk=pk)
@@ -445,6 +493,9 @@ def client_form(request, pk=None):
     sa_resp = _sa_check(request.user, 'clients')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'clients')
+    if access_resp:
+        return access_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'clients')
     if pk:
@@ -481,6 +532,9 @@ def contact_list(request):
     sa_resp = _sa_check(request.user, 'contacts')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'contacts')
+    if access_resp:
+        return access_resp
     scope = _get_role_scope(request.user, 'contacts')
     contacts = ClientContact.objects.filter(scope).select_related('client')
     ctx['contacts'] = contacts
@@ -508,6 +562,8 @@ def project_detail(request, pk):
     if sa_resp:
         return sa_resp
     ctx = get_rbac_context(request.user)
+    if request.user.is_client_user:
+        return HttpResponseForbidden('Access denied')
     scope = _get_role_scope(request.user, 'projects')
     project = get_object_or_404(Project.objects.filter(scope).select_related('client', 'project_manager'), pk=pk)
     tasks = ProjectTask.objects.filter(project=project).select_related('assigned_to')
@@ -565,13 +621,17 @@ def task_list(request):
     sa_resp = _sa_check(request.user, 'tasks')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'tasks')
+    if access_resp:
+        return access_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'tasks')
     tasks = ProjectTask.objects.filter(scope).select_related('project', 'assigned_to')
     ctx['tasks'] = tasks
     project_scope = _get_role_scope(request.user, 'projects')
     ctx['projects'] = Project.objects.filter(project_scope)
-    ctx['employees'] = User.objects.filter(is_active=True)
+    user_scope = _get_role_scope(request.user, 'users')
+    ctx['employees'] = User.objects.filter(user_scope, is_active=True)
     return render(request, 'project_360/task_list.html', ctx)
 
 @login_required
@@ -579,6 +639,9 @@ def task_form(request, pk=None):
     sa_resp = _sa_check(request.user, 'tasks')
     if sa_resp:
         return sa_resp
+    access_resp = _module_access_check(request.user, 'tasks')
+    if access_resp:
+        return access_resp
     ctx = get_rbac_context(request.user)
     scope = _get_role_scope(request.user, 'tasks')
     if pk:
@@ -588,12 +651,36 @@ def task_form(request, pk=None):
         task = None
     if request.method == 'POST':
         data = request.POST
+        project_scope = _get_role_scope(request.user, 'projects')
+        allowed_project_ids = set(
+            Project.objects.filter(project_scope).values_list('id', flat=True)
+        )
+        project_id_raw = data.get('project')
+        try:
+            project_id = int(project_id_raw) if project_id_raw else None
+        except (TypeError, ValueError):
+            project_id = None
+        if project_id not in allowed_project_ids:
+            return HttpResponseForbidden('Invalid project selection')
+
+        allowed_assignee_ids = set(
+            User.objects.filter(_get_role_scope(request.user, 'users'), is_active=True)
+            .values_list('id', flat=True)
+        )
+        assigned_to_raw = data.get('assigned_to')
+        try:
+            assigned_to_id = int(assigned_to_raw) if assigned_to_raw else None
+        except (TypeError, ValueError):
+            assigned_to_id = None
+        if assigned_to_id and assigned_to_id not in allowed_assignee_ids:
+            return HttpResponseForbidden('Invalid assignee selection')
+
         if not task:
-            task = ProjectTask(project_id=data.get('project'))
+            task = ProjectTask(project_id=project_id)
         task.title = data.get('title')
         task.description = data.get('description') or ''
-        task.project_id = data.get('project')
-        task.assigned_to_id = data.get('assigned_to')
+        task.project_id = project_id
+        task.assigned_to_id = assigned_to_id
         task.start_date = data.get('start_date') or None
         task.due_date = data.get('due_date') or None
         task.priority = data.get('priority', 'medium')
@@ -604,7 +691,7 @@ def task_form(request, pk=None):
     ctx['task'] = task
     project_scope = _get_role_scope(request.user, 'projects')
     ctx['projects'] = Project.objects.filter(project_scope)
-    assignees = User.objects.filter(is_active=True)
+    assignees = User.objects.filter(_get_role_scope(request.user, 'users'), is_active=True)
     ctx.update({'projects': ctx['projects'], 'assignees': assignees})
     return render(request, 'project_360/task_form.html', ctx)
 
@@ -636,7 +723,7 @@ def timesheet_list(request):
     ctx = get_rbac_context(request.user)
     if request.user.is_super_admin:
         return HttpResponseForbidden('Access denied')
-    ts = Timesheet.objects.select_related('employee')
+    ts = Timesheet.objects.select_related('employee').annotate(entries_count=Count('entries'))
     user = request.user
     if user.is_super_admin:
         pass
@@ -664,37 +751,107 @@ def leave_list(request):
     return render(request, 'employee_operations/leave_list.html', ctx)
 
 # --- Client Portal ---
+def _portal_client_for_user(user):
+    if not user.is_client_user:
+        return None
+    return Client.objects.filter(company=user.company).first()
+
+
 @login_required
 def portal_dashboard(request):
     ctx = get_rbac_context(request.user)
-    if request.user.is_client_user:
-        client = Client.objects.filter(company=request.user.company).first()
-        if client:
-            project_scope = _get_role_scope(request.user, 'projects')
-            projects = Project.objects.filter(project_scope, client=client)
-            invoices = Invoice.objects.filter(client=client)
-            ctx.update({
-                'client': client,
-                'total_projects': projects.count(),
-                'total_invoices': invoices.count(),
-                'projects': projects[:10],
-                'invoices': invoices[:10],
-            })
+    access_resp = _module_access_check(request.user, 'portal_dashboard')
+    if access_resp:
+        return access_resp
+
+    client = _portal_client_for_user(request.user)
+    if not client:
+        return HttpResponseForbidden('Access denied')
+
+    project_scope = _get_role_scope(request.user, 'projects')
+    projects = Project.objects.filter(project_scope, client=client).order_by('-updated_at')
+    invoices = Invoice.objects.filter(client=client).order_by('-invoice_date')
+    client_visible_docs = Document.objects.filter(
+        Q(client=client) | Q(project__client=client),
+        visibility='client_visible',
+    )
+    open_tickets = SupportTicket.objects.filter(project__client=client, status__in=['open', 'in_progress', 'waiting_on_client'])
+    invoices_due = invoices.filter(status__in=['sent', 'partial', 'overdue'])
+    ctx.update({
+        'client': client,
+        'active_projects': projects.filter(status__in=['active', 'approved', 'kickoff_scheduled']).count(),
+        'open_tickets': open_tickets.count(),
+        'invoices_due': invoices_due.count(),
+        'documents': client_visible_docs.count(),
+        'my_projects': projects[:10],
+        'recent_invoices': invoices[:10],
+    })
     return render(request, 'client_portal/portal_dashboard.html', ctx)
 
 @login_required
 def portal_projects(request):
     ctx = get_rbac_context(request.user)
-    if request.user.is_client_user:
-        client = Client.objects.filter(company=request.user.company).first()
-        project_scope = _get_role_scope(request.user, 'projects')
-        ctx['projects'] = Project.objects.filter(project_scope, client=client).select_related('project_manager') if client else []
+    access_resp = _module_access_check(request.user, 'portal_projects')
+    if access_resp:
+        return access_resp
+
+    client = _portal_client_for_user(request.user)
+    if not client:
+        return HttpResponseForbidden('Access denied')
+    project_scope = _get_role_scope(request.user, 'projects')
+    ctx['projects'] = Project.objects.filter(project_scope, client=client).select_related('project_manager')
     return render(request, 'client_portal/portal_projects.html', ctx)
+
+
+@login_required
+def portal_invoices(request):
+    ctx = get_rbac_context(request.user)
+    access_resp = _module_access_check(request.user, 'portal_invoices')
+    if access_resp:
+        return access_resp
+
+    client = _portal_client_for_user(request.user)
+    if not client:
+        return HttpResponseForbidden('Access denied')
+    ctx['invoices'] = Invoice.objects.filter(client=client).select_related('project').order_by('-invoice_date')
+    return render(request, 'client_portal/portal_invoices.html', ctx)
+
+
+@login_required
+def portal_documents(request):
+    ctx = get_rbac_context(request.user)
+    access_resp = _module_access_check(request.user, 'portal_documents')
+    if access_resp:
+        return access_resp
+
+    client = _portal_client_for_user(request.user)
+    if not client:
+        return HttpResponseForbidden('Access denied')
+    ctx['documents'] = Document.objects.filter(
+        Q(client=client) | Q(project__client=client),
+        visibility='client_visible',
+    ).select_related('project', 'client', 'uploaded_by').order_by('-created_at')
+    return render(request, 'client_portal/portal_documents.html', ctx)
+
+
+@login_required
+def portal_tickets(request):
+    ctx = get_rbac_context(request.user)
+    access_resp = _module_access_check(request.user, 'portal_tickets')
+    if access_resp:
+        return access_resp
+
+    client = _portal_client_for_user(request.user)
+    if not client:
+        return HttpResponseForbidden('Access denied')
+    ctx['tickets'] = SupportTicket.objects.filter(project__client=client).select_related('project', 'assigned_to').order_by('-created_at')
+    return render(request, 'client_portal/portal_tickets.html', ctx)
 
 # --- Generic Module CRUD System ---
 
 from django.db.models.fields import DateField, DateTimeField, TimeField, BooleanField, TextField, DecimalField, IntegerField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
+from django.db.models import FileField, ImageField
 
 _MODEL_CONFIG = {
     'contacts': {
@@ -724,7 +881,7 @@ _MODEL_CONFIG = {
     'documents': {
         'model': Document,
         'list_fields': ['title', 'project', 'document_type', 'version'],
-        'form_fields': ['project', 'client', 'title', 'document_type', 'description', 'version', 'visibility'],
+        'form_fields': ['project', 'client', 'title', 'document_type', 'description', 'version', 'visibility', 'document'],
         'redirect': 'documents_list',
     },
     'invoices': {
@@ -856,6 +1013,7 @@ def _build_fields_meta(model, fields, obj=None):
             is_bool = isinstance(f, BooleanField)
             is_text = isinstance(f, TextField)
             is_number = isinstance(f, (IntegerField, DecimalField))
+            is_file = isinstance(f, (FileField, ImageField))
             required = not f.null and not f.blank and not is_bool and not is_m2m
             # Pre-compute current value
             val = None
@@ -875,6 +1033,7 @@ def _build_fields_meta(model, fields, obj=None):
                 'is_bool': is_bool,
                 'is_text': is_text,
                 'is_number': is_number,
+                'is_file': is_file,
                 'required': required,
                 'choices': f.choices if is_choice else None,
                 'related_model': f.remote_field.model.__name__ if (is_fk or is_m2m) else None,
@@ -882,9 +1041,10 @@ def _build_fields_meta(model, fields, obj=None):
                 'value_id': getattr(obj, f'{fn}_id', None) if obj and is_fk else None,
                 'value_ids': list(val.values_list('pk', flat=True)) if obj and is_m2m and val else [],
                 'value_str': str(val) if val is not None else '',
+                'value_url': getattr(val, 'url', '') if val else '',
             })
         except:
-            meta.append({'name': fn, 'label': fn.replace('_', ' ').title(), 'is_fk': False, 'is_m2m': False, 'is_choice': False, 'is_date': False, 'is_datetime': False, 'is_time': False, 'is_bool': False, 'is_text': False, 'is_number': False, 'required': False, 'choices': None, 'related_model': None, 'value': None, 'value_id': None, 'value_ids': [], 'value_str': ''})
+            meta.append({'name': fn, 'label': fn.replace('_', ' ').title(), 'is_fk': False, 'is_m2m': False, 'is_choice': False, 'is_date': False, 'is_datetime': False, 'is_time': False, 'is_bool': False, 'is_text': False, 'is_number': False, 'is_file': False, 'required': False, 'choices': None, 'related_model': None, 'value': None, 'value_id': None, 'value_ids': [], 'value_str': '', 'value_url': ''})
     return meta
 
 
@@ -936,6 +1096,9 @@ def _module_list(request, key, extra_ctx=None):
         return HttpResponseForbidden('Access denied')
     if not request.user.is_super_admin and key in PLATFORM_MODULES:
         return HttpResponseForbidden('Access denied')
+    access_resp = _module_access_check(request.user, key)
+    if access_resp:
+        return access_resp
     config = _MODEL_CONFIG.get(key)
     headers, rows = [], []
     if config:
@@ -948,7 +1111,6 @@ def _module_list(request, key, extra_ctx=None):
                 headers.append(f.verbose_name.title())
             except:
                 headers.append(fn.replace('_', ' ').title())
-        headers.append('Actions')
         scope = _get_role_scope(request.user, key)
         qs = model.objects.filter(scope)[:100]
         for obj in qs:
@@ -976,6 +1138,9 @@ def _module_form(request, key, pk=None):
         return HttpResponseForbidden('Access denied')
     if not request.user.is_super_admin and key in PLATFORM_MODULES:
         return HttpResponseForbidden('Access denied')
+    access_resp = _module_access_check(request.user, key)
+    if access_resp:
+        return access_resp
     config = _MODEL_CONFIG.get(key)
     if not config:
         return HttpResponseForbidden('Invalid module')
@@ -1008,10 +1173,16 @@ def _module_form(request, key, pk=None):
         else:
             fm['readonly'] = False
     ctx['fields_meta'] = fields_meta
+    if key == 'timesheets':
+        project_scope = _get_role_scope(request.user, 'projects')
+        task_scope = _get_role_scope(request.user, 'tasks')
+        ctx['timesheet_projects'] = Project.objects.filter(project_scope).select_related('client').order_by('project_name')[:200]
+        ctx['timesheet_tasks'] = ProjectTask.objects.filter(task_scope).select_related('project').order_by('title')[:300]
 
     company = request.user.company
     if request.method == 'POST':
         data = request.POST
+        files = request.FILES
         if not obj:
             obj = model()
         for fn in form_fields:
@@ -1027,6 +1198,12 @@ def _module_form(request, key, pk=None):
                 setattr(obj, fn, val if val else (0 if isinstance(f, IntegerField) else 0.0))
             elif isinstance(f, (DateField, DateTimeField, TimeField)):
                 setattr(obj, fn, val or None)
+            elif isinstance(f, (FileField, ImageField)):
+                uploaded = files.get(fn)
+                if uploaded is not None:
+                    setattr(obj, fn, uploaded)
+                elif data.get(f'{fn}__clear') == '1':
+                    setattr(obj, fn, None)
             else:
                 setattr(obj, fn, val or '')
         # Force employee to self for self-only roles
@@ -1056,6 +1233,8 @@ def _module_form(request, key, pk=None):
             pw = data.get('password', '').strip()
             if pw:
                 obj.set_password(pw)
+        if isinstance(obj, User):
+            obj.is_client_user = obj.user_type in ('client_user', 'client_admin')
         # Auto-calculate total_days for LeaveRequest
         if isinstance(obj, LeaveRequest):
             sd_str = data.get('start_date')
@@ -1082,6 +1261,27 @@ def _module_form(request, key, pk=None):
             if not pk:
                 obj.balance_amount = obj.total_amount
         obj.save()
+        if key == 'timesheets':
+            entry_date = data.get('entry_date')
+            entry_project_id = data.get('entry_project')
+            entry_task_id = data.get('entry_task')
+            entry_hours = data.get('entry_hours')
+            entry_description = data.get('entry_description', '')
+            if entry_date and entry_project_id and entry_hours:
+                try:
+                    entry = TimesheetEntry(
+                        timesheet=obj,
+                        date=entry_date,
+                        project_id=int(entry_project_id),
+                        hours=entry_hours,
+                        description=entry_description or '',
+                        is_billable=data.get('entry_billable') == 'on',
+                    )
+                    if entry_task_id:
+                        entry.task_id = int(entry_task_id)
+                    entry.save()
+                except Exception:
+                    pass
         # Handle M2M fields
         for fn in form_fields:
             try:
@@ -1117,6 +1317,9 @@ def _module_detail(request, key, pk):
         return HttpResponseForbidden('Access denied')
     if not request.user.is_super_admin and key in PLATFORM_MODULES:
         return HttpResponseForbidden('Access denied')
+    access_resp = _module_access_check(request.user, key)
+    if access_resp:
+        return access_resp
     config = _MODEL_CONFIG.get(key)
     if not config:
         return HttpResponseForbidden('Invalid module')
@@ -1135,7 +1338,10 @@ def _module_detail(request, key, pk):
             v = getattr(obj, fn)
             if callable(v): v = v()
             if v is None: v = '—'
-            values.append({'label': f.verbose_name.title(), 'value': v, 'name': fn})
+            detail = {'label': f.verbose_name.title(), 'value': v, 'name': fn}
+            if isinstance(f, (FileField, ImageField)) and getattr(v, 'url', None):
+                detail['url'] = v.url
+            values.append(detail)
         except:
             values.append({'label': fn.replace('_', ' ').title(), 'value': '—', 'name': fn})
     ctx['field_values'] = values
@@ -1148,6 +1354,9 @@ def _module_delete(request, key, pk):
         return HttpResponseForbidden('Access denied')
     if not request.user.is_super_admin and key in PLATFORM_MODULES:
         return HttpResponseForbidden('Access denied')
+    access_resp = _module_access_check(request.user, key)
+    if access_resp:
+        return access_resp
     config = _MODEL_CONFIG.get(key)
     if not config:
         return HttpResponseForbidden('Invalid module')

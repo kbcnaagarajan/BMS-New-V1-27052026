@@ -457,8 +457,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         'finance_user': ['dashboard', 'clients', 'projects',
                           'invoices', 'payments', 'expenses',
                           'reports'],
-        'client_admin': ['portal_dashboard', 'portal_projects'],
-        'client_user': ['portal_dashboard', 'portal_projects'],
+        'client_admin': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
+        'client_user': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
     }
 
     def get_accessible_modules(self):
@@ -555,7 +555,7 @@ SUPER_ADMIN_RESTRICTED_MODULES = [
     'employees', 'timesheets', 'leave', 'attendance',
     'departments', 'designations', 'user_management', 'roles_permissions', 'users', 'roles',
     'company_settings',
-    'portal_dashboard', 'portal_projects',
+    'portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets',
     # Aliases used in code
     'leaves',
 ]

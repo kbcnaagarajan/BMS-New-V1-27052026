@@ -1,0 +1,216 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: FINANCE
+      - link " Invoices" [ref=e52] [cursor=pointer]:
+        - /url: /invoices/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Invoices
+      - link " Payments" [ref=e56] [cursor=pointer]:
+        - /url: /payments/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Payments
+      - link " Expenses" [ref=e60] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Expenses
+      - generic [ref=e63]: ISSUES & RISKS
+      - link " Issues" [ref=e65] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e66]: 
+        - generic [ref=e67]: Issues
+      - link " Risks" [ref=e69] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Risks
+      - link " Change Requests" [ref=e73] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Change Requests
+      - link " Support Tickets" [ref=e77] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Support Tickets
+      - generic [ref=e80]: PEOPLE
+      - link " Employees" [ref=e82] [cursor=pointer]:
+        - /url: /employees/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Employees
+      - link " Timesheets" [ref=e86] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e87]: 
+        - generic [ref=e88]: Timesheets
+      - link " Leave" [ref=e90] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e91]: 
+        - generic [ref=e92]: Leave
+      - link " Attendance" [ref=e94] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e95]: 
+        - generic [ref=e96]: Attendance
+      - generic [ref=e97]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e99] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e100]: 
+        - generic [ref=e101]: Reports
+      - generic [ref=e102]: ADMINISTRATION
+      - link " Company Settings" [ref=e104] [cursor=pointer]:
+        - /url: /settings/
+        - generic [ref=e105]: 
+        - generic [ref=e106]: Company Settings
+      - link " Departments" [ref=e108] [cursor=pointer]:
+        - /url: /departments/
+        - generic [ref=e109]: 
+        - generic [ref=e110]: Departments
+      - link " Designations" [ref=e112] [cursor=pointer]:
+        - /url: /designations/
+        - generic [ref=e113]: 
+        - generic [ref=e114]: Designations
+      - link " User Management" [ref=e116] [cursor=pointer]:
+        - /url: /users/
+        - generic [ref=e117]: 
+        - generic [ref=e118]: User Management
+      - link " Roles & Permissions" [ref=e120] [cursor=pointer]:
+        - /url: /roles/
+        - generic [ref=e121]: 
+        - generic [ref=e122]: Roles & Permissions
+      - generic [ref=e123]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e125] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e126]: 
+        - generic [ref=e127]: Portal Dashboard
+      - link " Portal Projects" [ref=e129] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e130]: 
+        - generic [ref=e131]: Portal Projects
+  - navigation [ref=e132]:
+    - text: 
+    - generic [ref=e133]: New User
+    - generic [ref=e135]:
+      - button "L Live Admin" [ref=e136] [cursor=pointer]:
+        - generic [ref=e137]: L
+        - generic [ref=e138]: Live Admin
+      - text:  
+  - generic [ref=e140]:
+    - link " Back" [ref=e142] [cursor=pointer]:
+      - /url: /users/
+      - generic [ref=e143]: 
+      - text: Back
+    - generic [ref=e144]:
+      - heading " New User" [level=5] [ref=e146]:
+        - generic [ref=e147]: 
+        - text: New User
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - generic [ref=e151]:
+            - generic [ref=e152]: Email *
+            - textbox "Email *" [ref=e153]
+          - generic [ref=e154]:
+            - generic [ref=e155]: First Name *
+            - textbox "First Name *" [ref=e156]
+          - generic [ref=e157]:
+            - generic [ref=e158]: Last Name
+            - textbox "Last Name" [ref=e159]
+          - generic [ref=e160]:
+            - generic [ref=e161]: User Type *
+            - combobox "User Type *" [ref=e162]:
+              - option "-- Select User Type --"
+              - option "Super Admin" [selected]
+              - option "Company Admin"
+              - option "Management / Director"
+              - option "Delivery Manager"
+              - option "Project Manager"
+              - option "Account Manager"
+              - option "Employee"
+              - option "HR / Resource Manager"
+              - option "Finance User"
+              - option "Client Admin"
+              - option "Client User"
+          - generic [ref=e163]:
+            - generic [ref=e164]: Department
+            - combobox "Department" [ref=e165]:
+              - option "-- Select Department --" [selected]
+              - option "LiveOrg531A - Engineering"
+          - generic [ref=e166]:
+            - generic [ref=e167]: Designation
+            - combobox "Designation" [ref=e168]:
+              - option "-- Select Designation --" [selected]
+              - option "Software Engineer"
+          - generic [ref=e169]:
+            - generic [ref=e170]: Phone
+            - textbox "Phone" [ref=e171]
+          - generic [ref=e172]:
+            - generic [ref=e173]: Password *
+            - textbox "Password *" [ref=e174]
+          - generic [ref=e175]:
+            - generic [ref=e176]: Is Active
+            - generic [ref=e177]:
+              - checkbox "Is Active Is Active" [ref=e178]
+              - generic [ref=e179]: Is Active
+          - generic [ref=e180]:
+            - generic [ref=e181]: Roles
+            - listbox "Roles" [ref=e182]:
+              - option "Super Administrator" [ref=e183]
+              - option "Company Administrator" [ref=e184]
+              - option "Management / Director" [ref=e185]
+              - option "Delivery Manager" [ref=e186]
+              - option "Project Manager" [ref=e187]
+              - option "Account Manager" [ref=e188]
+              - option "Employee / Staff" [ref=e189]
+              - option "HR / Resource Manager" [ref=e190]
+              - option "Finance User" [ref=e191]
+              - option "Client Administrator" [ref=e192]
+              - option "Client User" [ref=e193]
+            - text: Hold Ctrl/Cmd to select multiple
+        - generic [ref=e194]:
+          - button " Save" [ref=e195] [cursor=pointer]:
+            - generic [ref=e196]: 
+            - text: Save
+          - link "Cancel" [ref=e197] [cursor=pointer]:
+            - /url: /users/

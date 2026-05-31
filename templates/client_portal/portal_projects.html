@@ -55,9 +55,7 @@
 
                     <p class="card-text text-muted small flex-grow-1">{{ project.description|default:"No description provided."|truncatewords:25 }}</p>
 
-                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-outline-primary btn-sm mt-auto">
-                        <i class="bi bi-eye me-1"></i>View Details
-                    </a>
+                    <div class="text-muted small mt-auto">Manager: {{ project.project_manager.full_name|default:"-" }}</div>
                 </div>
             </div>
         </div>

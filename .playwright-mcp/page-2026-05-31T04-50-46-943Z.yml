@@ -1,0 +1,112 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PROJECTS & TASKS
+      - link " Projects" [ref=e13] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Projects
+      - link " Tasks" [ref=e17] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Tasks
+      - generic [ref=e20]: COLLABORATION
+      - link " Meetings" [ref=e22] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Meetings
+      - link " Documents" [ref=e26] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Documents
+      - generic [ref=e29]: FINANCE
+      - link " Expenses" [ref=e31] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Expenses
+      - generic [ref=e34]: PEOPLE
+      - link " Timesheets" [ref=e36] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Timesheets
+      - link " Leave" [ref=e40] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e41]: 
+        - generic [ref=e42]: Leave
+      - link " Attendance" [ref=e44] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e45]: 
+        - generic [ref=e46]: Attendance
+  - navigation [ref=e47]:
+    - text: 
+    - generic [ref=e48]: Tasks
+    - generic [ref=e50]:
+      - button "E Emp User" [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: E
+        - generic [ref=e53]: Emp User
+      - text:  
+  - generic [ref=e55]:
+    - generic [ref=e56]:
+      - heading "Tasks" [level=4] [ref=e57]
+      - link " Add Task" [ref=e58] [cursor=pointer]:
+        - /url: /tasks/add/
+        - generic [ref=e59]: 
+        - text: Add Task
+    - generic [ref=e62]:
+      - generic [ref=e63]:
+        - generic [ref=e66]:
+          - text: Show
+          - combobox "Show entries" [ref=e67]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e71]
+      - table [ref=e74]:
+        - rowgroup [ref=e75]:
+          - 'row "Task Name: activate to sort column descending Project: activate to sort column ascending Assignee: activate to sort column ascending Due Date: activate to sort column ascending Priority: activate to sort column ascending Status: activate to sort column ascending % Done: activate to sort column ascending Actions: activate to sort column ascending" [ref=e76]':
+            - 'columnheader "Task Name: activate to sort column descending" [ref=e77] [cursor=pointer]': Task Name
+            - 'columnheader "Project: activate to sort column ascending" [ref=e78] [cursor=pointer]': Project
+            - 'columnheader "Assignee: activate to sort column ascending" [ref=e79] [cursor=pointer]': Assignee
+            - 'columnheader "Due Date: activate to sort column ascending" [ref=e80] [cursor=pointer]': Due Date
+            - 'columnheader "Priority: activate to sort column ascending" [ref=e81] [cursor=pointer]': Priority
+            - 'columnheader "Status: activate to sort column ascending" [ref=e82] [cursor=pointer]': Status
+            - 'columnheader "% Done: activate to sort column ascending" [ref=e83] [cursor=pointer]': "% Done"
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e84] [cursor=pointer]': Actions
+        - rowgroup [ref=e85]:
+          - row "Build API endpoints - Emp User Jun 10, 2026 High In Progress 0 0% " [ref=e86]:
+            - cell "Build API endpoints" [ref=e87]
+            - cell "-" [ref=e88]
+            - cell "Emp User" [ref=e89]
+            - cell "Jun 10, 2026" [ref=e90]
+            - cell "High" [ref=e91]:
+              - generic [ref=e92]: High
+            - cell "In Progress" [ref=e93]:
+              - generic [ref=e94]: In Progress
+            - cell "0 0%" [ref=e95]:
+              - generic [ref=e96]:
+                - generic [ref=e97]:
+                  - progressbar
+                - generic [ref=e98]: 0%
+            - cell "" [ref=e99]:
+              - link "" [ref=e100] [cursor=pointer]:
+                - /url: /tasks/24/edit/
+                - generic [ref=e101]: 
+      - generic [ref=e102]:
+        - status [ref=e104]: Showing 1 to 1 of 1 entries
+        - list [ref=e107]:
+          - listitem [ref=e108]:
+            - link "Previous" [disabled]
+          - listitem [ref=e109]:
+            - link "1" [ref=e110] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e111]:
+            - link "Next" [disabled]

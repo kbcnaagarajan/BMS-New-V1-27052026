@@ -1,0 +1,77 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+      - link " Portal Invoices" [ref=e17] [cursor=pointer]:
+        - /url: /portal/invoices/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Portal Invoices
+      - link " Portal Documents" [ref=e21] [cursor=pointer]:
+        - /url: /portal/documents/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Portal Documents
+      - link " Portal Tickets" [ref=e25] [cursor=pointer]:
+        - /url: /portal/tickets/
+        - generic [ref=e26]: 
+        - generic [ref=e27]: Portal Tickets
+  - navigation [ref=e28]:
+    - text: 
+    - generic [ref=e29]: Portal Invoices
+    - generic [ref=e31]:
+      - button "C Client User" [ref=e32] [cursor=pointer]:
+        - generic [ref=e33]: C
+        - generic [ref=e34]: Client User
+      - text:  
+  - generic [ref=e36]:
+    - heading "Invoices" [level=4] [ref=e38]
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e46]:
+          - text: Show
+          - combobox "Show entries" [ref=e47]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e51]
+      - table [ref=e54]:
+        - rowgroup [ref=e55]:
+          - 'row "Invoice #: activate to sort column descending Project: activate to sort column ascending Total: activate to sort column ascending Paid: activate to sort column ascending Balance: activate to sort column ascending Due Date: activate to sort column ascending Status: activate to sort column ascending" [ref=e56]':
+            - 'columnheader "Invoice #: activate to sort column descending" [ref=e57] [cursor=pointer]': "Invoice #"
+            - 'columnheader "Project: activate to sort column ascending" [ref=e58] [cursor=pointer]': Project
+            - 'columnheader "Total: activate to sort column ascending" [ref=e59] [cursor=pointer]': Total
+            - 'columnheader "Paid: activate to sort column ascending" [ref=e60] [cursor=pointer]': Paid
+            - 'columnheader "Balance: activate to sort column ascending" [ref=e61] [cursor=pointer]': Balance
+            - 'columnheader "Due Date: activate to sort column ascending" [ref=e62] [cursor=pointer]': Due Date
+            - 'columnheader "Status: activate to sort column ascending" [ref=e63] [cursor=pointer]': Status
+        - rowgroup [ref=e64]:
+          - row "INV-20260531045426 LiveOrg Project A 1180.00 1180.00 0.00 Jun 30, 2026 Paid" [ref=e65]:
+            - cell "INV-20260531045426" [ref=e66]
+            - cell "LiveOrg Project A" [ref=e67]
+            - cell "1180.00" [ref=e68]
+            - cell "1180.00" [ref=e69]
+            - cell "0.00" [ref=e70]
+            - cell "Jun 30, 2026" [ref=e71]
+            - cell "Paid" [ref=e72]
+      - generic [ref=e73]:
+        - status [ref=e75]: Showing 1 to 1 of 1 entries
+        - list [ref=e78]:
+          - listitem [ref=e79]:
+            - link "Previous" [disabled]
+          - listitem [ref=e80]:
+            - link "1" [ref=e81] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e82]:
+            - link "Next" [disabled]

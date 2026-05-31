@@ -1,0 +1,93 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+      - link " Portal Invoices" [ref=e17] [cursor=pointer]:
+        - /url: /portal/invoices/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Portal Invoices
+      - link " Portal Documents" [ref=e21] [cursor=pointer]:
+        - /url: /portal/documents/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Portal Documents
+      - link " Portal Tickets" [ref=e25] [cursor=pointer]:
+        - /url: /portal/tickets/
+        - generic [ref=e26]: 
+        - generic [ref=e27]: Portal Tickets
+  - navigation [ref=e28]:
+    - text: 
+    - generic [ref=e29]: Dashboard
+    - generic [ref=e31]:
+      - button "C Client User" [ref=e32] [cursor=pointer]:
+        - generic [ref=e33]: C
+        - generic [ref=e34]: Client User
+      - text:  
+  - generic [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e39]:
+        - generic [ref=e41]: 
+        - generic [ref=e42]: "1"
+        - generic [ref=e43]: Total Projects
+      - generic [ref=e45]:
+        - generic [ref=e47]: 
+        - generic [ref=e48]: "0"
+        - generic [ref=e49]: Total Clients
+      - generic [ref=e51]:
+        - generic [ref=e53]: 
+        - generic [ref=e54]: "0"
+        - generic [ref=e55]: Open Tasks
+      - generic [ref=e57]:
+        - generic [ref=e59]: 
+        - generic [ref=e60]: "0"
+        - generic [ref=e61]: Employees
+    - generic [ref=e62]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: Project Health
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e71]:
+              - text: Show
+              - combobox "Show entries" [ref=e72]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e76]
+          - table [ref=e79]:
+            - rowgroup [ref=e80]:
+              - 'row "Project: activate to sort column descending Status: activate to sort column ascending Health: activate to sort column ascending" [ref=e81]':
+                - 'columnheader "Project: activate to sort column descending" [ref=e82] [cursor=pointer]': Project
+                - 'columnheader "Status: activate to sort column ascending" [ref=e83] [cursor=pointer]': Status
+                - 'columnheader "Health: activate to sort column ascending" [ref=e84] [cursor=pointer]': Health
+            - rowgroup [ref=e85]:
+              - row "LiveOrg Project A Active On Track" [ref=e86]:
+                - cell "LiveOrg Project A" [ref=e87]
+                - cell "Active" [ref=e88]:
+                  - generic [ref=e89]: Active
+                - cell "On Track" [ref=e90]
+          - generic [ref=e91]:
+            - status [ref=e93]: Showing 1 to 1 of 1 entries
+            - list [ref=e96]:
+              - listitem [ref=e97]:
+                - link "Previous" [disabled]
+              - listitem [ref=e98]:
+                - link "1" [ref=e99] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e100]:
+                - link "Next" [disabled]
+      - generic [ref=e102]:
+        - generic [ref=e103]: Upcoming Deadlines
+        - list [ref=e105]:
+          - listitem [ref=e106]: No upcoming deadlines.

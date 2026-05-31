@@ -1,0 +1,196 @@
+ Proposed Plan
+
+
+  ## Live Operational Flow Blueprint (Profile-Wise) for
+  KarthikAi-OMS
+
+  ### Summary
+
+  Define and run the system as a role-driven operating
+  model across the full lifecycle: platform governance,
+  tenant onboarding, company setup, delivery execution,
+  people operations, finance, client visibility, and
+  reporting/compliance.
+  Success means every user profile has clear daily/weekly/
+  monthly flows, strict RBAC boundaries, and measurable
+  handoffs between profiles.
+
+  ### Profile-Wise End-to-End Flows
+
+  1) Super Admin (Platform Owner)
+
+  1. Platform sign-in -> monitor global dashboard.
+  2. Create company tenant -> assign package/subscription
+     -> generate invite.
+
+  3. Track invite acceptance and activation status.
+  4. Monitor each tenant health: users, clients, projects,
+     billing/support summary.
+
+  5. Manage platform catalogs (packages/subscriptions) and
+     tenant activation/deactivation.
+
+  6. Review platform-level reports and exceptions.
+  7. Enforce privacy boundary: no tenant staff operations
+     (tasks/timesheets/leave/invoices execution work).
+
+  2) Company Admin (Tenant Operator)
+
+  1. Accept invite -> initial password set -> first login.
+  2. Configure company profile (country/currency/timezone/
+     working calendar).
+
+  3. Build org master data: departments, designations,
+     roles/permissions.
+
+  4. Create internal users by function (PM, employee,
+     finance, HR, management, account roles).
+
+  5. Validate RBAC menus and access per role.
+  6. Oversee all company modules: clients, projects,
+     delivery, people, finance, issues/risks.
+
+  7. Run governance reviews: cross-company isolation
+     check, stale records, escalation queue.
+
+  8. Close period: verify reporting accuracy and tenant-
+     level compliance.
+
+  3) Project Manager (Delivery Owner)
+
+  1. Create/manage clients and project records under
+     company scope.
+
+  2. Build project structure: team members, milestones,
+     deliverables, tasks.
+
+  3. Assign work to employees with deadlines, priority,
+     and progress expectations.
+
+  4. Run execution cadence: update project/task status,
+     monitor blockers, adjust plans.
+
+  5. Operate collaboration modules: meetings, documents,
+     action follow-ups.
+
+  6. Track risk/issue/change/support streams and resolve/
+     route escalations.
+
+  7. Review employee work logs (timesheets) and delivery
+     evidence.
+
+  8. Feed delivery KPIs to reports and company admin
+     governance.
+
+  4) Employee / Staff (Execution User)
+
+  1. Sign in -> view assigned projects/tasks only.
+  2. Execute assigned tasks -> update status/progress/
+     notes.
+
+  3. Submit personal operations data: timesheets (with
+     entries), attendance, leave, expenses.
+
+  4. Access only project-linked collaboration artifacts
+     (meetings/documents) and self HR records.
+
+  5. Receive feedback/rework loops from PM/admin.
+  6. Complete weekly close: task updates + timesheet +
+     attendance/leave accuracy.
+
+  5) Finance User (Billing Operator)
+
+  1. Create invoices linked to client/project.
+  2. Record payments against invoices with payment mode/
+     reference.
+
+  3. Validate invoice state transitions (draft/partial/
+     paid) and balances.
+
+  4. Reconcile billing records with project delivery and
+     client account status.
+
+  5. Publish finance metrics to reports and company admin
+     review.
+
+  6) Client User / Client Admin (External Stakeholder)
+
+  1. Sign in to portal-only experience.
+  2. View own project summaries and progress.
+  3. View client-visible financial/project artifacts as
+     permitted.
+
+  4. No create/edit/delete access to internal modules.
+  5. Escalate feedback via governed channels (if support/
+     change workflows exposed).
+
+  7) Management / Delivery Manager / Account Manager / HR
+  Manager (Functional Oversight)
+
+  1. Access scoped oversight dashboards and module views
+     per assigned permissions.
+
+  2. Review delivery, people, risk, and finance
+     indicators.
+
+  3. Perform function-specific approvals/interventions
+     (where enabled).
+
+  4. Maintain compliance with company-only data
+     boundaries.
+
+  ### Cross-Profile Operational Handoff Flows
+
+  1. Tenant Onboarding: Super Admin -> Company Admin
+     (invite accept + activation).
+
+  2. Org Enablement: Company Admin -> Functional Users
+     (roles, access, master data).
+
+  3. Delivery Execution: PM -> Employee (assignment) -> PM
+     (review/closure).
+
+  4. Commercial Closure: PM/Company Admin -> Finance
+     (invoice/payment) -> Reports.
+
+  5. Client Transparency: Internal delivery/finance state
+     -> Client portal read model.
+
+  6. Governance & Compliance: All roles -> reports ->
+     Company Admin/Super Admin oversight.
+
+  ### Test Scenarios and Acceptance Criteria (Live
+  Readiness)
+
+  1. Each profile lands on correct menu/dashboard and
+     cannot access unauthorized modules.
+
+  2. Every major workflow creates traceable records and
+     linked entities (client->project->task,
+     invoice->payment, etc.).
+
+  3. Data scope is correct across company/project/self/
+     client boundaries.
+
+  4. Critical operational loops pass:
+     assignment->execution->review,
+     invoice->payment->status update, portal visibility
+     isolation.
+     policies, expense categories, document upload path,
+     timesheet entry capture.
+
+  ### Assumptions and Defaults
+
+  - Active production profiles include: super_admin,
+    company_admin, project_manager, employee,
+    finance_user, client_user/client_admin, and optional
+    management/HR/account/delivery roles.
+
+  - Company-level operation is tenant-isolated by default.
+  - Portal users are strictly view-only for internal
+    operations unless explicitly expanded later.
+
+  - “Fully operational” includes daily use flows plus
+    periodic governance/reporting and access-control
+    verification.
+

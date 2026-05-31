@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PLATFORM
+      - link " Companies" [ref=e13] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Companies
+      - link " Packages" [ref=e17] [cursor=pointer]:
+        - /url: /packages/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Packages
+      - link " Subscriptions" [ref=e21] [cursor=pointer]:
+        - /url: /subscriptions/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Subscriptions
+      - generic [ref=e24]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e26] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Reports
+  - navigation [ref=e29]:
+    - text: 
+    - generic [ref=e30]: Companies
+    - generic [ref=e32]:
+      - button "S Super Admin" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: S
+        - generic [ref=e35]: Super Admin
+      - text:  
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - heading "Companies" [level=4] [ref=e39]
+      - link " Create Company" [ref=e40] [cursor=pointer]:
+        - /url: /companies/add/
+        - generic [ref=e41]: 
+        - text: Create Company
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e49]:
+          - text: Show
+          - combobox "Show entries" [ref=e50]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - searchbox [ref=e54]
+      - table [ref=e57]:
+        - rowgroup [ref=e58]:
+          - 'row "Name: activate to sort column descending Status: activate to sort column ascending Subscription: activate to sort column ascending Users: activate to sort column ascending Clients: activate to sort column ascending Projects: activate to sort column ascending Created: activate to sort column ascending Actions: activate to sort column ascending" [ref=e59]':
+            - 'columnheader "Name: activate to sort column descending" [ref=e60] [cursor=pointer]': Name
+            - 'columnheader "Status: activate to sort column ascending" [ref=e61] [cursor=pointer]': Status
+            - 'columnheader "Subscription: activate to sort column ascending" [ref=e62] [cursor=pointer]': Subscription
+            - 'columnheader "Users: activate to sort column ascending" [ref=e63] [cursor=pointer]': Users
+            - 'columnheader "Clients: activate to sort column ascending" [ref=e64] [cursor=pointer]': Clients
+            - 'columnheader "Projects: activate to sort column ascending" [ref=e65] [cursor=pointer]': Projects
+            - 'columnheader "Created: activate to sort column ascending" [ref=e66] [cursor=pointer]': Created
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e67] [cursor=pointer]': Actions
+        - rowgroup [ref=e68]:
+          - row "OtherCo Active Trial 0/10 1/50 0/50 May 27, 2026  " [ref=e69]:
+            - cell "OtherCo" [ref=e70]
+            - cell "Active" [ref=e71]
+            - cell "Trial" [ref=e72]:
+              - generic [ref=e73]: Trial
+            - cell "0/10" [ref=e74]
+            - cell "1/50" [ref=e75]
+            - cell "0/50" [ref=e76]
+            - cell "May 27, 2026" [ref=e77]
+            - cell " " [ref=e78]:
+              - generic [ref=e79]:
+                - link "" [ref=e80] [cursor=pointer]:
+                  - /url: /companies/28/
+                  - generic [ref=e81]: 
+                - link "" [ref=e82] [cursor=pointer]:
+                  - /url: /companies/28/edit/
+                  - generic [ref=e83]: 
+          - row "TestCo Active Active 36/5 1/20 2/20 May 27, 2026  " [ref=e84]:
+            - cell "TestCo" [ref=e85]
+            - cell "Active" [ref=e86]
+            - cell "Active" [ref=e87]:
+              - generic [ref=e88]: Active
+            - cell "36/5" [ref=e89]
+            - cell "1/20" [ref=e90]
+            - cell "2/20" [ref=e91]
+            - cell "May 27, 2026" [ref=e92]
+            - cell " " [ref=e93]:
+              - generic [ref=e94]:
+                - link "" [ref=e95] [cursor=pointer]:
+                  - /url: /companies/27/
+                  - generic [ref=e96]: 
+                - link "" [ref=e97] [cursor=pointer]:
+                  - /url: /companies/27/edit/
+                  - generic [ref=e98]: 
+      - generic [ref=e99]:
+        - status [ref=e101]: Showing 1 to 2 of 2 entries
+        - list [ref=e104]:
+          - listitem [ref=e105]:
+            - link "Previous" [disabled]
+          - listitem [ref=e106]:
+            - link "1" [ref=e107] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e108]:
+            - link "Next" [disabled]

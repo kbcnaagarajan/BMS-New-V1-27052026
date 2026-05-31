@@ -1,0 +1,167 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: ISSUES & RISKS
+      - link " Issues" [ref=e52] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Issues
+      - link " Risks" [ref=e56] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Risks
+      - link " Change Requests" [ref=e60] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Change Requests
+      - link " Support Tickets" [ref=e64] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e65]: 
+        - generic [ref=e66]: Support Tickets
+      - generic [ref=e67]: PEOPLE
+      - link " Timesheets" [ref=e69] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Timesheets
+      - link " Leave" [ref=e73] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Leave
+      - link " Attendance" [ref=e77] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Attendance
+      - generic [ref=e80]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e82] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Reports
+  - navigation [ref=e85]:
+    - text: 
+    - generic [ref=e86]: New Project Team Member
+    - generic [ref=e88]:
+      - button "P PM User" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: P
+        - generic [ref=e91]: PM User
+      - text:  
+  - generic [ref=e93]:
+    - link " Back" [ref=e95] [cursor=pointer]:
+      - /url: /team/
+      - generic [ref=e96]: 
+      - text: Back
+    - generic [ref=e97]:
+      - heading " New Project Team Member" [level=5] [ref=e99]:
+        - generic [ref=e100]: 
+        - text: New Project Team Member
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]: Project *
+            - combobox "Project *" [ref=e106]:
+              - option "-- Select Project --" [selected]
+              - option "PRJ-20260531044708 - LiveOrg Project A"
+          - generic [ref=e107]:
+            - generic [ref=e108]: User *
+            - combobox "User *" [ref=e109]:
+              - option "-- Select User --" [selected]
+              - option "Live Admin (company@liveorg531a.com)"
+              - option "PM User (pm@liveorg531a.com)"
+              - option "Emp User (emp@liveorg531a.com)"
+              - option "Finance User (finance@liveorg531a.com)"
+              - option "Client User (client@liveorg531a.com)"
+          - generic [ref=e110]:
+            - generic [ref=e111]: Role *
+            - combobox "Role *" [ref=e112]:
+              - option "-- Select Role --"
+              - option "Project Manager" [selected]
+              - option "Delivery Manager"
+              - option "Account Manager"
+              - option "Business Analyst"
+              - option "Backend Developer"
+              - option "Frontend Developer"
+              - option "Full Stack Developer"
+              - option "Integration Engineer"
+              - option "QA Tester"
+              - option "UI Designer"
+              - option "DevOps Engineer"
+              - option "Support Engineer"
+              - option "Data Analyst"
+              - option "Consultant"
+              - option "Other"
+          - generic [ref=e113]:
+            - generic [ref=e114]: Is Active
+            - generic [ref=e115]:
+              - checkbox "Is Active Is Active" [ref=e116]
+              - generic [ref=e117]: Is Active
+          - generic [ref=e118]:
+            - generic [ref=e119]: Is Billable
+            - generic [ref=e120]:
+              - checkbox "Is Billable Is Billable" [ref=e121]
+              - generic [ref=e122]: Is Billable
+          - generic [ref=e123]:
+            - generic [ref=e124]: Allocation Percentage *
+            - spinbutton "Allocation Percentage *" [ref=e125]
+          - generic [ref=e126]:
+            - generic [ref=e127]: Allocated Hours
+            - spinbutton "Allocated Hours" [ref=e128]
+          - generic [ref=e129]:
+            - generic [ref=e130]: Start Date
+            - textbox "Start Date" [ref=e131]
+          - generic [ref=e132]:
+            - generic [ref=e133]: End Date
+            - textbox "End Date" [ref=e134]
+          - generic [ref=e135]:
+            - generic [ref=e136]: Notes
+            - textbox "Notes" [ref=e137]
+        - generic [ref=e138]:
+          - button " Save" [ref=e139] [cursor=pointer]:
+            - generic [ref=e140]: 
+            - text: Save
+          - link "Cancel" [ref=e141] [cursor=pointer]:
+            - /url: /team/

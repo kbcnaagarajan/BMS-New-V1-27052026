@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+  - navigation [ref=e16]:
+    - text: 
+    - generic [ref=e17]: My Projects
+    - generic [ref=e19]:
+      - button "C Client User" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: C
+        - generic [ref=e22]: Client User
+      - text:  
+  - generic [ref=e24]:
+    - heading "My Projects" [level=4] [ref=e26]
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - heading "LiveOrg Project A" [level=5] [ref=e32]
+        - generic [ref=e34]: active
+      - generic [ref=e36]: green
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Progress
+          - generic [ref=e40]: 0%
+        - generic [ref=e41]:
+          - progressbar
+      - paragraph [ref=e42]: Operational rollout project
+      - link " View Details" [ref=e43] [cursor=pointer]:
+        - /url: /projects/43/
+        - generic [ref=e44]: 
+        - text: View Details

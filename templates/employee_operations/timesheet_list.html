@@ -41,6 +41,7 @@
                             <th class="ps-3">Employee</th>
                             <th>Week Start</th>
                             <th>Week End</th>
+                            <th>Entries</th>
                             <th>Total Hours</th>
                             <th>Status</th>
                             <th class="pe-3 text-end">Actions</th>
@@ -52,6 +53,7 @@
                             <td class="ps-3">{{ ts.employee.full_name }}</td>
                             <td>{{ ts.week_start_date|date:"M d, Y" }}</td>
                             <td>{{ ts.week_end_date|date:"M d, Y" }}</td>
+                            <td>{{ ts.entries_count }}</td>
                             <td>{{ ts.total_hours }}</td>
                             <td>
                                 {% if ts.status == "submitted" %}
@@ -82,7 +84,7 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-5">No timesheets found.</td>
+                            <td colspan="7" class="text-center text-muted py-5">No timesheets found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -97,6 +99,9 @@
 {{ block.super }}
 <script>
     $(document).ready(function() {
+        if ($('#timesheetTable tbody td[colspan]').length) {
+            return;
+        }
         $('#timesheetTable').DataTable({
             pageLength: 25,
             order: [[1, 'desc']],

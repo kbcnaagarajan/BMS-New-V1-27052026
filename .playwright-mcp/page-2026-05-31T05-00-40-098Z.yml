@@ -1,0 +1,131 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PLATFORM
+      - link " Companies" [ref=e13] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Companies
+      - link " Packages" [ref=e17] [cursor=pointer]:
+        - /url: /packages/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Packages
+      - link " Subscriptions" [ref=e21] [cursor=pointer]:
+        - /url: /subscriptions/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Subscriptions
+      - generic [ref=e24]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e26] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Reports
+  - navigation [ref=e29]:
+    - text: 
+    - generic [ref=e30]: Dashboard
+    - generic [ref=e32]:
+      - button "S Super Admin" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: S
+        - generic [ref=e35]: Super Admin
+      - text:  
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - generic [ref=e40]:
+        - generic [ref=e42]: 
+        - generic [ref=e43]: "3"
+        - generic [ref=e44]: Active Companies
+      - generic [ref=e46]:
+        - generic [ref=e48]: 
+        - generic [ref=e49]: "3"
+        - generic [ref=e50]: Total Projects
+      - generic [ref=e52]:
+        - generic [ref=e54]: 
+        - generic [ref=e55]: "3"
+        - generic [ref=e56]: Total Clients
+      - generic [ref=e58]:
+        - generic [ref=e60]: 
+        - generic [ref=e61]: "22"
+        - generic [ref=e62]: Users
+    - generic [ref=e63]:
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: 
+            - text: Registered Companies
+          - link "View All" [ref=e69] [cursor=pointer]:
+            - /url: /companies/
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - generic [ref=e75]:
+              - text: Show
+              - combobox "Show entries" [ref=e76]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e80]
+          - table [ref=e83]:
+            - rowgroup [ref=e84]:
+              - 'row "Company: activate to sort column descending Status: activate to sort column ascending Users: activate to sort column ascending Clients: activate to sort column ascending Projects: activate to sort column ascending Created: activate to sort column ascending" [ref=e85]':
+                - 'columnheader "Company: activate to sort column descending" [ref=e86] [cursor=pointer]': Company
+                - 'columnheader "Status: activate to sort column ascending" [ref=e87] [cursor=pointer]': Status
+                - 'columnheader "Users: activate to sort column ascending" [ref=e88] [cursor=pointer]': Users
+                - 'columnheader "Clients: activate to sort column ascending" [ref=e89] [cursor=pointer]': Clients
+                - 'columnheader "Projects: activate to sort column ascending" [ref=e90] [cursor=pointer]': Projects
+                - 'columnheader "Created: activate to sort column ascending" [ref=e91] [cursor=pointer]': Created
+            - rowgroup [ref=e92]:
+              - row "LiveOrg531A Active 5/5 1/20 1/20 May 31, 2026" [ref=e93]:
+                - cell "LiveOrg531A" [ref=e94]:
+                  - link "LiveOrg531A" [ref=e95] [cursor=pointer]:
+                    - /url: /companies/29/
+                - cell "Active" [ref=e96]
+                - cell "5/5" [ref=e97]
+                - cell "1/20" [ref=e98]
+                - cell "1/20" [ref=e99]
+                - cell "May 31, 2026" [ref=e100]
+              - row "OtherCo Active 0/10 1/50 0/50 May 27, 2026" [ref=e101]:
+                - cell "OtherCo" [ref=e102]:
+                  - link "OtherCo" [ref=e103] [cursor=pointer]:
+                    - /url: /companies/28/
+                - cell "Active" [ref=e104]
+                - cell "0/10" [ref=e105]
+                - cell "1/50" [ref=e106]
+                - cell "0/50" [ref=e107]
+                - cell "May 27, 2026" [ref=e108]
+              - row "TestCo Active 36/5 1/20 2/20 May 27, 2026" [ref=e109]:
+                - cell "TestCo" [ref=e110]:
+                  - link "TestCo" [ref=e111] [cursor=pointer]:
+                    - /url: /companies/27/
+                - cell "Active" [ref=e112]
+                - cell "36/5" [ref=e113]
+                - cell "1/20" [ref=e114]
+                - cell "2/20" [ref=e115]
+                - cell "May 27, 2026" [ref=e116]
+          - generic [ref=e117]:
+            - status [ref=e119]: Showing 1 to 3 of 3 entries
+            - list [ref=e122]:
+              - listitem [ref=e123]:
+                - link "Previous" [disabled]
+              - listitem [ref=e124]:
+                - link "1" [ref=e125] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e126]:
+                - link "Next" [disabled]
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e130]: 
+          - text: Open Support Tickets
+        - list [ref=e132]:
+          - listitem [ref=e133]:
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - generic [ref=e136]: Login issue in client portal
+                - text: LiveOrg531A
+              - generic [ref=e137]: Medium

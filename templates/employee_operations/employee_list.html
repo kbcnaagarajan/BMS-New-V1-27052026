@@ -72,6 +72,9 @@
 {{ block.super }}
 <script>
     $(document).ready(function() {
+        if ($('#employeeTable tbody td[colspan]').length) {
+            return;
+        }
         $('#employeeTable').DataTable({
             pageLength: 25,
             order: [[1, 'asc']],

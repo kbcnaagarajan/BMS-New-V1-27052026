@@ -1,0 +1,82 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+  - navigation [ref=e16]:
+    - text: 
+    - generic [ref=e17]: Clients
+    - generic [ref=e19]:
+      - button "C Client User" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: C
+        - generic [ref=e22]: Client User
+      - text:  
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - heading "Clients" [level=4] [ref=e26]
+      - link " Add Client" [ref=e27] [cursor=pointer]:
+        - /url: /clients/add/
+        - generic [ref=e28]: 
+        - text: Add Client
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e36]:
+          - text: Show
+          - combobox "Show entries" [ref=e37]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "100"
+          - text: entries
+        - generic [ref=e40]:
+          - text: "Search clients:"
+          - searchbox "Search clients:" [ref=e41]
+      - table [ref=e44]:
+        - rowgroup [ref=e45]:
+          - 'row "Company Name: activate to sort column descending Email: activate to sort column ascending Phone: activate to sort column ascending Projects: activate to sort column ascending Status: activate to sort column ascending Created Date: activate to sort column ascending Actions: activate to sort column ascending" [ref=e46]':
+            - 'columnheader "Company Name: activate to sort column descending" [ref=e47] [cursor=pointer]': Company Name
+            - 'columnheader "Email: activate to sort column ascending" [ref=e48] [cursor=pointer]': Email
+            - 'columnheader "Phone: activate to sort column ascending" [ref=e49] [cursor=pointer]': Phone
+            - 'columnheader "Projects: activate to sort column ascending" [ref=e50] [cursor=pointer]': Projects
+            - 'columnheader "Status: activate to sort column ascending" [ref=e51] [cursor=pointer]': Status
+            - 'columnheader "Created Date: activate to sort column ascending" [ref=e52] [cursor=pointer]': Created Date
+            - 'columnheader "Actions: activate to sort column ascending" [ref=e53] [cursor=pointer]': Actions
+        - rowgroup [ref=e54]:
+          - row "Acme Corp info@acme.com 1234567890 2 Active May 27, 2026  " [ref=e55]:
+            - cell "Acme Corp" [ref=e56]
+            - cell "info@acme.com" [ref=e57]:
+              - link "info@acme.com" [ref=e58] [cursor=pointer]:
+                - /url: mailto:info@acme.com
+            - cell "1234567890" [ref=e59]
+            - cell "2" [ref=e60]:
+              - generic [ref=e61]: "2"
+            - cell "Active" [ref=e62]
+            - cell "May 27, 2026" [ref=e63]
+            - cell " " [ref=e64]:
+              - generic [ref=e65]:
+                - link "" [ref=e66] [cursor=pointer]:
+                  - /url: /clients/41/
+                  - generic [ref=e67]: 
+                - link "" [ref=e68] [cursor=pointer]:
+                  - /url: /clients/41/edit/
+                  - generic [ref=e69]: 
+      - generic [ref=e70]:
+        - status [ref=e72]: Showing 1 to 1 of 1 entries
+        - list [ref=e75]:
+          - listitem [ref=e76]:
+            - link "Previous" [disabled]
+          - listitem [ref=e77]:
+            - link "1" [ref=e78] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e79]:
+            - link "Next" [disabled]

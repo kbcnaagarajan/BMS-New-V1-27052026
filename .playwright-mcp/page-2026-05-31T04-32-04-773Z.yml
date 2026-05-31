@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - generic [ref=e7]: CLIENT PORTAL
+      - link " Portal Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /portal/
+        - generic [ref=e10]: 
+        - generic [ref=e11]: Portal Dashboard
+      - link " Portal Projects" [ref=e13] [cursor=pointer]:
+        - /url: /portal/projects/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Portal Projects
+  - navigation [ref=e16]:
+    - text: 
+    - generic [ref=e17]: Dashboard
+    - generic [ref=e19]:
+      - button "C Client User" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: C
+        - generic [ref=e22]: Client User
+      - text:  
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e27]:
+        - generic [ref=e29]: 
+        - generic [ref=e30]: "2"
+        - generic [ref=e31]: Total Projects
+      - generic [ref=e33]:
+        - generic [ref=e35]: 
+        - generic [ref=e36]: "0"
+        - generic [ref=e37]: Total Clients
+      - generic [ref=e39]:
+        - generic [ref=e41]: 
+        - generic [ref=e42]: "0"
+        - generic [ref=e43]: Open Tasks
+      - generic [ref=e45]:
+        - generic [ref=e47]: 
+        - generic [ref=e48]: "0"
+        - generic [ref=e49]: Employees
+    - generic [ref=e50]:
+      - generic [ref=e52]:
+        - generic [ref=e53]: Project Health
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e59]:
+              - text: Show
+              - combobox "Show entries" [ref=e60]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e64]
+          - table [ref=e67]:
+            - rowgroup [ref=e68]:
+              - 'row "Project: activate to sort column descending Status: activate to sort column ascending Health: activate to sort column ascending" [ref=e69]':
+                - 'columnheader "Project: activate to sort column descending" [ref=e70] [cursor=pointer]': Project
+                - 'columnheader "Status: activate to sort column ascending" [ref=e71] [cursor=pointer]': Status
+                - 'columnheader "Health: activate to sort column ascending" [ref=e72] [cursor=pointer]': Health
+            - rowgroup [ref=e73]:
+              - row "test prjecr1 Approved On Track" [ref=e74]:
+                - cell "test prjecr1" [ref=e75]
+                - cell "Approved" [ref=e76]:
+                  - generic [ref=e77]: Approved
+                - cell "On Track" [ref=e78]
+              - row "Website Redesign Active On Track" [ref=e79]:
+                - cell "Website Redesign" [ref=e80]
+                - cell "Active" [ref=e81]:
+                  - generic [ref=e82]: Active
+                - cell "On Track" [ref=e83]
+          - generic [ref=e84]:
+            - status [ref=e86]: Showing 1 to 2 of 2 entries
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - link "Previous" [disabled]
+              - listitem [ref=e91]:
+                - link "1" [ref=e92] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e93]:
+                - link "Next" [disabled]
+      - generic [ref=e95]:
+        - generic [ref=e96]: Upcoming Deadlines
+        - list [ref=e98]:
+          - listitem [ref=e99]: No upcoming deadlines.

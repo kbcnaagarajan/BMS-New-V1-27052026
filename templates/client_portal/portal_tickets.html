@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block page_title %}Portal Support Tickets{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Support Tickets</h4>
+  </div>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 datatable">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-3">Title</th>
+              <th>Project</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Assigned To</th>
+              <th class="pe-3">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in tickets %}
+            <tr>
+              <td class="ps-3 fw-medium">{{ t.title }}</td>
+              <td>{{ t.project.project_name }}</td>
+              <td>{{ t.get_priority_display }}</td>
+              <td>{{ t.get_status_display }}</td>
+              <td>{{ t.assigned_to.full_name|default:"-" }}</td>
+              <td class="pe-3">{{ t.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-4">No support tickets found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

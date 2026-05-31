@@ -1,0 +1,33 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - heading "KarthikAi-OMS" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Enterprise operations management platform — projects, clients, finance, and HR under one roof.
+    - list [ref=e6]:
+      - listitem [ref=e7]:
+        - generic [ref=e8]: 
+        - text: Multi-company & role-based access control
+      - listitem [ref=e9]:
+        - generic [ref=e10]: 
+        - text: Project 360° with health monitoring
+      - listitem [ref=e11]:
+        - generic [ref=e12]: 
+        - text: Client CRM with portal access
+      - listitem [ref=e13]:
+        - generic [ref=e14]: 
+        - text: Billing, timesheets & expense tracking
+      - listitem [ref=e15]:
+        - generic [ref=e16]: 
+        - text: Meetings, documents & issue management
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - heading "Welcome back" [level=3] [ref=e20]
+      - paragraph [ref=e21]: Sign in to your account
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]: Email
+        - textbox "you@company.com" [active] [ref=e25]
+      - generic [ref=e26]:
+        - generic [ref=e27]: Password
+        - textbox "Enter your password" [ref=e28]
+      - button "Sign in" [ref=e29] [cursor=pointer]
+    - paragraph [ref=e30]: KarthikAi Operations Management System

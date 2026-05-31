@@ -18,7 +18,13 @@
         {% for fv in field_values %}
         <div class="col-md-6">
           <div class="detail-label">{{ fv.label }}</div>
-          <div class="detail-value">{{ fv.value }}</div>
+          <div class="detail-value">
+            {% if fv.url %}
+            <a href="{{ fv.url }}" target="_blank" rel="noopener">{{ fv.value }}</a>
+            {% else %}
+            {{ fv.value }}
+            {% endif %}
+          </div>
         </div>
         {% endfor %}
       </div>

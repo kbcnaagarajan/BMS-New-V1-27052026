@@ -165,4 +165,7 @@ urlpatterns = [
     # Client Portal
     path('portal/', v.portal_dashboard, name='portal_dashboard'),
     path('portal/projects/', v.portal_projects, name='portal_projects'),
+    path('portal/invoices/', v.portal_invoices, name='portal_invoices'),
+    path('portal/documents/', v.portal_documents, name='portal_documents'),
+    path('portal/tickets/', v.portal_tickets, name='portal_tickets'),
 ]

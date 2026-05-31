@@ -1,0 +1,159 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - generic [ref=e16]: PROJECTS & TASKS
+      - link " Projects" [ref=e18] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e19]: 
+        - generic [ref=e20]: Projects
+      - link " Tasks" [ref=e22] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Tasks
+      - generic [ref=e25]: COLLABORATION
+      - link " Meetings" [ref=e27] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e28]: 
+        - generic [ref=e29]: Meetings
+      - link " Documents" [ref=e31] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e32]: 
+        - generic [ref=e33]: Documents
+      - generic [ref=e34]: FINANCE
+      - link " Invoices" [ref=e36] [cursor=pointer]:
+        - /url: /invoices/
+        - generic [ref=e37]: 
+        - generic [ref=e38]: Invoices
+      - link " Payments" [ref=e40] [cursor=pointer]:
+        - /url: /payments/
+        - generic [ref=e41]: 
+        - generic [ref=e42]: Payments
+      - link " Expenses" [ref=e44] [cursor=pointer]:
+        - /url: /expenses/
+        - generic [ref=e45]: 
+        - generic [ref=e46]: Expenses
+      - generic [ref=e47]: ISSUES & RISKS
+      - link " Issues" [ref=e49] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e50]: 
+        - generic [ref=e51]: Issues
+      - link " Risks" [ref=e53] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e54]: 
+        - generic [ref=e55]: Risks
+      - link " Change Requests" [ref=e57] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e58]: 
+        - generic [ref=e59]: Change Requests
+      - link " Support Tickets" [ref=e61] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e62]: 
+        - generic [ref=e63]: Support Tickets
+      - generic [ref=e64]: PEOPLE
+      - link " Employees" [ref=e66] [cursor=pointer]:
+        - /url: /employees/
+        - generic [ref=e67]: 
+        - generic [ref=e68]: Employees
+      - link " Timesheets" [ref=e70] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e71]: 
+        - generic [ref=e72]: Timesheets
+      - link " Leave" [ref=e74] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e75]: 
+        - generic [ref=e76]: Leave
+      - link " Attendance" [ref=e78] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e79]: 
+        - generic [ref=e80]: Attendance
+      - generic [ref=e81]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e83] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e84]: 
+        - generic [ref=e85]: Reports
+  - navigation [ref=e86]:
+    - text: 
+    - generic [ref=e87]: Dashboard
+    - generic [ref=e89]:
+      - button [ref=e90] [cursor=pointer]
+      - text:  
+  - generic [ref=e93]:
+    - generic [ref=e94]:
+      - generic [ref=e96]:
+        - generic [ref=e98]: 
+        - generic [ref=e99]: "2"
+        - generic [ref=e100]: Total Projects
+      - generic [ref=e102]:
+        - generic [ref=e104]: 
+        - generic [ref=e105]: "1"
+        - generic [ref=e106]: Total Clients
+      - generic [ref=e108]:
+        - generic [ref=e110]: 
+        - generic [ref=e111]: "1"
+        - generic [ref=e112]: Open Tasks
+      - generic [ref=e114]:
+        - generic [ref=e116]: 
+        - generic [ref=e117]: "18"
+        - generic [ref=e118]: Employees
+    - generic [ref=e119]:
+      - generic [ref=e121]:
+        - generic [ref=e122]: Project Health
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e128]:
+              - text: Show
+              - combobox "Show entries" [ref=e129]:
+                - option "10"
+                - option "25" [selected]
+                - option "50"
+                - option "100"
+              - text: entries
+            - searchbox [ref=e133]
+          - table [ref=e136]:
+            - rowgroup [ref=e137]:
+              - 'row "Project: activate to sort column descending Status: activate to sort column ascending Health: activate to sort column ascending" [ref=e138]':
+                - 'columnheader "Project: activate to sort column descending" [ref=e139] [cursor=pointer]': Project
+                - 'columnheader "Status: activate to sort column ascending" [ref=e140] [cursor=pointer]': Status
+                - 'columnheader "Health: activate to sort column ascending" [ref=e141] [cursor=pointer]': Health
+            - rowgroup [ref=e142]:
+              - row "test prjecr1 Approved On Track" [ref=e143]:
+                - cell "test prjecr1" [ref=e144]
+                - cell "Approved" [ref=e145]:
+                  - generic [ref=e146]: Approved
+                - cell "On Track" [ref=e147]
+              - row "Website Redesign Active On Track" [ref=e148]:
+                - cell "Website Redesign" [ref=e149]
+                - cell "Active" [ref=e150]:
+                  - generic [ref=e151]: Active
+                - cell "On Track" [ref=e152]
+          - generic [ref=e153]:
+            - status [ref=e155]: Showing 1 to 2 of 2 entries
+            - list [ref=e158]:
+              - listitem [ref=e159]:
+                - link "Previous" [disabled]
+              - listitem [ref=e160]:
+                - link "1" [ref=e161] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e162]:
+                - link "Next" [disabled]
+      - generic [ref=e164]:
+        - generic [ref=e165]: Upcoming Deadlines
+        - list [ref=e167]:
+          - listitem [ref=e168]:
+            - generic [ref=e169]:
+              - generic [ref=e170]:
+                - heading "Setup homepage" [level=6] [ref=e171]
+                - text: Website Redesign
+              - generic [ref=e173]: Jun 10

@@ -1,0 +1,532 @@
+the process to test in the bms so far is - 
+
+Reviewed the implemented system audit and the previous workflow plan. Your current system already has **4 user profiles, 2 portals, 22 modules, 147 routes, RBAC, data scoping rules, validations, client CRM, project 360, employee operations, meetings/documents, billing, issues/risks, and reports**. 
+The earlier plan had 61 flows, but for operational testing and practical usage, we should now reduce it to the **most important priority workflows only**. 
+
+# Focused Operational Workflows
+
+## 1. Super Admin Creates Company
+
+Super Admin Login
+-> Open Platform Dashboard
+-> Open Companies
+-> Create Company
+-> Enter Company Details
+-> Select Package / Subscription
+-> Enter Company Admin Name and Email
+-> Save Company
+-> System Creates Company Record
+-> System Generates Invite Token
+-> Company Admin Accepts Invite
+-> Company Becomes Active
+-> Super Admin Sees Company Summary Only
+
+---
+
+## 2. Super Admin Monitors Companies
+
+Super Admin Login
+-> Open Platform Dashboard
+-> View Registered Companies
+-> Select Company
+-> View Company Status
+-> View Subscription Status
+-> View User Count
+-> View Client Count
+-> View Project Count
+-> View Invoice / Support Summary
+-> Activate / Deactivate Company if Required
+-> Exit Without Managing Company Staff Operations
+
+---
+
+## 3. Company Admin Sets Up Company Workspace
+
+Company Admin Login
+-> Open Company Dashboard
+-> Open Company Settings
+-> Update Company Profile
+-> Set Country / Currency / Timezone
+-> Set Working Days / Working Hours
+-> Create Departments
+-> Create Designations
+-> Review Default Roles
+-> Review Permissions
+-> Save Company Setup
+
+---
+
+## 4. Company Admin Creates Internal Users
+
+Company Admin Login
+-> Open User Management
+-> Create Project Manager
+-> Create Employee / Staff
+-> Create Finance User if Required
+-> Create Management User if Required
+-> Assign Department
+-> Assign Designation
+-> Assign Role
+-> Assign Company Scope
+-> Save User
+-> User Logs In
+-> User Sees Role-Based Dashboard
+
+---
+
+## 5. RBAC and Data Scope Check
+
+User Login
+-> System Identifies User Type
+-> System Identifies Company
+-> System Loads Role Permissions
+-> System Applies Company Scope
+-> System Applies Project / Self Scope
+-> User Opens Menu
+-> System Shows Only Allowed Modules
+-> User Tries Restricted Module
+-> System Denies or Hides Access
+
+Priority validation:
+
+Super Admin
+-> Should see companies and platform summary
+-> Should not manage tenant staff operational data
+
+Company Admin
+-> Should see all data inside own company
+-> Should not see other companies
+
+Project Manager
+-> Should see assigned projects and related project data
+
+Employee
+-> Should see own tasks, own timesheets, own attendance, own leave, own expenses
+
+---
+
+## 6. Company Admin / Project Manager Creates Client
+
+Company Admin / Project Manager Login
+-> Open Clients
+-> Create Client
+-> Enter Client Details
+-> Save Client
+-> Open Client Detail
+-> Add Client Contacts
+-> Save Contacts
+-> Client Appears in Client List
+-> Client Detail Shows Linked Contacts and Projects
+
+---
+
+## 7. Project Manager Creates Project Under Client
+
+Project Manager Login
+-> Open Clients
+-> Select Client
+-> Create Project
+-> Enter Project Name
+-> Enter Project Details
+-> Select Project Manager
+-> Set Project Dates
+-> Set Budget / Status if Required
+-> Save Project
+-> Open Project Detail
+-> Project Shows Under Selected Client
+
+Core rule:
+
+Client
+-> Can have Multiple Projects
+
+So test:
+
+Open Same Client
+-> Create Project 1
+-> Create Project 2
+-> Open Client Detail
+-> Confirm Both Projects Are Listed
+
+---
+
+## 8. Project Manager Builds Project Structure
+
+Project Manager Login
+-> Open Project
+-> Add Team Members
+-> Add Milestones
+-> Add Deliverables
+-> Add Tasks
+-> Link Tasks to Project
+-> Assign Tasks to Staff
+-> Save Project Structure
+-> Open Project Detail
+-> Verify Tasks, Team, and Activity Are Visible
+
+---
+
+## 9. Project Manager Creates and Assigns Task
+
+Project Manager Login
+-> Open Tasks
+-> Create Task
+-> Select Project
+-> Enter Task Details
+-> Select Assigned Staff
+-> Select Status
+-> Set Priority
+-> Save Task
+-> Staff Logs In
+-> Opens My Tasks
+-> Staff Sees Assigned Task
+
+---
+
+## 10. Employee Works on Assigned Task
+
+Employee Login
+-> Open Dashboard
+-> Open My Tasks
+-> Select Assigned Task
+-> Review Task Details
+-> Update Task Status
+-> Add Work Progress / Notes if Available
+-> Save Task Update
+-> Project Manager Logs In
+-> Opens Project Detail
+-> Verifies Task Update
+
+---
+
+## 11. Employee Captures Timesheet
+
+Employee Login
+-> Open Timesheets
+-> Add Timesheet
+-> System Auto-Sets Employee to Self
+-> Select Week / Date Period
+-> Enter Notes
+-> Save Timesheet
+-> Timesheet Appears in Employee Timesheet List
+-> Project Manager / Company Admin Opens Timesheets
+-> Reviews Employee Timesheet
+
+Important current-system note: the audit says the **timesheet list queries TimesheetEntry**, while the generic form creates **Timesheet** records. This is a priority item to align before deep testing timesheet entries. 
+
+---
+
+## 12. Employee Applies Leave
+
+Employee Login
+-> Open Leave
+-> Apply Leave
+-> System Auto-Sets Employee to Self
+-> Select Leave Policy
+-> Enter Leave Dates
+-> Enter Reason
+-> Select Handover Person if Required
+-> Save Leave Request
+-> Leave Appears in Leave List
+-> Company Admin / Project Manager Reviews Leave
+
+Priority current-system note: leave policy seed data is missing, so this workflow may not fully run until LeavePolicy records are seeded. 
+
+---
+
+## 13. Employee Marks Attendance
+
+Employee Login
+-> Open Attendance
+-> Add Attendance
+-> System Auto-Sets Employee to Self
+-> Enter Attendance Details
+-> Save Attendance
+-> Attendance Appears in Employee Attendance List
+-> Company Admin Reviews Attendance
+
+---
+
+## 14. Project Manager Creates Meeting
+
+Project Manager Login
+-> Open Meetings
+-> Create Meeting
+-> Select Project
+-> Enter Meeting Details
+-> Add Agenda / Notes if Available
+-> Save Meeting
+-> Meeting Appears in Meeting List
+-> Employee Opens Meetings
+-> Employee Sees Meetings Related to Assigned Project
+
+---
+
+## 15. Project Manager Uploads Document
+
+Project Manager Login
+-> Open Documents
+-> Add Document
+-> Select Project
+-> Enter Document Details
+-> Upload / Attach Document if Implemented
+-> Save Document
+-> Document Appears in Project Documents
+-> Employee Opens Documents
+-> Employee Sees Documents for Assigned Project
+
+Priority current-system note: file upload handling is listed as not fully implemented, so document workflow may currently be metadata-based unless upload handling is added. 
+
+---
+
+## 16. Project Manager Creates Issue
+
+Project Manager / Employee Login
+-> Open Issues
+-> Create Issue
+-> Select Project
+-> Enter Issue Details
+-> Assign Owner if Available
+-> Save Issue
+-> Issue Appears in Issue List
+-> Project Manager Reviews Issue
+-> Updates Issue Status
+-> Issue Appears in Project Report / Dashboard
+
+---
+
+## 17. Project Manager Creates Risk
+
+Project Manager Login
+-> Open Risks
+-> Create Risk
+-> Select Project
+-> Enter Risk Details
+-> Save Risk
+-> Risk Appears in Risk Register
+-> Project Manager Reviews Risk
+-> Updates Risk Status
+-> Risk Appears in Reports
+
+---
+
+## 18. Project Manager Creates Change Request
+
+Project Manager Login
+-> Open Change Requests
+-> Create Change Request
+-> Select Project
+-> Enter Change Details
+-> Save Change Request
+-> Change Request Appears in List
+-> Management / Company Admin Reviews Change Request
+
+---
+
+## 19. Finance Creates Invoice
+
+Finance / Company Admin Login
+-> Open Invoices
+-> Create Invoice
+-> Select Client
+-> Select Project if Available
+-> Enter Invoice Details
+-> Save Invoice
+-> Invoice Appears in Invoice List
+-> Open Client / Project
+-> Verify Invoice Is Linked
+
+---
+
+## 20. Finance Records Payment
+
+Finance / Company Admin Login
+-> Open Payments
+-> Create Payment
+-> Select Invoice
+-> Enter Payment Details
+-> Save Payment
+-> Payment Appears in Payment List
+-> Invoice / Billing Summary Updates
+
+---
+
+## 21. Client Portal Project View
+
+Client Admin / Client User Login
+-> Open Client Portal
+-> View Portal Dashboard
+-> Open Portal Projects
+-> View Own Client Projects
+-> Open Project Summary
+-> Verify View-Only Access
+-> Try Create / Edit Action
+-> System Blocks or Hides Create / Edit
+-> Try Access Other Client Project
+-> System Blocks Access
+
+---
+
+## 22. Employee Restricted Access Test
+
+Employee Login
+-> Open Dashboard
+-> View Assigned Projects
+-> View Assigned Tasks
+-> View Own Timesheets
+-> View Own Leave
+-> View Own Attendance
+-> Try Open Clients
+-> System Denies / Hides Access
+-> Try Open Invoices
+-> System Denies / Hides Access
+-> Try Open Other Employee Details
+-> System Denies Access
+
+This matches the implemented employee data scope: employees have self-only access for personal modules and assigned-project access for project-related modules. 
+
+---
+
+## 23. Project Manager Restricted Access Test
+
+Project Manager Login
+-> Open Dashboard
+-> View Assigned Projects
+-> View Tasks for Managed Projects
+-> View Milestones / Deliverables for Managed Projects
+-> View Meetings / Documents for Managed Projects
+-> View Issues / Risks for Managed Projects
+-> Try Open Unassigned Project
+-> System Denies Access
+-> Open Own Leave / Attendance
+-> Verify Self-Only Personal Records
+
+The audit confirms Project Manager scope is mainly based on projects where `project_manager=user`, with downstream access to related tasks, milestones, deliverables, meetings, documents, issues, risks, change requests, support tickets, invoices, and payments. 
+
+---
+
+## 24. Company Admin Full Company Access Test
+
+Company Admin Login
+-> Open Dashboard
+-> View All Company Clients
+-> View All Company Projects
+-> View All Company Users
+-> View All Company Tasks
+-> View Timesheets
+-> View Leave
+-> View Attendance
+-> View Expenses
+-> View Invoices
+-> View Payments
+-> View Issues / Risks
+-> Open Reports
+-> Verify All Data Belongs Only to Own Company
+-> Try Access Another Company URL / Record
+-> System Denies Access
+
+---
+
+## 25. Super Admin Privacy Boundary Test
+
+Super Admin Login
+-> Open Companies
+-> Select Company
+-> View Company Summary
+-> View Users Count
+-> View Clients Count
+-> View Projects Count
+-> View Subscription
+-> Try to Work as Company Staff
+-> System Should Not Enter Staff Operational Flow
+-> Super Admin Returns to Platform Monitoring
+
+Important: your audit currently says Super Admin has unrestricted access and can view all projects, tasks, invoices across all companies. 
+But your business rule says Super Admin should **not see individual staff personal details**. So this is a **priority RBAC correction** if not yet adjusted.
+
+---
+
+## 26. Reports Dashboard Workflow
+
+User Login
+-> Open Reports
+-> System Loads Reports Dashboard
+-> View Counts / Metrics Based on Role
+-> Company Admin Sees Company-Level Reports
+-> Project Manager Sees Assigned Project Reports
+-> Employee Sees Own Work Reports
+-> Client User Sees Portal-Level Project Summary Only
+-> Export if Permission Exists
+
+---
+
+# Most Prioritized Operational Testing Order
+
+Run the system in this order:
+
+1. Super Admin creates company
+2. Company Admin accepts invite
+3. Company Admin creates users
+4. Company Admin checks RBAC permissions
+5. Project Manager creates client
+6. Project Manager creates project under client
+7. Project Manager adds team member
+8. Project Manager creates tasks
+9. Project Manager assigns task to employee
+10. Employee views assigned task
+11. Employee creates timesheet
+12. Project Manager reviews timesheet
+13. Project Manager creates meeting
+14. Project Manager creates document
+15. Project Manager creates issue
+16. Project Manager creates risk
+17. Finance creates invoice
+18. Finance records payment
+19. Client user views portal
+20. Employee restriction test
+21. Project Manager restriction test
+22. Company Admin company-wide access test
+23. Super Admin privacy boundary test
+24. Reports dashboard test
+
+---
+
+# Final Focused Master Flow
+
+Super Admin Creates Company
+-> Company Admin Accepts Invite
+-> Company Admin Sets Up Workspace
+-> Company Admin Creates Users
+-> Project Manager Creates Client
+-> Project Manager Creates Project Under Client
+-> Project Manager Adds Team Members
+-> Project Manager Creates Milestones / Deliverables
+-> Project Manager Creates Tasks
+-> Project Manager Assigns Tasks to Employees
+-> Employees Work on Assigned Tasks
+-> Employees Capture Timesheets
+-> Project Manager Reviews Project Work
+-> Project Manager Creates Meetings / Documents / Issues / Risks
+-> Finance Creates Invoices and Payments
+-> Client Views Own Projects in Portal
+-> Reports Are Generated by Role
+-> RBAC Restricts Every User to Their Allowed Scope
+
+This is the clean operational workflow set to test first. Later you can add deeper workflows for approvals, notifications, timesheet entries, deliverable approval, change request costing, dashboard charts, audit trail, and project closure.
+
+admin@karthikai.com	super_admin	Full system access, company registration, monitoring
+company@testco.com	company_admin	Manage workspace: settings, departments, designations, users, roles
+pm@testco.com	project_manager	Manage assigned projects, tasks, team, timesheets
+emp@testco.com	employee	Personal timesheets, leaves, attendance, expenses
+admin@wf1.com	company_admin (no roles)	From workflow-1 invite flow test
+1 | admin@karthikai.com            | super_admin        | active=True | superuser=True | company=TestCo
+  2 | company@testco.com             | company_admin      | active=True | superuser=False | company=TestCo
+  5 | admin@wf1.com                  | company_admin      | active=True | superuser=False | company=TestCo
+  8 | newpm@testco.com               |                    | active=False | superuser=False | company=TestCo
+  9 | newpm_135853@testco.com        |                    | active=False | superuser=False | company=TestCo
+ 10 | client@test.com                | client_user        | active=True | superuser=False | company=TestCo
+ 47 | admin@testco.com               | company_admin      | active=True | superuser=False | company=TestCo
+ 48 | pm@testco.com                  | project_manager    | active=True | superuser=False | company=TestCo
+ 49 | emp@testco.com                 | employee           | active=True | superuser=False | company=TestCo
+ 50 | finance@testco.com             | finance_user       | active=True | superuser=False | company=TestCo
+ 51 | client@testc

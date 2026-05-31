@@ -14,7 +14,7 @@
       </h5>
     </div>
     <div class="card-body">
-      <form method="post" novalidate>
+      <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         <div class="row g-3">
           {% for field in fields_meta %}
@@ -59,12 +59,65 @@
             <textarea name="{{ field.name }}" id="id_{{ field.name }}" class="form-control" rows="3"{% if field.required %} required{% endif %}>{{ field.value_str }}</textarea>
             {% elif field.is_number %}
             <input type="number" step="any" name="{{ field.name }}" id="id_{{ field.name }}" class="form-control" value="{{ field.value_str }}">
+            {% elif field.is_file %}
+            <input type="file" name="{{ field.name }}" id="id_{{ field.name }}" class="form-control"{% if field.required and not field.value_str %} required{% endif %}>
+            {% if field.value_url %}
+            <div class="mt-1">
+              <a href="{{ field.value_url }}" target="_blank" rel="noopener">Current file</a>
+              <div class="form-check mt-1">
+                <input type="checkbox" class="form-check-input" id="id_{{ field.name }}__clear" name="{{ field.name }}__clear" value="1">
+                <label class="form-check-label" for="id_{{ field.name }}__clear">Remove file</label>
+              </div>
+            </div>
+            {% endif %}
             {% else %}
             <input type="text" name="{{ field.name }}" id="id_{{ field.name }}" class="form-control" value="{{ field.value_str }}"{% if field.required %} required{% endif %}>
             {% endif %}
           </div>
           {% endfor %}
         </div>
+        {% if module_key == 'timesheets' %}
+        <hr class="my-4">
+        <h6 class="fw-semibold">Add One Timesheet Entry</h6>
+        <div class="row g-3 mt-1">
+          <div class="col-md-3">
+            <label for="id_entry_date" class="form-label">Entry Date</label>
+            <input type="date" name="entry_date" id="id_entry_date" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="id_entry_project" class="form-label">Project</label>
+            <select name="entry_project" id="id_entry_project" class="form-select">
+              <option value="">-- Select Project --</option>
+              {% for p in timesheet_projects %}
+              <option value="{{ p.pk }}">{{ p.project_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="id_entry_task" class="form-label">Task (Optional)</label>
+            <select name="entry_task" id="id_entry_task" class="form-select">
+              <option value="">-- Select Task --</option>
+              {% for t in timesheet_tasks %}
+              <option value="{{ t.pk }}">{{ t.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label for="id_entry_hours" class="form-label">Hours</label>
+            <input type="number" step="0.25" min="0" name="entry_hours" id="id_entry_hours" class="form-control">
+          </div>
+          <div class="col-md-10">
+            <label for="id_entry_description" class="form-label">Entry Description</label>
+            <input type="text" name="entry_description" id="id_entry_description" class="form-control" placeholder="Worked on...">
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <div class="form-check mb-2">
+              <input type="checkbox" name="entry_billable" id="id_entry_billable" class="form-check-input" checked>
+              <label class="form-check-label" for="id_entry_billable">Billable</label>
+            </div>
+          </div>
+        </div>
+        {% endif %}
         <div class="d-flex gap-2 mt-4">
           <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save</button>
           <a href="{% url module_key|add:'_list' %}" class="btn btn-secondary">Cancel</a>

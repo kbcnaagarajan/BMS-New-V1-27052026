@@ -1,0 +1,89 @@
+[       6ms] [WARNING] jQuery.Deferred exception: Cannot set properties of undefined (setting '_DT_CellIndex') TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
+    at St (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:20407)
+    at x (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17777)
+    at HTMLTableRowElement.<anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17881)
+    at https://code.jquery.com/jquery-3.7.1.min.js:2:1681
+    at ce.map (https://code.jquery.com/jquery-3.7.1.min.js:2:3971)
+    at ce.fn.init.map (https://code.jquery.com/jquery-3.7.1.min.js:2:1649)
+    at ut (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17846)
+    at t (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:8513)
+    at HTMLTableElement.<anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:8696)
+    at ce.each (https://code.jquery.com/jquery-3.7.1.min.js:2:3129) undefined @ https://code.jquery.com/jquery-3.7.1.min.js:1
+[      12ms] Uncaught TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
+    at St (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:20406)
+    at x (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17776)
+    at <anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17880)
+    at <anonymous> (https://code.jquery.com/jquery-3.7.1.min.js:1:1680)
+    at map (https://code.jquery.com/jquery-3.7.1.min.js:1:3970)
+    at map (https://code.jquery.com/jquery-3.7.1.min.js:1:1648)
+    at ut (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17845)
+    at t (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:8512)
+    at <anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:8695)
+    at each (https://code.jquery.com/jquery-3.7.1.min.js:1:3128)
+    at each (https://code.jquery.com/jquery-3.7.1.min.js:1:1593)
+    at w (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:3586)
+    at P.fn.DataTable (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:87064)
+    at <anonymous> (http://127.0.0.1:8000/contacts/:389:23)
+    at e (https://code.jquery.com/jquery-3.7.1.min.js:1:27027)
+    at t (https://code.jquery.com/jquery-3.7.1.min.js:1:27329)
+[    2346ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/packages/:0
+[    2444ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/subscriptions/:0
+[    2542ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/users/:0
+[    2674ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[    2705ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[    5290ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/invoices/:0
+[    5376ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/payments/:0
+[    5464ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/users/:0
+[    5559ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/roles/:0
+[    5689ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[    5721ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[    8048ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/tasks/add/:0
+[    8131ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/users/:0
+[    8217ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/roles/:0
+[    8349ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[    8383ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[   10110ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/tasks/add/:0
+[   10194ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/users/:0
+[   10272ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/invoices/add/:0
+[   10353ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/projects/:0
+[   10477ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[   10516ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  112728ms] [WARNING] jQuery.Deferred exception: Cannot set properties of undefined (setting '_DT_CellIndex') TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
+    at St (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:20407)
+    at x (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17777)
+    at HTMLTableRowElement.<anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17881)
+    at https://code.jquery.com/jquery-3.7.1.min.js:2:1681
+    at ce.map (https://code.jquery.com/jquery-3.7.1.min.js:2:3971)
+    at ce.fn.init.map (https://code.jquery.com/jquery-3.7.1.min.js:2:1649)
+    at ut (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:17846)
+    at t (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:8513)
+    at HTMLTableElement.<anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:4:8696)
+    at ce.each (https://code.jquery.com/jquery-3.7.1.min.js:2:3129) undefined @ https://code.jquery.com/jquery-3.7.1.min.js:1
+[  112731ms] Uncaught TypeError: Cannot set properties of undefined (setting '_DT_CellIndex')
+    at St (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:20406)
+    at x (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17776)
+    at <anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17880)
+    at <anonymous> (https://code.jquery.com/jquery-3.7.1.min.js:1:1680)
+    at map (https://code.jquery.com/jquery-3.7.1.min.js:1:3970)
+    at map (https://code.jquery.com/jquery-3.7.1.min.js:1:1648)
+    at ut (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:17845)
+    at t (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:8512)
+    at <anonymous> (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:8695)
+    at each (https://code.jquery.com/jquery-3.7.1.min.js:1:3128)
+    at each (https://code.jquery.com/jquery-3.7.1.min.js:1:1593)
+    at w (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:3586)
+    at P.fn.DataTable (https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js:3:87064)
+    at <anonymous> (http://127.0.0.1:8000/leaves/:466:25)
+    at e (https://code.jquery.com/jquery-3.7.1.min.js:1:27027)
+    at t (https://code.jquery.com/jquery-3.7.1.min.js:1:27329)
+[  113332ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/packages/:0
+[  113439ms] [ERROR] Failed to load resource: the server responded with a status of 403 (Forbidden) @ http://127.0.0.1:8000/subscriptions/:0
+[  113562ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  142772ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  144022ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ chrome-error://chromewebdata/:0
+[  144370ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  144422ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  144446ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  144519ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  163159ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/login/:0
+[  164901ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ chrome-error://chromewebdata/:0

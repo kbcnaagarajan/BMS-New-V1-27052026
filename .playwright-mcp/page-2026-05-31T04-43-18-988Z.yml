@@ -1,0 +1,147 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PLATFORM
+      - link " Companies" [ref=e13] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Companies
+      - link " Packages" [ref=e17] [cursor=pointer]:
+        - /url: /packages/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Packages
+      - link " Subscriptions" [ref=e21] [cursor=pointer]:
+        - /url: /subscriptions/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Subscriptions
+      - generic [ref=e24]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e26] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Reports
+  - navigation [ref=e29]:
+    - text: 
+    - generic [ref=e30]: LiveOrg531A
+    - generic [ref=e32]:
+      - button "S Super Admin" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: S
+        - generic [ref=e35]: Super Admin
+      - text:  
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - link " All Companies" [ref=e40] [cursor=pointer]:
+          - /url: /companies/
+          - generic [ref=e41]: 
+          - text: All Companies
+        - heading "LiveOrg531A" [level=4] [ref=e42]
+      - generic [ref=e43]:
+        - link " Edit" [ref=e44] [cursor=pointer]:
+          - /url: /companies/29/edit/
+          - generic [ref=e45]: 
+          - text: Edit
+        - link " Deactivate" [ref=e46] [cursor=pointer]:
+          - /url: /companies/29/toggle-active/
+          - generic [ref=e47]: 
+          - text: Deactivate
+    - generic [ref=e48]:
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: Status
+          - heading "Active" [level=4] [ref=e55]
+        - generic [ref=e57]: 
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: Subscription
+            - heading "Trial" [level=5] [ref=e64]:
+              - generic [ref=e65]: Trial
+          - generic [ref=e67]: 
+        - text: Starter plan
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - paragraph [ref=e73]: Users
+          - heading "0 / 5" [level=4] [ref=e74]
+        - generic [ref=e76]: 
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: Storage
+          - heading "0 MB / 512 MB" [level=5] [ref=e83]
+        - generic [ref=e85]: 
+    - generic [ref=e87]:
+      - generic [ref=e90]:
+        - generic [ref=e91]: 
+        - heading "0" [level=3] [ref=e92]
+        - paragraph [ref=e93]: Clients / 20
+      - generic [ref=e96]:
+        - generic [ref=e97]: 
+        - heading "0" [level=3] [ref=e98]
+        - paragraph [ref=e99]: Projects / 20
+      - generic [ref=e102]:
+        - generic [ref=e103]: 
+        - heading "0" [level=3] [ref=e104]
+        - paragraph [ref=e105]: Documents Uploaded
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e110]:
+          - generic [ref=e111]: 
+          - text: Users (0)
+        - table [ref=e114]:
+          - rowgroup [ref=e115]:
+            - row "Name Email Role Status" [ref=e116]:
+              - columnheader "Name" [ref=e117]
+              - columnheader "Email" [ref=e118]
+              - columnheader "Role" [ref=e119]
+              - columnheader "Status" [ref=e120]
+          - rowgroup [ref=e121]:
+            - row "No users" [ref=e122]:
+              - cell "No users" [ref=e123]
+      - generic [ref=e125]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: 
+          - text: Platform Support Tickets (0)
+        - table [ref=e131]:
+          - rowgroup [ref=e132]:
+            - row "Title Status Priority Created" [ref=e133]:
+              - columnheader "Title" [ref=e134]
+              - columnheader "Status" [ref=e135]
+              - columnheader "Priority" [ref=e136]
+              - columnheader "Created" [ref=e137]
+          - rowgroup [ref=e138]:
+            - row "No support tickets" [ref=e139]:
+              - cell "No support tickets" [ref=e140]
+      - generic [ref=e142]:
+        - generic [ref=e144]:
+          - generic [ref=e145]: 
+          - text: Recent Invoices
+        - table [ref=e148]:
+          - rowgroup [ref=e149]:
+            - 'row "Invoice # Client Amount Status" [ref=e150]':
+              - 'columnheader "Invoice #" [ref=e151]'
+              - columnheader "Client" [ref=e152]
+              - columnheader "Amount" [ref=e153]
+              - columnheader "Status" [ref=e154]
+          - rowgroup [ref=e155]:
+            - row "No invoices" [ref=e156]:
+              - cell "No invoices" [ref=e157]
+      - generic [ref=e159]:
+        - generic [ref=e161]:
+          - generic [ref=e162]: 
+          - text: Active Projects (0)
+        - table [ref=e165]:
+          - rowgroup [ref=e166]:
+            - row "Project Client Manager Status" [ref=e167]:
+              - columnheader "Project" [ref=e168]
+              - columnheader "Client" [ref=e169]
+              - columnheader "Manager" [ref=e170]
+              - columnheader "Status" [ref=e171]
+          - rowgroup [ref=e172]:
+            - row "No projects" [ref=e173]:
+              - cell "No projects" [ref=e174]

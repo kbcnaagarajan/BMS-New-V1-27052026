@@ -1,0 +1,158 @@
+- generic [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: LiveOrg531A
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: ISSUES & RISKS
+      - link " Issues" [ref=e52] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Issues
+      - link " Risks" [ref=e56] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Risks
+      - link " Change Requests" [ref=e60] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Change Requests
+      - link " Support Tickets" [ref=e64] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e65]: 
+        - generic [ref=e66]: Support Tickets
+      - generic [ref=e67]: PEOPLE
+      - link " Timesheets" [ref=e69] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Timesheets
+      - link " Leave" [ref=e73] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Leave
+      - link " Attendance" [ref=e77] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Attendance
+      - generic [ref=e80]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e82] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Reports
+  - navigation [ref=e85]:
+    - text: 
+    - generic [ref=e86]: New Document
+    - generic [ref=e88]:
+      - button "P PM User" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: P
+        - generic [ref=e91]: PM User
+      - text:  
+  - generic [ref=e93]:
+    - link " Back" [ref=e95] [cursor=pointer]:
+      - /url: /documents/
+      - generic [ref=e96]: 
+      - text: Back
+    - generic [ref=e97]:
+      - heading " New Document" [level=5] [ref=e99]:
+        - generic [ref=e100]: 
+        - text: New Document
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]: Project
+            - combobox "Project" [ref=e106]:
+              - option "-- Select Project --"
+              - option "PRJ-20260531044708 - LiveOrg Project A" [selected]
+          - generic [ref=e107]:
+            - generic [ref=e108]: Client
+            - combobox "Client" [ref=e109]:
+              - option "-- Select Client --"
+              - option "LiveOrg Client A (CL-20260531044648)" [selected]
+          - generic [ref=e110]:
+            - generic [ref=e111]: Title *
+            - textbox "Title *" [ref=e112]: Test Flow Basic Runbook Evidence
+          - generic [ref=e113]:
+            - generic [ref=e114]: Document Type *
+            - combobox "Document Type *" [ref=e115]:
+              - option "-- Select Document Type --"
+              - option "SOW"
+              - option "Contract"
+              - option "Proposal"
+              - option "Project Plan"
+              - option "BRD"
+              - option "FSD"
+              - option "Technical Document" [selected]
+              - option "Meeting Minutes"
+              - option "UAT Document"
+              - option "Sign-Off"
+              - option "Invoice"
+              - option "Payment Proof"
+              - option "Client Document"
+              - option "Internal Note"
+              - option "Other"
+          - generic [ref=e116]:
+            - generic [ref=e117]: Description
+            - textbox "Description" [ref=e118]: Uploaded file evidence for operational runbook test.
+          - generic [ref=e119]:
+            - generic [ref=e120]: Version
+            - textbox "Version" [ref=e121]: "1.0"
+          - generic [ref=e122]:
+            - generic [ref=e123]: Visibility *
+            - combobox "Visibility *" [ref=e124]:
+              - option "-- Select Visibility --"
+              - option "Internal Only"
+              - option "Client Visible" [selected]
+              - option "Management Only"
+              - option "Project Team Only"
+          - generic [ref=e125]:
+            - generic [ref=e126]: Document
+            - button "Document" [active] [ref=e127] [cursor=pointer]
+        - generic [ref=e128]:
+          - button " Save" [ref=e129] [cursor=pointer]:
+            - generic [ref=e130]: 
+            - text: Save
+          - link "Cancel" [ref=e131] [cursor=pointer]:
+            - /url: /documents/

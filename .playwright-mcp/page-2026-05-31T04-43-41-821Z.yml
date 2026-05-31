@@ -1,0 +1,20 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - heading "KarthikAi-OMS" [level=3] [ref=e6]
+    - paragraph [ref=e7]:
+      - text: You've been invited to join
+      - strong [ref=e8]: LiveOrg531A
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]: Email
+      - textbox [disabled] [ref=e12]: company@liveorg531a.com
+    - generic [ref=e13]:
+      - generic [ref=e14]: Name
+      - textbox [disabled] [ref=e15]: Live Admin
+    - generic [ref=e16]:
+      - generic [ref=e17]: Set Password *
+      - textbox "Min 6 characters" [ref=e18]
+    - generic [ref=e19]:
+      - generic [ref=e20]: Confirm Password *
+      - textbox [ref=e21]
+    - button "Accept Invite & Set Password" [ref=e22] [cursor=pointer]

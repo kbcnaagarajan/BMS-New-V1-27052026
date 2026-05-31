@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: CLIENTS & CONTACTS
+      - link " Clients" [ref=e13] [cursor=pointer]:
+        - /url: /clients/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Clients
+      - link " Contacts" [ref=e17] [cursor=pointer]:
+        - /url: /contacts/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Contacts
+      - generic [ref=e20]: PROJECTS & TASKS
+      - link " Projects" [ref=e22] [cursor=pointer]:
+        - /url: /projects/
+        - generic [ref=e23]: 
+        - generic [ref=e24]: Projects
+      - link " Tasks" [ref=e26] [cursor=pointer]:
+        - /url: /tasks/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Tasks
+      - link " Milestones" [ref=e30] [cursor=pointer]:
+        - /url: /milestones/
+        - generic [ref=e31]: 
+        - generic [ref=e32]: Milestones
+      - link " Deliverables" [ref=e34] [cursor=pointer]:
+        - /url: /deliverables/
+        - generic [ref=e35]: 
+        - generic [ref=e36]: Deliverables
+      - generic [ref=e37]: COLLABORATION
+      - link " Meetings" [ref=e39] [cursor=pointer]:
+        - /url: /meetings/
+        - generic [ref=e40]: 
+        - generic [ref=e41]: Meetings
+      - link " Documents" [ref=e43] [cursor=pointer]:
+        - /url: /documents/
+        - generic [ref=e44]: 
+        - generic [ref=e45]: Documents
+      - link " Team" [ref=e47] [cursor=pointer]:
+        - /url: /team/
+        - generic [ref=e48]: 
+        - generic [ref=e49]: Team
+      - generic [ref=e50]: ISSUES & RISKS
+      - link " Issues" [ref=e52] [cursor=pointer]:
+        - /url: /issues/
+        - generic [ref=e53]: 
+        - generic [ref=e54]: Issues
+      - link " Risks" [ref=e56] [cursor=pointer]:
+        - /url: /risks/
+        - generic [ref=e57]: 
+        - generic [ref=e58]: Risks
+      - link " Change Requests" [ref=e60] [cursor=pointer]:
+        - /url: /change-requests/
+        - generic [ref=e61]: 
+        - generic [ref=e62]: Change Requests
+      - link " Support Tickets" [ref=e64] [cursor=pointer]:
+        - /url: /support-tickets/
+        - generic [ref=e65]: 
+        - generic [ref=e66]: Support Tickets
+      - generic [ref=e67]: PEOPLE
+      - link " Timesheets" [ref=e69] [cursor=pointer]:
+        - /url: /timesheets/
+        - generic [ref=e70]: 
+        - generic [ref=e71]: Timesheets
+      - link " Leave" [ref=e73] [cursor=pointer]:
+        - /url: /leaves/
+        - generic [ref=e74]: 
+        - generic [ref=e75]: Leave
+      - link " Attendance" [ref=e77] [cursor=pointer]:
+        - /url: /attendance/
+        - generic [ref=e78]: 
+        - generic [ref=e79]: Attendance
+      - generic [ref=e80]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e82] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e83]: 
+        - generic [ref=e84]: Reports
+  - navigation [ref=e85]:
+    - text: 
+    - generic [ref=e86]: New Timesheet
+    - generic [ref=e88]:
+      - button "P Project Manager" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: P
+        - generic [ref=e91]: Project Manager
+      - text:  
+  - generic [ref=e93]:
+    - link " Back" [ref=e95] [cursor=pointer]:
+      - /url: /timesheets/
+      - generic [ref=e96]: 
+      - text: Back
+    - generic [ref=e97]:
+      - heading " New Timesheet" [level=5] [ref=e99]:
+        - generic [ref=e100]: 
+        - text: New Timesheet
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e104]:
+            - generic [ref=e105]: Employee *
+            - combobox "Employee *" [ref=e106]:
+              - option "-- Select Employee --" [selected]
+              - option "Super Admin (admin@karthikai.com)"
+              - option "Company Admin (company@testco.com)"
+              - option "WF1 Admin (admin@wf1.com)"
+              - option "Client User (client@test.com)"
+              - option "(mgmt@testco.com)"
+              - option "(dm@testco.com)"
+              - option "(am@testco.com)"
+              - option "(hr@testco.com)"
+              - option "(ca@testco.com)"
+              - option "(management@testco.com)"
+              - option "(delivery_manager@testco.com)"
+              - option "(account_manager@testco.com)"
+              - option "(hr_manager@testco.com)"
+              - option "Admin User (admin@testco.com)"
+              - option "Project Manager (pm@testco.com)"
+              - option "Employee User (emp@testco.com)"
+              - option "Finance User (finance@testco.com)"
+              - option "Client User (client@testco.com)"
+          - generic [ref=e107]:
+            - generic [ref=e108]: Week Start Date *
+            - textbox "Week Start Date *" [ref=e109]
+          - generic [ref=e110]:
+            - generic [ref=e111]: Week End Date *
+            - textbox "Week End Date *" [ref=e112]
+          - generic [ref=e113]:
+            - generic [ref=e114]: Notes
+            - textbox "Notes" [ref=e115]
+        - separator [ref=e116]
+        - heading "Add One Timesheet Entry" [level=6] [ref=e117]
+        - generic [ref=e118]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: Entry Date
+            - textbox "Entry Date" [ref=e121]
+          - generic [ref=e122]:
+            - generic [ref=e123]: Project
+            - combobox "Project" [ref=e124]:
+              - option "-- Select Project --" [selected]
+              - option "Website Redesign"
+          - generic [ref=e125]:
+            - generic [ref=e126]: Task (Optional)
+            - combobox "Task (Optional)" [ref=e127]:
+              - option "-- Select Task --" [selected]
+              - option "Setup homepage"
+          - generic [ref=e128]:
+            - generic [ref=e129]: Hours
+            - spinbutton "Hours" [ref=e130]
+          - generic [ref=e131]:
+            - generic [ref=e132]: Entry Description
+            - textbox "Entry Description" [ref=e133]:
+              - /placeholder: Worked on...
+          - generic [ref=e135]:
+            - checkbox "Billable" [checked] [ref=e136]
+            - generic [ref=e137]: Billable
+        - generic [ref=e138]:
+          - button " Save" [ref=e139] [cursor=pointer]:
+            - generic [ref=e140]: 
+            - text: Save
+          - link "Cancel" [ref=e141] [cursor=pointer]:
+            - /url: /timesheets/

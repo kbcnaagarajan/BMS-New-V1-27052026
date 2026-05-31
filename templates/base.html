@@ -191,7 +191,14 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.datatable').DataTable({ pageLength: 25, language: { search: '', searchPlaceholder: 'Search...' } });
+        $('.datatable').each(function() {
+            const $table = $(this);
+            // DataTables does not handle empty-state tbody rows with colspan reliably.
+            if ($table.find('tbody td[colspan]').length) {
+                return;
+            }
+            $table.DataTable({ pageLength: 25, language: { search: '', searchPlaceholder: 'Search...' } });
+        });
         $('.select2').select2({ theme: 'bootstrap-5' });
     });
     function showToast(msg, type) { const el = $('#toast-container'); el.html(`<div class="toast align-items-center text-bg-${type} border-0"><div class="d-flex"><div class="toast-body">${msg}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`); const t = new bootstrap.Toast(el.find('.toast')[0]); t.show(); }
