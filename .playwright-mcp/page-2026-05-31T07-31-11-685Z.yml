@@ -1,0 +1,178 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PLATFORM
+      - link " Companies" [ref=e13] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Companies
+      - link " Packages" [ref=e17] [cursor=pointer]:
+        - /url: /packages/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Packages
+      - link " Subscriptions" [ref=e21] [cursor=pointer]:
+        - /url: /subscriptions/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Subscriptions
+      - generic [ref=e24]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e26] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Reports
+  - navigation [ref=e29]:
+    - text: 
+    - generic [ref=e30]: PW-Invite-20260531-1026
+    - generic [ref=e32]:
+      - button "S Super Admin" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: S
+        - generic [ref=e35]: Super Admin
+      - text:  
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - link " All Companies" [ref=e40] [cursor=pointer]:
+          - /url: /companies/
+          - generic [ref=e41]: 
+          - text: All Companies
+        - heading "PW-Invite-20260531-1026" [level=4] [ref=e42]
+      - generic [ref=e43]:
+        - link " Edit" [ref=e44] [cursor=pointer]:
+          - /url: /companies/33/edit/
+          - generic [ref=e45]: 
+          - text: Edit
+        - link " Deactivate" [ref=e46] [cursor=pointer]:
+          - /url: /companies/33/toggle-active/
+          - generic [ref=e47]: 
+          - text: Deactivate
+    - generic [ref=e48]:
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: Status
+          - heading "Active" [level=4] [ref=e55]
+        - generic [ref=e57]: 
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: Subscription
+            - heading "Trial" [level=5] [ref=e64]:
+              - generic [ref=e65]: Trial
+          - generic [ref=e67]: 
+        - text: Starter plan
+      - generic [ref=e71]:
+        - generic [ref=e72]:
+          - paragraph [ref=e73]: Users
+          - heading "0 / 5" [level=4] [ref=e74]
+        - generic [ref=e76]: 
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: Storage
+          - heading "0 MB / 512 MB" [level=5] [ref=e83]
+        - generic [ref=e85]: 
+    - generic [ref=e87]:
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e90]: 
+          - text: Admin Invitation
+        - generic [ref=e91]:
+          - button " Copy Invite" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93]: 
+            - text: Copy Invite
+          - button " Resend Invite" [ref=e95] [cursor=pointer]:
+            - generic [ref=e96]: 
+            - text: Resend Invite
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - paragraph [ref=e100]: Invitee
+          - paragraph [ref=e101]: Karthik Nagaraj
+          - text: nagaraj.karthik@gmail.com
+        - generic [ref=e102]:
+          - paragraph [ref=e103]: Status
+          - generic [ref=e104]: Pending
+        - generic [ref=e105]:
+          - paragraph [ref=e106]: Expires
+          - paragraph [ref=e107]: Jun 07, 2026 12:56
+        - generic [ref=e108]:
+          - paragraph [ref=e109]: Created
+          - paragraph [ref=e110]: May 31, 2026 12:56
+        - generic [ref=e111]:
+          - paragraph [ref=e112]: Invite Link
+          - generic [ref=e113]:
+            - textbox [ref=e114]: http://127.0.0.1:8000/invite/dN7nU0UgP9xb2pSvqZlCOTURlpNmT2q2tBcSuLeIQilaLKUGGDR8B2yQhPnRHfqK/
+            - button "Copy" [ref=e115] [cursor=pointer]
+    - generic [ref=e116]:
+      - generic [ref=e119]:
+        - generic [ref=e120]: 
+        - heading "0" [level=3] [ref=e121]
+        - paragraph [ref=e122]: Clients / 20
+      - generic [ref=e125]:
+        - generic [ref=e126]: 
+        - heading "0" [level=3] [ref=e127]
+        - paragraph [ref=e128]: Projects / 20
+      - generic [ref=e131]:
+        - generic [ref=e132]: 
+        - heading "0" [level=3] [ref=e133]
+        - paragraph [ref=e134]: Documents Uploaded
+    - generic [ref=e135]:
+      - generic [ref=e137]:
+        - generic [ref=e139]:
+          - generic [ref=e140]: 
+          - text: Users (0)
+        - table [ref=e143]:
+          - rowgroup [ref=e144]:
+            - row "Name Email Role Status" [ref=e145]:
+              - columnheader "Name" [ref=e146]
+              - columnheader "Email" [ref=e147]
+              - columnheader "Role" [ref=e148]
+              - columnheader "Status" [ref=e149]
+          - rowgroup [ref=e150]:
+            - row "No users" [ref=e151]:
+              - cell "No users" [ref=e152]
+      - generic [ref=e154]:
+        - generic [ref=e156]:
+          - generic [ref=e157]: 
+          - text: Platform Support Tickets (0)
+        - table [ref=e160]:
+          - rowgroup [ref=e161]:
+            - row "Title Status Priority Created" [ref=e162]:
+              - columnheader "Title" [ref=e163]
+              - columnheader "Status" [ref=e164]
+              - columnheader "Priority" [ref=e165]
+              - columnheader "Created" [ref=e166]
+          - rowgroup [ref=e167]:
+            - row "No support tickets" [ref=e168]:
+              - cell "No support tickets" [ref=e169]
+      - generic [ref=e171]:
+        - generic [ref=e173]:
+          - generic [ref=e174]: 
+          - text: Recent Invoices
+        - table [ref=e177]:
+          - rowgroup [ref=e178]:
+            - 'row "Invoice # Client Amount Status" [ref=e179]':
+              - 'columnheader "Invoice #" [ref=e180]'
+              - columnheader "Client" [ref=e181]
+              - columnheader "Amount" [ref=e182]
+              - columnheader "Status" [ref=e183]
+          - rowgroup [ref=e184]:
+            - row "No invoices" [ref=e185]:
+              - cell "No invoices" [ref=e186]
+      - generic [ref=e188]:
+        - generic [ref=e190]:
+          - generic [ref=e191]: 
+          - text: Active Projects (0)
+        - table [ref=e194]:
+          - rowgroup [ref=e195]:
+            - row "Project Client Manager Status" [ref=e196]:
+              - columnheader "Project" [ref=e197]
+              - columnheader "Client" [ref=e198]
+              - columnheader "Manager" [ref=e199]
+              - columnheader "Status" [ref=e200]
+          - rowgroup [ref=e201]:
+            - row "No projects" [ref=e202]:
+              - cell "No projects" [ref=e203]

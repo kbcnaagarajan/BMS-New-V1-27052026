@@ -1,0 +1,117 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e4]:
+      - heading "KarthikAi-OMS" [level=5] [ref=e5]
+      - text: TestCo
+    - generic [ref=e6]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard/
+        - generic [ref=e9]: 
+        - generic [ref=e10]: Dashboard
+      - generic [ref=e11]: PLATFORM
+      - link " Companies" [ref=e13] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e14]: 
+        - generic [ref=e15]: Companies
+      - link " Packages" [ref=e17] [cursor=pointer]:
+        - /url: /packages/
+        - generic [ref=e18]: 
+        - generic [ref=e19]: Packages
+      - link " Subscriptions" [ref=e21] [cursor=pointer]:
+        - /url: /subscriptions/
+        - generic [ref=e22]: 
+        - generic [ref=e23]: Subscriptions
+      - generic [ref=e24]: REPORTS & ANALYTICS
+      - link " Reports" [ref=e26] [cursor=pointer]:
+        - /url: /reports/
+        - generic [ref=e27]: 
+        - generic [ref=e28]: Reports
+  - navigation [ref=e29]:
+    - text: 
+    - generic [ref=e30]: Create Company
+    - generic [ref=e32]:
+      - button "S Super Admin" [ref=e33] [cursor=pointer]:
+        - generic [ref=e34]: S
+        - generic [ref=e35]: Super Admin
+      - text:  
+  - generic [ref=e37]:
+    - generic [ref=e38]:
+      - heading "Create Company" [level=4] [ref=e39]
+      - link " Back" [ref=e40] [cursor=pointer]:
+        - /url: /companies/
+        - generic [ref=e41]: 
+        - text: Back
+    - generic [ref=e43]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 
+          - text: Company Details
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: Company Name *
+            - textbox [ref=e52]
+          - generic [ref=e53]:
+            - generic [ref=e54]: Type
+            - combobox [ref=e55]:
+              - option "Enterprise" [selected]
+              - option "Startup"
+              - option "Agency"
+              - option "Freelancer"
+              - option "Other"
+          - generic [ref=e56]:
+            - generic [ref=e57]: Email
+            - textbox [ref=e58]
+          - generic [ref=e59]:
+            - generic [ref=e60]: Phone
+            - textbox [ref=e61]
+          - generic [ref=e62]:
+            - generic [ref=e63]: Address
+            - textbox [ref=e64]
+          - generic [ref=e65]:
+            - generic [ref=e66]: City
+            - textbox [ref=e67]
+          - generic [ref=e68]:
+            - generic [ref=e69]: State
+            - textbox [ref=e70]
+          - generic [ref=e71]:
+            - generic [ref=e72]: Country
+            - textbox [ref=e73]
+          - generic [ref=e74]:
+            - generic [ref=e75]: Registration Number
+            - textbox [ref=e76]
+          - generic [ref=e77]:
+            - generic [ref=e78]: Tax Number
+            - textbox [ref=e79]
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e83]: 
+          - text: Subscription Package
+        - generic [ref=e85]:
+          - radio "Starter Free 5 users | 20 clients | 20 projects | 512MB storage 14-day free trial" [checked] [ref=e86]
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - strong [ref=e89]: Starter
+              - generic [ref=e90]: Free
+            - generic [ref=e91]: 5 users | 20 clients | 20 projects | 512MB storage
+            - text: 14-day free trial
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - generic [ref=e95]: 
+          - text: Company Admin Account
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - generic [ref=e99]: First Name *
+            - textbox [ref=e100]
+          - generic [ref=e101]:
+            - generic [ref=e102]: Last Name
+            - textbox [ref=e103]
+          - generic [ref=e104]:
+            - generic [ref=e105]: Email *
+            - textbox [ref=e106]
+            - text: An invite link will be generated. The admin sets their password when accepting.
+      - generic [ref=e107]:
+        - button " Create Company & Send Invite" [ref=e108] [cursor=pointer]:
+          - generic [ref=e109]: 
+          - text: Create Company & Send Invite
+        - link "Cancel" [ref=e110] [cursor=pointer]:
+          - /url: /companies/

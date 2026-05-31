@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
+  <p>Hello {{ admin_name }},</p>
+
+  <p>You have been invited to register as the Company Admin for <strong>{{ company_name }}</strong>.</p>
+
+  <p><strong>Admin email:</strong> {{ admin_email }}<br>
+  <strong>Invited by:</strong> {{ invited_by_name }}{% if invited_by_email %} ({{ invited_by_email }}){% endif %}<br>
+  <strong>Invite expires:</strong> {{ expires_at|date:"M d, Y H:i" }}</p>
+
+  <p>
+    Complete your registration and set your password using this link:<br>
+    <a href="{{ invite_url }}">{{ invite_url }}</a>
+  </p>
+
+  <p>Next steps after acceptance:</p>
+  <ol>
+    <li>Set your password from the invite page.</li>
+    <li>Sign in and review company settings.</li>
+    <li>Start operating by setting up your users, roles, and workspace defaults.</li>
+  </ol>
+
+  <p>If you were not expecting this invitation, please ignore this email.</p>
+</body>
+</html>

@@ -93,6 +93,76 @@
   </div>
 
   <!-- Client / Project / Document Summary -->
+  {% if latest_invite %}
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <span class="fw-semibold"><i class="bi bi-envelope me-2"></i>Admin Invitation</span>
+      {% if latest_invite.status != 'accepted' %}
+      <div class="d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          onclick="copyInviteLink('{{ request.scheme }}://{{ request.get_host }}{% url 'company_invite_accept' latest_invite.token %}')"
+        >
+          <i class="bi bi-clipboard me-1"></i>Copy Invite
+        </button>
+        {% if user.is_super_admin %}
+        <form method="post" action="{% url 'company_invite_resend' company.pk %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat me-1"></i>Resend Invite</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <p class="detail-label mb-1">Invitee</p>
+          <p class="mb-0">{{ latest_invite.first_name }} {{ latest_invite.last_name }}</p>
+          <small class="text-muted">{{ latest_invite.email }}</small>
+        </div>
+        <div class="col-md-2">
+          <p class="detail-label mb-1">Status</p>
+          <span class="status-badge {% if latest_invite.status == 'accepted' %}bg-success bg-opacity-10 text-success{% elif latest_invite.status == 'pending' %}bg-warning bg-opacity-10 text-warning{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %}">
+            {{ latest_invite.get_status_display }}
+          </span>
+        </div>
+        <div class="col-md-3">
+          <p class="detail-label mb-1">Expires</p>
+          <p class="mb-0">{{ latest_invite.expires_at|date:"M d, Y H:i" }}</p>
+        </div>
+        <div class="col-md-3">
+          <p class="detail-label mb-1">Created</p>
+          <p class="mb-0">{{ latest_invite.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+        {% if latest_invite.status != 'accepted' %}
+        <div class="col-12">
+          <p class="detail-label mb-1">Invite Link</p>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="invite-link-input"
+              readonly
+              value="{{ request.scheme }}://{{ request.get_host }}{% url 'company_invite_accept' latest_invite.token %}"
+            >
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              onclick="copyInviteLink('{{ request.scheme }}://{{ request.get_host }}{% url 'company_invite_accept' latest_invite.token %}')"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Client / Project / Document Summary -->
   <div class="row g-3 mb-4">
     <div class="col-md-4">
       <div class="card border-0 shadow-sm h-100">
@@ -273,4 +343,17 @@
     </div>
   </div>
 </div>
+<script>
+  function copyInviteLink(link) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(link).then(function () {
+        alert('Invite link copied.');
+      }).catch(function () {
+        window.prompt('Copy invite link:', link);
+      });
+      return;
+    }
+    window.prompt('Copy invite link:', link);
+  }
+</script>
 {% endblock %}

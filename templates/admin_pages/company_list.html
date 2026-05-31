@@ -23,6 +23,7 @@
               <th>Users</th>
               <th>Clients</th>
               <th>Projects</th>
+              <th>Invite</th>
               <th>Created</th>
               <th class="pe-3 text-end">Actions</th>
             </tr>
@@ -43,21 +44,36 @@
                   {{ company.get_subscription_status_display }}
                 </span>
               </td>
-              <td>{{ company.total_users|default:"0" }}/{{ company.user_limit|default:"—" }}</td>
-              <td>{{ company.total_clients|default:"0" }}/{{ company.client_limit|default:"—" }}</td>
-              <td>{{ company.total_projects|default:"0" }}/{{ company.project_limit|default:"—" }}</td>
+              <td>{{ company.total_users|default:"0" }}/{{ company.user_limit|default:"-" }}</td>
+              <td>{{ company.total_clients|default:"0" }}/{{ company.client_limit|default:"-" }}</td>
+              <td>{{ company.total_projects|default:"0" }}/{{ company.project_limit|default:"-" }}</td>
+              <td>
+                {% if company.latest_invite %}
+                  <span class="status-badge {% if company.latest_invite.status == 'accepted' %}bg-success bg-opacity-10 text-success{% elif company.latest_invite.status == 'pending' %}bg-warning bg-opacity-10 text-warning{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %}">
+                    {{ company.latest_invite.get_status_display }}
+                  </span>
+                {% else %}
+                  <span class="text-muted">No invite</span>
+                {% endif %}
+              </td>
               <td>{{ company.created_at|date:"M d, Y" }}</td>
               <td class="pe-3 text-end">
                 <div class="btn-group btn-group-sm">
                   <a href="{% url 'company_detail' company.pk %}" class="btn btn-outline-secondary" title="View"><i class="bi bi-eye"></i></a>
                   {% if user.is_super_admin %}
+                  {% if company.latest_invite and company.latest_invite.status != 'accepted' %}
+                  <form method="post" action="{% url 'company_invite_resend' company.pk %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary" title="Resend Invite"><i class="bi bi-envelope"></i></button>
+                  </form>
+                  {% endif %}
                   <a href="{% url 'company_edit' company.pk %}" class="btn btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
                   {% endif %}
                 </div>
               </td>
             </tr>
             {% empty %}
-            <tr><td colspan="8" class="text-center text-muted py-5">No companies registered yet.</td></tr>
+            <tr><td colspan="9" class="text-center text-muted py-5">No companies registered yet.</td></tr>
             {% endfor %}
           </tbody>
         </table>

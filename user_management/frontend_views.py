@@ -2,9 +2,11 @@ from decimal import Decimal
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.db.models import Count, Sum, Q, F
 from django.utils import timezone
 from django.http import HttpResponseForbidden
+from django.urls import reverse
 from user_management.models import User, Company, Module, Department, Designation, Role, Package, CompanySubscription, CompanyInvite, SUPER_ADMIN_RESTRICTED_MODULES, PLATFORM_MODULES
 from user_management.rbac import build_user_menu
 from client_crm.models import Client, ClientContact
@@ -14,7 +16,7 @@ from meetings_documents.models import Meeting, Document
 from issues_risks.models import ProjectIssue, ProjectRisk, ChangeRequest, SupportTicket
 from billing.models import Invoice, Payment
 
-from django.http import HttpResponseForbidden
+from user_management.invite_email import send_company_invite_email
 
 
 def _sa_check(user, module_key):
@@ -36,6 +38,19 @@ def _module_access_check(user, module_key):
     if not user.has_module_access(check_key):
         return HttpResponseForbidden('Access denied')
     return None
+
+
+def _latest_company_invites(company_ids):
+    invites = (
+        CompanyInvite.objects
+        .filter(company_id__in=company_ids)
+        .order_by('company_id', '-created_at')
+    )
+    latest = {}
+    for invite in invites:
+        if invite.company_id not in latest:
+            latest[invite.company_id] = invite
+    return latest
 
 def _get_role_scope(user, module_key):
     """
@@ -266,6 +281,11 @@ def company_list(request):
         )
     else:
         companies = [user.company] if user.company else []
+    company_list_data = list(companies) if user.is_super_admin else [c for c in companies if c]
+    invite_map = _latest_company_invites([c.pk for c in company_list_data]) if company_list_data else {}
+    for company in company_list_data:
+        company.latest_invite = invite_map.get(company.pk)
+    companies = company_list_data
     ctx['companies'] = companies
     ctx['packages'] = Package.objects.filter(is_active=True) if user.is_super_admin else []
     return render(request, 'admin_pages/company_list.html', ctx)
@@ -348,7 +368,7 @@ def company_create(request):
         if admin_email and admin_first:
             from django.utils.crypto import get_random_string
             token = get_random_string(64)
-            CompanyInvite.objects.create(
+            invite = CompanyInvite.objects.create(
                 company=company,
                 email=admin_email,
                 token=token,
@@ -360,6 +380,17 @@ def company_create(request):
                 status='pending',
             )
             invite_token = token
+            sent, error = send_company_invite_email(request, invite)
+            if sent:
+                messages.success(request, f'Company created and invitation email sent to {admin_email}.')
+            else:
+                messages.warning(
+                    request,
+                    f'Company created, but invitation email could not be sent to {admin_email}. '
+                    f'You can resend from company details. Error: {error}'
+                )
+        else:
+            messages.warning(request, 'Company created without admin invite email because admin details were incomplete.')
 
         return redirect('company_detail', pk=company.pk)
     return render(request, 'admin_pages/company_create.html', ctx)
@@ -396,8 +427,42 @@ def company_detail(request, pk):
         'invoices': invoices,
         'doc_count': doc_count,
         'subscription': CompanySubscription.objects.filter(company=company).first(),
+        'latest_invite': CompanyInvite.objects.filter(company=company).order_by('-created_at').first(),
     })
     return render(request, 'admin_pages/company_detail.html', ctx)
+
+
+@login_required
+def company_invite_resend(request, pk):
+    if not request.user.is_super_admin:
+        return HttpResponseForbidden('Only super admins can resend invites')
+    if request.method != 'POST':
+        return HttpResponseForbidden('Invalid request method')
+
+    company = get_object_or_404(Company, pk=pk)
+    invite = CompanyInvite.objects.filter(company=company).order_by('-created_at').first()
+    if not invite:
+        messages.warning(request, 'No invite found for this company.')
+        return redirect('company_detail', pk=company.pk)
+
+    if invite.status == 'accepted':
+        messages.warning(request, 'This invite has already been accepted. Resend is not allowed.')
+        return redirect('company_detail', pk=company.pk)
+
+    if invite.status == 'expired':
+        from django.utils.crypto import get_random_string
+        invite.status = 'pending'
+        invite.token = get_random_string(64)
+        invite.expires_at = timezone.now() + timezone.timedelta(days=7)
+        invite.invited_by = request.user
+        invite.save(update_fields=['status', 'token', 'expires_at', 'invited_by'])
+
+    sent, error = send_company_invite_email(request, invite)
+    if sent:
+        messages.success(request, f'Invitation email resent to {invite.email}.')
+    else:
+        messages.warning(request, f'Invite resend failed for {invite.email}. Error: {error}')
+    return redirect('company_detail', pk=company.pk)
 
 @login_required
 def company_edit(request, pk):
