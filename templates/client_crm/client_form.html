@@ -61,6 +61,23 @@
               <option value="non_profit" {% if client.client_type == 'non_profit' %}selected{% endif %}>Non-Profit</option>
             </select>
           </div>
+          <div class="col-12 mt-2">
+            <hr>
+            <h6 class="fw-semibold mb-2"><i class="bi bi-person-check me-2"></i>Client Portal Invite (Optional)</h6>
+          </div>
+          <div class="col-md-4">
+            <label for="id_portal_first_name" class="form-label">First Name</label>
+            <input type="text" name="portal_first_name" id="id_portal_first_name" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="id_portal_last_name" class="form-label">Last Name</label>
+            <input type="text" name="portal_last_name" id="id_portal_last_name" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label for="id_portal_email" class="form-label">Portal Login Email</label>
+            <input type="email" name="portal_email" id="id_portal_email" class="form-control">
+            <small class="text-muted">If provided, an invite link is generated and emailed.</small>
+          </div>
         </div>
         <div class="d-flex gap-2 mt-4">
           <button type="submit" class="btn btn-primary">

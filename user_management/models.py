@@ -200,6 +200,37 @@ class CompanyInvite(models.Model):
         return f'Invite: {self.email} -> {self.company.name}'
 
 
+class EmailSettings(models.Model):
+    """
+    SMTP configuration stored in DB.
+    company = null => platform default (super admin managed)
+    company != null => company-level override (company admin managed)
+    """
+    company = models.OneToOneField(
+        Company, on_delete=models.CASCADE, null=True, blank=True, related_name='email_settings'
+    )
+    backend = models.CharField(max_length=255, default='django.core.mail.backends.smtp.EmailBackend')
+    host = models.CharField(max_length=255, default='smtp.gmail.com')
+    port = models.IntegerField(default=587)
+    host_user = models.CharField(max_length=255, blank=True)
+    host_password = models.CharField(max_length=255, blank=True)
+    use_tls = models.BooleanField(default=True)
+    use_ssl = models.BooleanField(default=False)
+    default_from_email = models.EmailField(blank=True)
+    is_active = models.BooleanField(default=True)
+    updated_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Email Settings'
+
+    def __str__(self):
+        if self.company_id:
+            return f'Email Settings: {self.company.name}'
+        return 'Email Settings: Platform Default'
+
+
 class Department(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='departments')
     name = models.CharField(max_length=255)
@@ -375,10 +406,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # ========== RBAC METHODS ==========
 
+    def _module_allowed_by_user_type(self, module_key):
+        """
+        Hard boundary by user_type.
+        Role permissions cannot grant access outside this boundary.
+        """
+        module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+        if module_keys == '__all__':
+            return True
+        if module_keys:
+            return module_key in module_keys
+        return False
+
     def has_module_access(self, module_key):
         """Check if user has access to a module via any permission in that module."""
         if self.is_superuser:
             return module_key not in SUPER_ADMIN_RESTRICTED_MODULES
+        if not self._module_allowed_by_user_type(module_key):
+            return False
         if self.roles.filter(
             permissions__module__key=module_key,
             is_active=True
@@ -395,6 +440,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Check if user has a specific permission type on a module."""
         if self.is_superuser:
             return module_key not in SUPER_ADMIN_RESTRICTED_MODULES
+        if not self._module_allowed_by_user_type(module_key):
+            return False
         if self.roles.filter(
             permissions__module__key=module_key,
             permissions__permission_type=perm_type,
@@ -414,6 +461,8 @@ class User(AbstractBaseUser, PermissionsMixin):
             if module_key in SUPER_ADMIN_RESTRICTED_MODULES:
                 return []
             return ['view', 'create', 'edit', 'delete', 'approve', 'export', 'import', 'assign', 'manage']
+        if not self._module_allowed_by_user_type(module_key):
+            return []
         perms = list(self.roles.filter(
             permissions__module__key=module_key,
             is_active=True
@@ -447,6 +496,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                              'meetings', 'documents',
                              'issues', 'support_tickets', 'change_requests',
                              'invoices', 'payments',
+                             'timesheets', 'leave', 'attendance',
                              'reports'],
         'employee': ['dashboard', 'projects', 'tasks',
                       'timesheets', 'leave', 'attendance', 'expenses',
@@ -456,6 +506,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                         'departments', 'designations'],
         'finance_user': ['dashboard', 'clients', 'projects',
                           'invoices', 'payments', 'expenses',
+                          'timesheets', 'leave', 'attendance',
                           'reports'],
         'client_admin': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
         'client_user': ['portal_dashboard', 'portal_projects', 'portal_invoices', 'portal_documents', 'portal_tickets'],
@@ -465,14 +516,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Get all modules this user can access."""
         if self.is_superuser:
             return Module.objects.filter(key__in=SA_ALLOWED_MODULES, is_active=True)
+        module_keys = self.USER_TYPE_MODULES.get(self.user_type)
         role_modules = Module.objects.filter(
             permissions__roles__users=self,
             permissions__roles__is_active=True,
             is_active=True
         ).distinct()
         if role_modules.exists():
-            return role_modules.exclude(key__in=PLATFORM_MODULES)
-        user_type_module_keys = self.USER_TYPE_MODULES.get(self.user_type)
+            if module_keys == '__all__':
+                return role_modules.exclude(key__in=PLATFORM_MODULES)
+            if module_keys:
+                return role_modules.filter(key__in=module_keys).exclude(key__in=PLATFORM_MODULES)
+            return Module.objects.none()
+        user_type_module_keys = module_keys
         if user_type_module_keys == '__all__':
             return Module.objects.filter(is_active=True).exclude(key__in=PLATFORM_MODULES)
         if user_type_module_keys:

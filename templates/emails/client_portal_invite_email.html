@@ -1,0 +1,15 @@
+<p>Hello {{ invitee_name }},</p>
+
+<p>You have been invited to access the client portal for <strong>{{ client_name }}</strong>.</p>
+
+<p>
+  <strong>Invited by:</strong> {{ invited_by_name }}{% if invited_by_email %} ({{ invited_by_email }}){% endif %}<br>
+  <strong>Invite expires on:</strong> {{ expires_at|date:"M d, Y H:i" }}
+</p>
+
+<p>
+  Click this link to set your password and log in:<br>
+  <a href="{{ invite_url }}">{{ invite_url }}</a>
+</p>
+
+<p>If you were not expecting this invitation, you can ignore this email.</p>

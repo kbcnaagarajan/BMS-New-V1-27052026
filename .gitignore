@@ -1,0 +1,39 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django / local DB
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Local secrets / credentials
+.env
+*.env
+user credentials.txt
+github commands.txt
+
+# Playwright MCP logs
+.playwright-mcp/
+
+# Codex / local runtime
+.codex_server_pid
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Mistaken cloned backup
+BMS-New-V1-27052026_clone_backup/
+

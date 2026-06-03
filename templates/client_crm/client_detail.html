@@ -11,6 +11,53 @@
     </a>
   </div>
 
+  {% if latest_client_invite %}
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <span class="fw-semibold"><i class="bi bi-envelope me-2"></i>Client Portal Invitation</span>
+      {% if latest_client_invite.status != 'accepted' %}
+      <div class="d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          onclick="copyClientInviteLink('{{ request.scheme }}://{{ request.get_host }}{% url 'client_invite_accept' latest_client_invite.token %}')"
+        >
+          <i class="bi bi-clipboard me-1"></i>Copy Invite
+        </button>
+        <form method="post" action="{% url 'client_invite_resend' client.pk %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat me-1"></i>Resend Invite</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="detail-label">Invitee</div>
+          <div class="detail-value">{{ latest_client_invite.first_name }} {{ latest_client_invite.last_name }}</div>
+          <small class="text-muted">{{ latest_client_invite.email }}</small>
+        </div>
+        <div class="col-md-2">
+          <div class="detail-label">Status</div>
+          <div class="detail-value">{{ latest_client_invite.get_status_display }}</div>
+        </div>
+        <div class="col-md-3">
+          <div class="detail-label">Expires</div>
+          <div class="detail-value">{{ latest_client_invite.expires_at|date:"M d, Y H:i" }}</div>
+        </div>
+        <div class="col-md-4">
+          <div class="detail-label">Invite Link</div>
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" readonly value="{{ request.scheme }}://{{ request.get_host }}{% url 'client_invite_accept' latest_client_invite.token %}">
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="copyClientInviteLink('{{ request.scheme }}://{{ request.get_host }}{% url 'client_invite_accept' latest_client_invite.token %}')">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <div class="row g-4 mb-4">
     <div class="col-md-6">
       <div class="card border-0 shadow-sm h-100">
@@ -216,4 +263,17 @@
     </div>
   </div>
 </div>
+<script>
+  function copyClientInviteLink(link) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(link).then(function () {
+        alert('Client invite link copied.');
+      }).catch(function () {
+        window.prompt('Copy client invite link:', link);
+      });
+      return;
+    }
+    window.prompt('Copy client invite link:', link);
+  }
+</script>
 {% endblock %}

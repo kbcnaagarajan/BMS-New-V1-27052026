@@ -7,16 +7,16 @@ from django.db.models import Count, Sum, Q, F
 from django.utils import timezone
 from django.http import HttpResponseForbidden
 from django.urls import reverse
-from user_management.models import User, Company, Module, Department, Designation, Role, Package, CompanySubscription, CompanyInvite, SUPER_ADMIN_RESTRICTED_MODULES, PLATFORM_MODULES
+from user_management.models import User, Company, Module, Department, Designation, Role, Package, CompanySubscription, CompanyInvite, EmailSettings, SUPER_ADMIN_RESTRICTED_MODULES, PLATFORM_MODULES
 from user_management.rbac import build_user_menu
-from client_crm.models import Client, ClientContact
+from client_crm.models import Client, ClientContact, ClientPortalInvite
 from project_360.models import Project, ProjectTask, ProjectTeamMember, ProjectMilestone, ProjectDeliverable
 from employee_operations.models import Timesheet, TimesheetEntry, LeaveRequest, LeaveBalance, Attendance, Expense, ExpenseCategory, LeavePolicy
 from meetings_documents.models import Meeting, Document
 from issues_risks.models import ProjectIssue, ProjectRisk, ChangeRequest, SupportTicket
 from billing.models import Invoice, Payment
 
-from user_management.invite_email import send_company_invite_email
+from user_management.invite_email import send_company_invite_email, send_client_portal_invite_email
 
 
 def _sa_check(user, module_key):
@@ -52,6 +52,19 @@ def _latest_company_invites(company_ids):
             latest[invite.company_id] = invite
     return latest
 
+
+def _latest_client_invites(client_ids):
+    invites = (
+        ClientPortalInvite.objects
+        .filter(client_id__in=client_ids)
+        .order_by('client_id', '-created_at')
+    )
+    latest = {}
+    for invite in invites:
+        if invite.client_id not in latest:
+            latest[invite.client_id] = invite
+    return latest
+
 def _get_role_scope(user, module_key):
     """
     Return a Q object filter for the given module based on the user's role.
@@ -76,8 +89,8 @@ def _get_role_scope(user, module_key):
     company = user.company
 
     # â”€â”€ Client portal roles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Client users/admins should not access internal operational modules.
-    if role in ('client_user', 'client_admin') or user.is_client_user:
+    # Client-portal roles should not access internal operational modules.
+    if role in ('client_user', 'client_admin'):
         if module_key in ('projects',):
             return Q(client__company=company) if company else Q(pk=None)
         return Q(pk=None)
@@ -464,6 +477,38 @@ def company_invite_resend(request, pk):
         messages.warning(request, f'Invite resend failed for {invite.email}. Error: {error}')
     return redirect('company_detail', pk=company.pk)
 
+
+@login_required
+def client_invite_resend(request, pk):
+    if request.method != 'POST':
+        return HttpResponseForbidden('Invalid request method')
+    client = get_object_or_404(Client, pk=pk)
+    if not request.user.is_super_admin and request.user.company_id != client.company_id:
+        return HttpResponseForbidden('Access denied')
+
+    invite = ClientPortalInvite.objects.filter(client=client).order_by('-created_at').first()
+    if not invite:
+        messages.warning(request, 'No client portal invite found for this client.')
+        return redirect('client_detail', pk=client.pk)
+    if invite.status == 'accepted':
+        messages.warning(request, 'This client invite has already been accepted.')
+        return redirect('client_detail', pk=client.pk)
+
+    if invite.status == 'expired':
+        from django.utils.crypto import get_random_string
+        invite.status = 'pending'
+        invite.token = get_random_string(64)
+        invite.expires_at = timezone.now() + timezone.timedelta(days=7)
+        invite.invited_by = request.user
+        invite.save(update_fields=['status', 'token', 'expires_at', 'invited_by'])
+
+    sent, error = send_client_portal_invite_email(request, invite)
+    if sent:
+        messages.success(request, f'Client portal invite resent to {invite.email}.')
+    else:
+        messages.warning(request, f'Client invite resend failed for {invite.email}. Error: {error}')
+    return redirect('client_detail', pk=client.pk)
+
 @login_required
 def company_edit(request, pk):
     if not request.user.is_super_admin:
@@ -545,12 +590,14 @@ def client_detail(request, pk):
     if access_resp:
         return access_resp
     ctx = get_rbac_context(request.user)
-    scope = _get_role_scope(request.user, 'clients')
-    client = get_object_or_404(Client.objects.filter(scope).annotate(project_count=Count('projects')), pk=pk)
+    client = get_object_or_404(Client.objects.annotate(project_count=Count('projects')), pk=pk)
+    if (not request.user.is_super_admin) and client.company_id != request.user.company_id:
+        return HttpResponseForbidden('Access denied to this company’s client')
     project_scope = _get_role_scope(request.user, 'projects')
     projects = client.projects.filter(project_scope).select_related('project_manager').all()
     notes = client.client_notes.select_related('created_by').all()[:10]
-    ctx.update({'client': client, 'projects': projects, 'notes': notes})
+    latest_invite = ClientPortalInvite.objects.filter(client=client).order_by('-created_at').first()
+    ctx.update({'client': client, 'projects': projects, 'notes': notes, 'latest_client_invite': latest_invite})
     return render(request, 'client_crm/client_detail.html', ctx)
 
 @login_required
@@ -587,6 +634,43 @@ def client_form(request, pk=None):
         if not client.created_by_id:
             client.created_by = request.user
         client.save()
+
+        # Optional client portal invite generation
+        portal_email = (data.get('portal_email') or '').strip()
+        portal_first = (data.get('portal_first_name') or '').strip()
+        portal_last = (data.get('portal_last_name') or '').strip()
+        if portal_email and portal_first:
+            from django.utils.crypto import get_random_string
+            invite, created = ClientPortalInvite.objects.get_or_create(
+                client=client,
+                email=portal_email,
+                defaults={
+                    'token': get_random_string(64),
+                    'first_name': portal_first,
+                    'last_name': portal_last,
+                    'status': 'pending',
+                    'invited_by': request.user,
+                    'expires_at': timezone.now() + timezone.timedelta(days=7),
+                }
+            )
+            if not created:
+                invite.first_name = portal_first
+                invite.last_name = portal_last
+                if invite.status in ('accepted', 'cancelled'):
+                    invite.status = 'pending'
+                    invite.token = get_random_string(64)
+                invite.expires_at = timezone.now() + timezone.timedelta(days=7)
+                invite.invited_by = request.user
+                invite.save(update_fields=['first_name', 'last_name', 'status', 'token', 'expires_at', 'invited_by'])
+            sent, error = send_client_portal_invite_email(request, invite)
+            if sent:
+                messages.success(request, f'Client saved and portal invite sent to {portal_email}.')
+            else:
+                messages.warning(
+                    request,
+                    f'Client saved, but portal invite email failed for {portal_email}. '
+                    f'Use Copy Invite from client details. Error: {error}'
+                )
         return redirect('client_detail', pk=client.pk)
     ctx['client'] = client
     return render(request, 'client_crm/client_form.html', ctx)
@@ -817,9 +901,19 @@ def leave_list(request):
 
 # --- Client Portal ---
 def _portal_client_for_user(user):
-    if not user.is_client_user:
+    if user.user_type not in ('client_user', 'client_admin') and not user.is_client_user:
         return None
-    return Client.objects.filter(company=user.company).first()
+    # Prefer explicit contact mapping for client portal identity.
+    linked_contact = (
+        ClientContact.objects
+        .filter(portal_user=user, can_login=True)
+        .select_related('client')
+        .order_by('-is_primary', 'client__name')
+        .first()
+    )
+    if linked_contact:
+        return linked_contact.client
+    return Client.objects.filter(company=user.company).order_by('name').first()
 
 
 @login_required
@@ -1685,7 +1779,42 @@ def reports_dashboard(request):
 
 @login_required
 def settings_view(request):
-    return _module_list(request, 'settings')
+    if request.user.is_super_admin:
+        company = None
+        label = 'Platform (Default)'
+    else:
+        company = request.user.company
+        if not company:
+            return HttpResponseForbidden('No company context found')
+        label = company.name
+
+    cfg, _ = EmailSettings.objects.get_or_create(
+        company=company,
+        defaults={
+            'host_user': company.email if company else '',
+            'default_from_email': company.email if company else '',
+        }
+    )
+
+    if request.method == 'POST':
+        d = request.POST
+        cfg.backend = d.get('backend', cfg.backend)
+        cfg.host = d.get('host', cfg.host)
+        cfg.port = int(d.get('port') or cfg.port or 587)
+        cfg.host_user = d.get('host_user', '').strip()
+        cfg.host_password = d.get('host_password', '').strip() or cfg.host_password
+        cfg.use_tls = bool(d.get('use_tls'))
+        cfg.use_ssl = bool(d.get('use_ssl'))
+        cfg.default_from_email = d.get('default_from_email', '').strip()
+        cfg.is_active = bool(d.get('is_active'))
+        cfg.updated_by = request.user
+        cfg.save()
+        messages.success(request, 'Email settings saved successfully.')
+        return redirect('settings_list')
+
+    ctx = get_rbac_context(request.user)
+    ctx.update({'email_cfg': cfg, 'settings_scope_label': label})
+    return render(request, 'admin_pages/email_settings.html', ctx)
 
 @login_required
 def settings_form(request, pk=None):
@@ -1762,15 +1891,37 @@ def company_invite_accept(request, token):
         elif password != confirm:
             error = 'Passwords do not match'
         else:
-            user = User.objects.create_user(
+            existing = User.objects.filter(email=invite.email).first()
+            if existing and existing.is_super_admin:
+                error = 'This email is already used by a super admin account and cannot be used for company invite.'
+                return render(request, 'admin_pages/invite_accept.html', {'invite': invite, 'error': error})
+            if existing and existing.company_id and existing.company_id != invite.company_id:
+                error = (
+                    'This email already belongs to another company account. '
+                    'Please ask super admin to resend invite to a different email.'
+                )
+                return render(request, 'admin_pages/invite_accept.html', {'invite': invite, 'error': error})
+
+            user, created = User.objects.get_or_create(
                 email=invite.email,
-                password=password,
-                first_name=invite.first_name,
-                last_name=invite.last_name,
-                company=invite.company,
-                user_type='company_admin',
-                is_active=True,
+                defaults={
+                    'first_name': invite.first_name,
+                    'last_name': invite.last_name,
+                    'company': invite.company,
+                    'user_type': 'company_admin',
+                    'is_active': True,
+                }
             )
+            if not created:
+                # Keep the existing account, but align it to invited company-admin profile.
+                user.first_name = invite.first_name
+                user.last_name = invite.last_name
+                user.company = invite.company
+                user.user_type = 'company_admin'
+                user.is_active = True
+                user.is_client_user = False
+            user.set_password(password)
+            user.save()
             invite.company.company_admin = user
             invite.company.is_active = True
             invite.company.subscription_status = 'active'
@@ -1782,3 +1933,70 @@ def company_invite_accept(request, token):
             auth_login(request, user)
             return redirect('dashboard')
     return render(request, 'admin_pages/invite_accept.html', {'invite': invite, 'error': error})
+
+
+def client_invite_accept(request, token):
+    invite = get_object_or_404(ClientPortalInvite, token=token, status='pending')
+    if invite.expires_at < timezone.now():
+        invite.status = 'expired'
+        invite.save(update_fields=['status'])
+        return render(request, 'admin_pages/client_invite_expired.html', {'invite': invite})
+
+    error = None
+    if request.method == 'POST':
+        d = request.POST
+        password = d.get('password')
+        confirm = d.get('confirm_password')
+        if not password or len(password) < 6:
+            error = 'Password must be at least 6 characters'
+        elif password != confirm:
+            error = 'Passwords do not match'
+        else:
+            user, created = User.objects.get_or_create(
+                email=invite.email,
+                defaults={
+                    'first_name': invite.first_name,
+                    'last_name': invite.last_name,
+                    'company': invite.client.company,
+                    'user_type': 'client_user',
+                    'is_active': True,
+                    'is_client_user': True,
+                }
+            )
+            if (not created) and user.user_type not in ('client_user', 'client_admin'):
+                error = (
+                    'This email is already used by an internal staff/admin account. '
+                    'Use a different email for client portal access.'
+                )
+                return render(request, 'admin_pages/client_invite_accept.html', {'invite': invite, 'error': error})
+            if (not created) and user.company_id and user.company_id != invite.client.company_id:
+                error = (
+                    'This email already belongs to another company account and cannot be used for this client invite.'
+                )
+                return render(request, 'admin_pages/client_invite_accept.html', {'invite': invite, 'error': error})
+            if not created:
+                user.first_name = invite.first_name
+                user.last_name = invite.last_name
+                user.company = invite.client.company
+                user.user_type = 'client_user'
+                user.is_client_user = True
+                user.is_active = True
+            user.set_password(password)
+            user.save()
+
+            contact, _ = ClientContact.objects.get_or_create(
+                client=invite.client,
+                email=invite.email,
+                defaults={'first_name': invite.first_name, 'last_name': invite.last_name}
+            )
+            contact.can_login = True
+            contact.portal_user = user
+            contact.save(update_fields=['can_login', 'portal_user'])
+
+            invite.status = 'accepted'
+            invite.accepted_by = user
+            invite.accepted_at = timezone.now()
+            invite.save(update_fields=['status', 'accepted_by', 'accepted_at'])
+            auth_login(request, user)
+            return redirect('portal_dashboard')
+    return render(request, 'admin_pages/client_invite_accept.html', {'invite': invite, 'error': error})

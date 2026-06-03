@@ -18,6 +18,8 @@ urlpatterns = [
     path('companies/<int:pk>/toggle-active/', v.company_toggle_active, name='company_toggle_active'),
     path('companies/<int:pk>/resend-invite/', v.company_invite_resend, name='company_invite_resend'),
     path('invite/<str:token>/', v.company_invite_accept, name='company_invite_accept'),
+    path('clients/<int:pk>/resend-invite/', v.client_invite_resend, name='client_invite_resend'),
+    path('client-invite/<str:token>/', v.client_invite_accept, name='client_invite_accept'),
 
     # Client CRM
     path('clients/', v.client_list, name='client_list'),

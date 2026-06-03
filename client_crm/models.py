@@ -190,3 +190,34 @@ class ClientCommunicationLog(models.Model):
 
     def __str__(self):
         return f'{self.get_communication_type_display()} - {self.subject}'
+
+
+class ClientPortalInvite(models.Model):
+    INVITE_STATUS = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('expired', 'Expired'),
+        ('cancelled', 'Cancelled'),
+    )
+
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='portal_invites')
+    email = models.EmailField()
+    token = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150, blank=True)
+    status = models.CharField(max_length=20, choices=INVITE_STATUS, default='pending')
+    invited_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='sent_client_invites'
+    )
+    accepted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='accepted_client_invites'
+    )
+    accepted_at = models.DateTimeField(null=True, blank=True)
+    expires_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Client Invite: {self.email} -> {self.client.name}'

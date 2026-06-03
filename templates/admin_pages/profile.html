@@ -51,8 +51,14 @@
               <p class="fw-medium mb-0">{{ user.roles.all.0.name|default:"No role assigned" }}</p>
             </div>
             <div class="col-md-6">
-              <label class="form-label text-muted small text-uppercase fw-semibold">Company</label>
-              <p class="fw-medium mb-0">{{ user.company.name|default:"—" }}</p>
+              <label class="form-label text-muted small text-uppercase fw-semibold">Current Company</label>
+              <p class="fw-medium mb-0">
+                {% if user.is_super_admin %}
+                  Platform (Super Admin)
+                {% else %}
+                  {{ user.company.name|default:"—" }}
+                {% endif %}
+              </p>
             </div>
           </div>
         </div>
